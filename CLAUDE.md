@@ -79,6 +79,17 @@ const ROADMAP = [
 
 User progress (learning/done status per item) is stored in `localStorage` with a key defined by each page's `STORAGE_KEY` constant (e.g., `devops-progress`).
 
+## Commit Rules
+
+- Never include AI attribution (`Co-Authored-By: Claude`) in commit messages.
+- Use [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+feat(appname): add new app
+fix(kuma): update routing rule
+chore: update dependencies
+```
+
 ## Adding a New Roadmap
 
 1. Create a new directory (e.g., `platform/`) with an `index.html`
