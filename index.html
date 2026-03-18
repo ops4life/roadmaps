@@ -195,22 +195,6 @@
         font-size: 0.68rem;
         color: #555;
       }
-      .rel-toggle-btn {
-        font-family: "Space Mono", monospace;
-        font-size: 0.68rem;
-        border: 1px solid #000;
-        background: transparent;
-        padding: 0.3rem 0.7rem;
-        cursor: pointer;
-        white-space: nowrap;
-        transition: background 0.15s, color 0.15s;
-        flex-shrink: 0;
-      }
-      .rel-toggle-btn:hover {
-        background: #000;
-        color: var(--bg);
-      }
-
       .rel-diagram-outer {
         overflow-x: auto;
         display: flex;
@@ -316,12 +300,7 @@
       .slab-tools {
         font-size: 0.6rem;
         color: #555;
-        opacity: 0;
-        transition: opacity 0.25s;
         margin-top: 0.15rem;
-      }
-      .rel-section.tools-mode .slab-tools {
-        opacity: 1;
       }
 
       /* SVG arrows */
@@ -425,7 +404,6 @@
           <div class="rel-title">How They Relate</div>
           <div class="rel-subtitle">DevOps is the foundation — extended for security and ML</div>
         </div>
-        <button class="rel-toggle-btn" id="rel-toggle-btn" onclick="toggleRelLabels()">Show Tools</button>
       </div>
       <div class="rel-diagram-outer">
         <div class="rel-iso-scene" id="rel-iso-scene">
@@ -536,13 +514,6 @@
       · <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener">GitHub</a>
     </footer>
     <script>
-      function toggleRelLabels() {
-        const section = document.getElementById('rel-section');
-        const btn = document.getElementById('rel-toggle-btn');
-        section.classList.toggle('tools-mode');
-        btn.textContent = section.classList.contains('tools-mode') ? 'Hide Tools' : 'Show Tools';
-      }
-
       function drawRelArrows() {
         const svg = document.getElementById('rel-arrows');
         if (!svg) return;
