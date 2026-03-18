@@ -24,6 +24,8 @@
         --bg: #e9e9e9;
         --border: #000;
         --accent: #0d9488;
+        --purple: #6d28d9;
+        --teal: #0d9488;
         --green: #16a34a;
         --orange: #f97316;
         --done-bg: #dcfce7;
@@ -188,9 +190,10 @@
         border: 1.5px solid #000;
         border-radius: 50%;
       }
-      .ld-accent { background: var(--accent); }
+      .ld-purple { background: var(--purple); }
+      .ld-teal   { background: var(--teal); }
       .ld-orange { background: var(--orange); }
-      .ld-green { background: var(--green); }
+      .ld-green  { background: var(--green); }
 
       /* CANVAS */
       .rm-canvas-wrap {
@@ -270,10 +273,10 @@
         box-shadow: 4px 4px 0 #000;
       }
       .rm-node.recommended {
-        border-left: 4px solid var(--accent);
+        border-left: 4px solid var(--purple);
       }
       .rm-node.alt {
-        border-left: 4px solid var(--orange);
+        border-left: 4px solid var(--teal);
       }
       .rm-node.status-learning {
         background: var(--learning-bg);
@@ -606,15 +609,15 @@
       </div>
       <div class="legend">
         <div class="legend-item">
-          <div class="legend-dot ld-accent"></div>
-          Core
+          <div class="legend-dot ld-purple"></div>
+          Recommended
         </div>
         <div class="legend-item">
-          <div class="legend-dot ld-orange"></div>
+          <div class="legend-dot ld-teal"></div>
           Alternative
         </div>
         <div class="legend-item">
-          <div class="legend-dot ld-orange" style="background:var(--orange)"></div>
+          <div class="legend-dot ld-orange"></div>
           Learning
         </div>
         <div class="legend-item">
