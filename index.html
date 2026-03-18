@@ -171,6 +171,230 @@
           grid-template-columns: 1fr;
         }
       }
+
+      /* RELATIONSHIP DIAGRAM */
+      .rel-section {
+        border-bottom: 2px solid var(--border);
+        padding: 2rem 1.25rem;
+      }
+      .rel-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .rel-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.6rem;
+        letter-spacing: 0.04em;
+        line-height: 1;
+        margin-bottom: 0.3rem;
+      }
+      .rel-subtitle {
+        font-size: 0.68rem;
+        color: #555;
+      }
+      .rel-toggle-btn {
+        font-family: "Space Mono", monospace;
+        font-size: 0.68rem;
+        border: 1px solid #000;
+        background: transparent;
+        padding: 0.3rem 0.7rem;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.15s, color 0.15s;
+        flex-shrink: 0;
+      }
+      .rel-toggle-btn:hover {
+        background: #000;
+        color: var(--bg);
+      }
+
+      .rel-diagram-outer {
+        overflow-x: auto;
+        display: flex;
+        justify-content: center;
+      }
+      .rel-iso-scene {
+        position: relative;
+        width: 540px;
+        height: 280px;
+        flex-shrink: 0;
+      }
+
+      /* Isometric slabs */
+      .rel-slab {
+        position: absolute;
+        border: 2px solid #000;
+        transition: transform 0.2s;
+        cursor: default;
+      }
+      .rel-slab::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 4px;
+        right: -4px;
+        height: 10px;
+        border-left: 2px solid #000;
+        border-bottom: 2px solid #000;
+        border-right: 2px solid #000;
+        filter: brightness(0.6);
+      }
+      .rel-slab:hover {
+        transform: translateY(-4px) !important;
+      }
+
+      .rel-slab--devops {
+        width: 320px;
+        height: 130px;
+        background: #ede9fe;
+        bottom: 30px;
+        left: 10px;
+        animation: rel-float 4s ease-in-out infinite;
+      }
+      .rel-slab--devops::after {
+        background: #6d28d9;
+        opacity: 0.35;
+      }
+      .rel-slab--devsecops {
+        width: 220px;
+        height: 105px;
+        background: #ccfbf1;
+        top: 20px;
+        right: 20px;
+        animation: rel-float 4s ease-in-out 1.8s infinite;
+      }
+      .rel-slab--devsecops::after {
+        background: #0d9488;
+        opacity: 0.35;
+      }
+      .rel-slab--mlops {
+        width: 210px;
+        height: 100px;
+        background: #ffedd5;
+        top: 40px;
+        left: 130px;
+        animation: rel-float 4s ease-in-out 3.4s infinite;
+      }
+      .rel-slab--mlops::after {
+        background: #f97316;
+        opacity: 0.35;
+      }
+
+      @keyframes rel-float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-6px); }
+      }
+      .rel-iso-scene:hover .rel-slab {
+        animation-play-state: paused;
+      }
+
+      /* Slab labels */
+      .slab-label {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+        padding: 0.75rem 1rem;
+        gap: 0.25rem;
+      }
+      .slab-name {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.4rem;
+        letter-spacing: 0.06em;
+        line-height: 1;
+      }
+      .slab-tag {
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: #444;
+        text-transform: uppercase;
+      }
+      .slab-tools {
+        font-size: 0.6rem;
+        color: #555;
+        opacity: 0;
+        transition: opacity 0.25s;
+        margin-top: 0.15rem;
+      }
+      .rel-section.tools-mode .slab-tools {
+        opacity: 1;
+      }
+
+      /* SVG arrows */
+      .rel-arrows {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: visible;
+      }
+
+      /* Legend */
+      .rel-legend {
+        display: flex;
+        gap: 1.25rem;
+        margin-top: 1.5rem;
+        flex-wrap: wrap;
+      }
+      .rel-leg {
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .rel-leg::before {
+        content: "";
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border: 2px solid #000;
+      }
+      .rel-leg--purple::before { background: #ede9fe; }
+      .rel-leg--teal::before   { background: #ccfbf1; }
+      .rel-leg--orange::before { background: #ffedd5; }
+
+      @media (max-width: 640px) {
+        .rel-iso-scene {
+          width: 100%;
+          height: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+        .rel-slab {
+          position: static;
+          width: 100% !important;
+          height: auto !important;
+          animation: none !important;
+        }
+        .rel-slab::after {
+          display: none;
+        }
+        .slab-label {
+          padding: 0.75rem 1rem;
+        }
+        .slab-tools {
+          opacity: 1;
+        }
+        .rel-arrows {
+          display: none;
+        }
+        .rel-diagram-outer {
+          justify-content: flex-start;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .rel-slab {
+          animation: none !important;
+        }
+      }
     </style>
   </head>
   <body>
@@ -192,6 +416,48 @@
         Interactive learning paths for DevOps, DevSecOps, and MLOps. Track your
         progress through each curriculum as you build real skills.
       </p>
+    </section>
+
+    <!-- RELATIONSHIP DIAGRAM -->
+    <section class="rel-section" id="rel-section">
+      <div class="rel-header">
+        <div>
+          <div class="rel-title">How They Relate</div>
+          <div class="rel-subtitle">DevOps is the foundation — extended for security and ML</div>
+        </div>
+        <button class="rel-toggle-btn" id="rel-toggle-btn" onclick="toggleRelLabels()">Show Tools</button>
+      </div>
+      <div class="rel-diagram-outer">
+        <div class="rel-iso-scene" id="rel-iso-scene">
+          <div class="rel-slab rel-slab--devops" id="slab-devops">
+            <div class="slab-label">
+              <span class="slab-name">DevOps</span>
+              <span class="slab-tag">Foundation</span>
+              <span class="slab-tools">CI/CD · Automation · Culture · IaC</span>
+            </div>
+          </div>
+          <div class="rel-slab rel-slab--devsecops" id="slab-devsecops">
+            <div class="slab-label">
+              <span class="slab-name">DevSecOps</span>
+              <span class="slab-tag">+ Security</span>
+              <span class="slab-tools">SAST · DAST · Secrets Mgmt · Compliance</span>
+            </div>
+          </div>
+          <div class="rel-slab rel-slab--mlops" id="slab-mlops">
+            <div class="slab-label">
+              <span class="slab-name">MLOps</span>
+              <span class="slab-tag">+ ML Lifecycle</span>
+              <span class="slab-tools">Feature Stores · Model Registry · Drift</span>
+            </div>
+          </div>
+          <svg class="rel-arrows" id="rel-arrows" aria-hidden="true"></svg>
+        </div>
+      </div>
+      <div class="rel-legend">
+        <span class="rel-leg rel-leg--purple">DevOps</span>
+        <span class="rel-leg rel-leg--teal">DevSecOps</span>
+        <span class="rel-leg rel-leg--orange">MLOps</span>
+      </div>
     </section>
 
     <!-- ROADMAP CARDS -->
@@ -269,5 +535,80 @@
       <a href="https://roadmap.sh" target="_blank" rel="noopener">roadmap.sh</a>
       · <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener">GitHub</a>
     </footer>
+    <script>
+      function toggleRelLabels() {
+        const section = document.getElementById('rel-section');
+        const btn = document.getElementById('rel-toggle-btn');
+        section.classList.toggle('tools-mode');
+        btn.textContent = section.classList.contains('tools-mode') ? 'Hide Tools' : 'Show Tools';
+      }
+
+      function drawRelArrows() {
+        const svg = document.getElementById('rel-arrows');
+        if (!svg) return;
+        svg.innerHTML = '';
+        if (window.innerWidth <= 640) return;
+
+        const scene = document.getElementById('rel-iso-scene');
+        const sceneRect = scene.getBoundingClientRect();
+
+        function center(el) {
+          const r = el.getBoundingClientRect();
+          return {
+            x: r.left - sceneRect.left + r.width / 2,
+            y: r.top - sceneRect.top + r.height / 2,
+          };
+        }
+
+        const devops = center(document.getElementById('slab-devops'));
+        const devsecops = center(document.getElementById('slab-devsecops'));
+        const mlops = center(document.getElementById('slab-mlops'));
+
+        // defs: arrowhead marker
+        const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+        defs.innerHTML = `<marker id="rel-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#000"/>
+        </marker>`;
+        svg.appendChild(defs);
+
+        function addArrow(x1, y1, x2, y2, label) {
+          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+          line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+          line.setAttribute('stroke', '#000');
+          line.setAttribute('stroke-width', '1.5');
+          line.setAttribute('stroke-dasharray', '5,3');
+          line.setAttribute('marker-end', 'url(#rel-arrow)');
+          svg.appendChild(line);
+
+          const mx = (x1 + x2) / 2;
+          const my = (y1 + y2) / 2;
+          const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          const tw = label.length * 5.5 + 8;
+          rect.setAttribute('x', mx - tw / 2); rect.setAttribute('y', my - 9);
+          rect.setAttribute('width', tw); rect.setAttribute('height', 14);
+          rect.setAttribute('fill', '#e9e9e9');
+          rect.setAttribute('stroke', '#000');
+          rect.setAttribute('stroke-width', '1');
+          svg.appendChild(rect);
+
+          const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          text.setAttribute('x', mx); text.setAttribute('y', my + 1);
+          text.setAttribute('text-anchor', 'middle');
+          text.setAttribute('dominant-baseline', 'middle');
+          text.setAttribute('font-family', 'Space Mono, monospace');
+          text.setAttribute('font-size', '8');
+          text.setAttribute('fill', '#000');
+          text.textContent = label;
+          svg.appendChild(text);
+        }
+
+        addArrow(devops.x, devops.y, devsecops.x, devsecops.y, 'extends');
+        addArrow(devops.x, devops.y, mlops.x, mlops.y, 'extends');
+      }
+
+      window.addEventListener('load', drawRelArrows);
+      window.addEventListener('resize', drawRelArrows);
+    </script>
   </body>
 </html>
