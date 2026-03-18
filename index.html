@@ -195,137 +195,98 @@
         font-size: 0.68rem;
         color: #555;
       }
-      .rel-diagram-wrap {
+
+      /* Isometric block diagram */
+      .iso-wrap {
         display: flex;
-        align-items: center;
-        gap: 0.5rem;
+        justify-content: center;
         overflow-x: auto;
       }
-      .rel-axis-label {
-        font-size: 0.6rem;
-        font-weight: 700;
+      .iso-svg {
+        width: 100%;
+        max-width: 560px;
+        height: auto;
+        flex-shrink: 0;
+        min-width: 360px;
+      }
+      .iso-group { cursor: pointer; text-decoration: none; }
+      .iso-face { transition: filter 0.15s; }
+      .iso-group--devops .iso-face--front { fill: rgba(109,40,217,0.28); stroke: #6d28d9; stroke-width: 2; }
+      .iso-group--devops .iso-face--top   { fill: rgba(109,40,217,0.14); stroke: #6d28d9; stroke-width: 2; }
+      .iso-group--devops .iso-face--right { fill: rgba(109,40,217,0.21); stroke: #6d28d9; stroke-width: 2; }
+      .iso-group--mlops .iso-face--front { fill: rgba(249,115,22,0.28); stroke: #f97316; stroke-width: 2; }
+      .iso-group--mlops .iso-face--top   { fill: rgba(249,115,22,0.14); stroke: #f97316; stroke-width: 2; }
+      .iso-group--mlops .iso-face--right { fill: rgba(249,115,22,0.21); stroke: #f97316; stroke-width: 2; }
+      .iso-group--devsecops .iso-face--front { fill: rgba(13,148,136,0.28); stroke: #0d9488; stroke-width: 2; }
+      .iso-group--devsecops .iso-face--top   { fill: rgba(13,148,136,0.14); stroke: #0d9488; stroke-width: 2; }
+      .iso-group--devsecops .iso-face--right { fill: rgba(13,148,136,0.21); stroke: #0d9488; stroke-width: 2; }
+      .iso-group:hover .iso-face { filter: brightness(1.15); }
+      .iso-label {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 15px;
         letter-spacing: 0.06em;
-        color: #555;
-        white-space: nowrap;
-        flex-shrink: 0;
+        text-anchor: middle;
+        pointer-events: none;
       }
-      .rel-venn-scene {
-        position: relative;
-        width: 640px;
-        height: 300px;
-        flex-shrink: 0;
-        isolation: isolate;
+      .iso-sublabel {
+        font-family: "Space Mono", monospace;
+        font-size: 6.5px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        text-anchor: middle;
+        fill: #555;
+        pointer-events: none;
       }
-      .venn-circle {
-        position: absolute;
-        border-radius: 50%;
-        mix-blend-mode: multiply;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 0.2rem;
+      .iso-group--mlops   { animation: iso-float 5s ease-in-out infinite; }
+      .iso-group--devsecops { animation: iso-float 5s ease-in-out 2.5s infinite; }
+      @keyframes iso-float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-3px); }
       }
-      .venn-circle--devops {
-        width: 280px; height: 280px;
-        left: 180px; top: 10px;
-        background: rgba(109, 40, 217, 0.18);
-        border: 2px solid rgba(109, 40, 217, 0.5);
-        animation: venn-pulse-purple 5s ease-in-out infinite;
-      }
-      .venn-circle--mlops {
-        width: 250px; height: 250px;
-        left: 50px; top: 25px;
-        background: rgba(249, 115, 22, 0.18);
-        border: 2px solid rgba(249, 115, 22, 0.5);
-        animation: venn-pulse-orange 5s ease-in-out 1.7s infinite;
-      }
-      .venn-circle--devsecops {
-        width: 250px; height: 250px;
-        left: 340px; top: 25px;
-        background: rgba(13, 148, 136, 0.18);
-        border: 2px solid rgba(13, 148, 136, 0.5);
-        animation: venn-pulse-teal 5s ease-in-out 3.3s infinite;
-      }
-      @keyframes venn-pulse-purple {
-        0%,100% { box-shadow: 0 0 0 0 rgba(109,40,217,0); }
-        50% { box-shadow: 0 0 24px 6px rgba(109,40,217,0.12); }
-      }
-      @keyframes venn-pulse-orange {
-        0%,100% { box-shadow: 0 0 0 0 rgba(249,115,22,0); }
-        50% { box-shadow: 0 0 24px 6px rgba(249,115,22,0.12); }
-      }
-      @keyframes venn-pulse-teal {
-        0%,100% { box-shadow: 0 0 0 0 rgba(13,148,136,0); }
-        50% { box-shadow: 0 0 24px 6px rgba(13,148,136,0.12); }
-      }
-      .rel-venn-scene:hover .venn-circle {
+      .iso-wrap:hover .iso-group--mlops,
+      .iso-wrap:hover .iso-group--devsecops {
         animation-play-state: paused;
       }
-      .venn-name {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 1.1rem;
-        letter-spacing: 0.06em;
-        line-height: 1;
-      }
-      .venn-sub {
-        font-size: 0.52rem;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: #555;
-      }
-      .venn-pill {
-        position: absolute;
-        background: #111;
-        color: #fff;
-        font-size: 0.58rem;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        padding: 0.2rem 0.55rem;
-        border-radius: 999px;
-        white-space: nowrap;
-        pointer-events: none;
-      }
-      .venn-zone-pill {
-        position: absolute;
-        background: rgba(0,0,0,0.06);
-        color: #333;
-        font-size: 0.55rem;
-        letter-spacing: 0.02em;
-        padding: 0.18rem 0.5rem;
-        border-radius: 999px;
-        border: 1px solid rgba(0,0,0,0.15);
-        white-space: nowrap;
-        pointer-events: none;
-      }
+      .iso-mobile { display: none; }
 
       @media (max-width: 640px) {
-        .rel-diagram-wrap { flex-direction: column; align-items: flex-start; }
-        .rel-axis-label { display: none; }
-        .rel-venn-scene {
-          width: 100%;
-          height: auto;
+        .iso-wrap { display: none; }
+        .iso-mobile {
           display: flex;
           flex-direction: column;
           gap: 0.75rem;
-          isolation: auto;
         }
-        .venn-circle {
-          position: static;
-          width: 100% !important;
-          height: auto !important;
-          border-radius: 0;
-          mix-blend-mode: normal;
-          padding: 1rem;
-          border: 2px solid #000 !important;
-          animation: none !important;
+        .iso-mobile-block {
+          display: flex;
+          flex-direction: column;
           align-items: flex-start;
+          padding: 1rem;
+          border: 2px solid #000;
+          text-decoration: none;
+          color: #000;
+          gap: 0.2rem;
+          transition: transform 0.12s, box-shadow 0.12s;
         }
-        .venn-pill, .venn-zone-pill { display: none; }
+        .iso-mobile-block:hover {
+          transform: translate(-2px, -2px);
+          box-shadow: 4px 4px 0 #000;
+        }
+        .iso-mobile-name {
+          font-family: "Bebas Neue", sans-serif;
+          font-size: 1.1rem;
+          letter-spacing: 0.06em;
+          line-height: 1;
+        }
+        .iso-mobile-sub {
+          font-size: 0.52rem;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: #555;
+        }
       }
       @media (prefers-reduced-motion: reduce) {
-        .venn-circle { animation: none !important; }
+        .iso-group--mlops, .iso-group--devsecops { animation: none !important; }
       }
     </style>
   </head>
@@ -358,33 +319,48 @@
           <div class="rel-subtitle">DevOps is the foundation — extended for security and ML</div>
         </div>
       </div>
-      <div class="rel-diagram-wrap">
-        <span class="rel-axis-label">← ML Lifecycle</span>
-        <div class="rel-venn-scene" id="rel-venn-scene">
-          <!-- Circles (render order: mlops, devsecops, devops on top) -->
-          <div class="venn-circle venn-circle--mlops">
-            <span class="venn-name" style="color:#f97316">MLOps</span>
-            <span class="venn-sub">+ ML Lifecycle</span>
-          </div>
-          <div class="venn-circle venn-circle--devsecops">
-            <span class="venn-name" style="color:#0d9488">DevSecOps</span>
-            <span class="venn-sub">+ Security</span>
-          </div>
-          <div class="venn-circle venn-circle--devops">
-            <span class="venn-name" style="color:#6d28d9">DevOps</span>
-            <span class="venn-sub">Foundation</span>
-          </div>
-          <!-- Intersection pills -->
-          <div class="venn-pill" style="left:168px; top:108px">Pipelines · IaC</div>
-          <div class="venn-pill" style="left:396px; top:108px">CI/CD · Hardening</div>
-          <!-- Zone-only pills -->
-          <div class="venn-zone-pill" style="left:68px; top:160px">Drift · Serving</div>
-          <div class="venn-zone-pill" style="left:68px; top:182px">Feature Stores</div>
-          <div class="venn-zone-pill" style="left:266px; top:190px">Culture · Monitoring</div>
-          <div class="venn-zone-pill" style="left:468px; top:160px">SAST · DAST</div>
-          <div class="venn-zone-pill" style="left:468px; top:182px">Compliance</div>
-        </div>
-        <span class="rel-axis-label">Security Integrated →</span>
+      <div class="iso-wrap">
+        <svg class="iso-svg" viewBox="0 95 355 170" xmlns="http://www.w3.org/2000/svg">
+          <!-- DevOps base block -->
+          <a href="/devops/" class="iso-group iso-group--devops">
+            <polygon class="iso-face iso-face--top"   points="10,200 270,200 339,160 79,160" />
+            <polygon class="iso-face iso-face--right" points="270,250 339,210 339,160 270,200" />
+            <polygon class="iso-face iso-face--front" points="10,250 270,250 270,200 10,200" />
+            <text class="iso-label" x="140" y="230" fill="#6d28d9">DevOps</text>
+            <text class="iso-sublabel" x="140" y="243">Foundation</text>
+          </a>
+          <!-- MLOps extension block -->
+          <a href="/mlops/" class="iso-group iso-group--mlops">
+            <polygon class="iso-face iso-face--top"   points="10,155 125,155 194,115 79,115" />
+            <polygon class="iso-face iso-face--right" points="125,200 194,160 194,115 125,155" />
+            <polygon class="iso-face iso-face--front" points="10,200 125,200 125,155 10,155" />
+            <text class="iso-label" x="68" y="180" fill="#f97316">MLOps</text>
+            <text class="iso-sublabel" x="68" y="192">+ ML Lifecycle</text>
+          </a>
+          <!-- DevSecOps extension block -->
+          <a href="/devsecops/" class="iso-group iso-group--devsecops">
+            <polygon class="iso-face iso-face--top"   points="145,155 270,155 339,115 214,115" />
+            <polygon class="iso-face iso-face--right" points="270,200 339,160 339,115 270,155" />
+            <polygon class="iso-face iso-face--front" points="145,200 270,200 270,155 145,155" />
+            <text class="iso-label" x="208" y="180" fill="#0d9488">DevSecOps</text>
+            <text class="iso-sublabel" x="208" y="192">+ Security</text>
+          </a>
+        </svg>
+      </div>
+      <!-- Mobile: stacked blocks -->
+      <div class="iso-mobile">
+        <a href="/devops/" class="iso-mobile-block" style="background:rgba(109,40,217,0.18); border-color:rgba(109,40,217,0.5)">
+          <span class="iso-mobile-name" style="color:#6d28d9">DevOps</span>
+          <span class="iso-mobile-sub">Foundation</span>
+        </a>
+        <a href="/mlops/" class="iso-mobile-block" style="background:rgba(249,115,22,0.18); border-color:rgba(249,115,22,0.5)">
+          <span class="iso-mobile-name" style="color:#f97316">MLOps</span>
+          <span class="iso-mobile-sub">+ ML Lifecycle</span>
+        </a>
+        <a href="/devsecops/" class="iso-mobile-block" style="background:rgba(13,148,136,0.18); border-color:rgba(13,148,136,0.5)">
+          <span class="iso-mobile-name" style="color:#0d9488">DevSecOps</span>
+          <span class="iso-mobile-sub">+ Security</span>
+        </a>
       </div>
     </section>
 
