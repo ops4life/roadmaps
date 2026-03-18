@@ -206,8 +206,6 @@
         width: 100%;
         max-width: 560px;
         height: auto;
-        flex-shrink: 0;
-        min-width: 360px;
       }
       .iso-group { cursor: pointer; text-decoration: none; }
       .iso-face { transition: filter 0.15s; }
@@ -247,44 +245,7 @@
       .iso-wrap:hover .iso-group--devsecops {
         animation-play-state: paused;
       }
-      .iso-mobile { display: none; }
 
-      @media (max-width: 640px) {
-        .iso-wrap { display: none; }
-        .iso-mobile {
-          display: flex;
-          flex-direction: column;
-          gap: 0.75rem;
-        }
-        .iso-mobile-block {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          padding: 1rem;
-          border: 2px solid #000;
-          text-decoration: none;
-          color: #000;
-          gap: 0.2rem;
-          transition: transform 0.12s, box-shadow 0.12s;
-        }
-        .iso-mobile-block:hover {
-          transform: translate(-2px, -2px);
-          box-shadow: 4px 4px 0 #000;
-        }
-        .iso-mobile-name {
-          font-family: "Bebas Neue", sans-serif;
-          font-size: 1.1rem;
-          letter-spacing: 0.06em;
-          line-height: 1;
-        }
-        .iso-mobile-sub {
-          font-size: 0.52rem;
-          font-weight: 700;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          color: #555;
-        }
-      }
       @media (prefers-reduced-motion: reduce) {
         .iso-group--mlops, .iso-group--devsecops { animation: none !important; }
       }
@@ -346,21 +307,6 @@
             <text class="iso-sublabel" x="208" y="192">+ Security</text>
           </a>
         </svg>
-      </div>
-      <!-- Mobile: stacked blocks -->
-      <div class="iso-mobile">
-        <a href="/devops/" class="iso-mobile-block" style="background:rgba(109,40,217,0.18); border-color:rgba(109,40,217,0.5)">
-          <span class="iso-mobile-name" style="color:#6d28d9">DevOps</span>
-          <span class="iso-mobile-sub">Foundation</span>
-        </a>
-        <a href="/mlops/" class="iso-mobile-block" style="background:rgba(249,115,22,0.18); border-color:rgba(249,115,22,0.5)">
-          <span class="iso-mobile-name" style="color:#f97316">MLOps</span>
-          <span class="iso-mobile-sub">+ ML Lifecycle</span>
-        </a>
-        <a href="/devsecops/" class="iso-mobile-block" style="background:rgba(13,148,136,0.18); border-color:rgba(13,148,136,0.5)">
-          <span class="iso-mobile-name" style="color:#0d9488">DevSecOps</span>
-          <span class="iso-mobile-sub">+ Security</span>
-        </a>
       </div>
     </section>
 
