@@ -1855,8 +1855,6 @@
         if (cols.length < 2) return;
 
         const wrapRect = canvas.getBoundingClientRect();
-        const scrollLeft = wrap.scrollLeft;
-        const scrollTop = wrap.scrollTop;
 
         let paths = "";
         for (let i = 0; i < cols.length - 1; i++) {
@@ -1865,10 +1863,10 @@
           if (!a || !b) continue;
           const ar = a.getBoundingClientRect();
           const br = b.getBoundingClientRect();
-          const x1 = ar.right - wrapRect.left + scrollLeft;
-          const y1 = ar.top + ar.height / 2 - wrapRect.top + scrollTop;
-          const x2 = br.left - wrapRect.left + scrollLeft;
-          const y2 = br.top + br.height / 2 - wrapRect.top + scrollTop;
+          const x1 = ar.right - wrapRect.left;
+          const y1 = ar.top + ar.height / 2 - wrapRect.top;
+          const x2 = br.left - wrapRect.left;
+          const y2 = br.top + br.height / 2 - wrapRect.top;
           const cx = (x1 + x2) / 2;
           paths += `<path d="M${x1},${y1} C${cx},${y1} ${cx},${y2} ${x2},${y2}"/>`;
         }
