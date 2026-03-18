@@ -1,0 +1,1666 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MLOps Roadmap — ops4life</title>
+    <link rel="icon" type="image/svg+xml" href="/mlops/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #e9e9e9;
+        --border: #000;
+        --accent: #f97316;
+        --teal: #0d9488;
+        --green: #16a34a;
+        --done-bg: #dcfce7;
+        --learning-bg: #fff7ed;
+        --node-border: 2px solid #000;
+        --panel-w: 380px;
+      }
+
+      body {
+        font-family: "Space Mono", monospace;
+        background: var(--bg);
+        color: #000;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* NAV */
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem 1.25rem;
+        border-bottom: 2px solid var(--border);
+        background: var(--bg);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .nav-back {
+        font-size: 0.75rem;
+        color: #000;
+        text-decoration: none;
+        border: 1px solid #000;
+        padding: 0.25rem 0.6rem;
+        transition: background 0.15s;
+      }
+      .nav-back:hover {
+        background: #000;
+        color: var(--bg);
+      }
+      .nav-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        flex: 1;
+        min-width: 0;
+      }
+
+      /* HERO */
+      .hero {
+        border-bottom: 2px solid var(--border);
+        padding: 2rem 1.25rem 1.5rem;
+      }
+      .hero-heading {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(3rem, 8vw, 6rem);
+        line-height: 0.9;
+        letter-spacing: 0.02em;
+        margin-bottom: 1rem;
+      }
+      .hero-sub {
+        font-size: 0.75rem;
+        color: #444;
+        margin-bottom: 1.5rem;
+        max-width: 520px;
+      }
+      .progress-wrap {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .progress-bar-outer {
+        flex: 1;
+        min-width: 160px;
+        height: 14px;
+        border: 2px solid #000;
+        background: #fff;
+        position: relative;
+        overflow: hidden;
+      }
+      .progress-bar-inner {
+        height: 100%;
+        background: var(--accent);
+        transition: width 0.4s ease;
+        width: 0%;
+      }
+      .progress-stats {
+        font-size: 0.7rem;
+        display: flex;
+        gap: 1.2rem;
+        flex-wrap: wrap;
+      }
+      .pstat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .pstat-n {
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
+      .pstat-l {
+        font-size: 0.65rem;
+        color: #555;
+      }
+
+      /* TOOLBAR */
+      .toolbar {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1.25rem;
+        border-bottom: 2px solid var(--border);
+        flex-wrap: wrap;
+      }
+      .search-input {
+        font-family: "Space Mono", monospace;
+        font-size: 0.75rem;
+        border: 2px solid #000;
+        background: #fff;
+        padding: 0.4rem 0.75rem;
+        outline: none;
+        width: 220px;
+      }
+      .search-input:focus { background: #f5f5f5; }
+      .btn {
+        font-family: "Space Mono", monospace;
+        font-size: 0.7rem;
+        font-weight: 700;
+        border: 2px solid #000;
+        background: var(--bg);
+        padding: 0.35rem 0.75rem;
+        cursor: pointer;
+        transition: background 0.15s;
+        white-space: nowrap;
+      }
+      .btn:hover {
+        background: #000;
+        color: var(--bg);
+      }
+      .legend {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-left: auto;
+        flex-wrap: wrap;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.65rem;
+      }
+      .legend-dot {
+        width: 10px;
+        height: 10px;
+        border: 1.5px solid #000;
+        border-radius: 50%;
+      }
+      .ld-accent { background: var(--accent); }
+      .ld-teal { background: var(--teal); }
+      .ld-green { background: var(--green); }
+
+      /* CANVAS */
+      .rm-canvas-wrap {
+        position: relative;
+        overflow-x: auto;
+        overflow-y: visible;
+        padding: 2rem 1.25rem 3rem;
+      }
+      .rm-canvas {
+        display: flex;
+        gap: 0;
+        min-width: max-content;
+        position: relative;
+      }
+      svg.rm-connectors {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: visible;
+      }
+      svg.rm-connectors path {
+        fill: none;
+        stroke: #888;
+        stroke-width: 1.5;
+        stroke-dasharray: 4 3;
+      }
+
+      /* COLUMN */
+      .rm-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 180px;
+        min-width: 180px;
+        padding: 0 0.5rem;
+        position: relative;
+      }
+      .rm-col-header {
+        font-size: 0.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        background: #000;
+        color: var(--bg);
+        padding: 0.35rem 0.6rem;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 0.75rem;
+        border: 2px solid #000;
+      }
+      .rm-col-num {
+        font-size: 0.5rem;
+        opacity: 0.6;
+        display: block;
+        margin-bottom: 0.1rem;
+      }
+
+      /* NODE */
+      .rm-node {
+        width: 100%;
+        border: var(--node-border);
+        background: #fff;
+        padding: 0.5rem 0.6rem;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+        transition:
+          transform 0.12s,
+          box-shadow 0.12s,
+          opacity 0.2s;
+        position: relative;
+      }
+      .rm-node:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 4px 4px 0 #000;
+      }
+      .rm-node.recommended { border-left: 4px solid var(--accent); }
+      .rm-node.alt { border-left: 4px solid var(--teal); }
+      .rm-node.status-learning { background: var(--learning-bg); }
+      .rm-node.status-done { background: var(--done-bg); }
+      .rm-node.faded {
+        opacity: 0.2;
+        pointer-events: none;
+      }
+      .rm-node-label {
+        font-size: 0.68rem;
+        font-weight: 700;
+        line-height: 1.3;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+      .rm-node-label .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .status-dot.learning { background: var(--accent); }
+      .status-dot.done { background: var(--green); }
+      .rm-node-sub {
+        font-size: 0.58rem;
+        color: #555;
+        margin-top: 0.2rem;
+      }
+
+      /* DETAIL PANEL */
+      .detail-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.25);
+        z-index: 200;
+      }
+      .detail-overlay.open { display: block; }
+      .detail-panel {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: var(--panel-w);
+        height: 100vh;
+        background: var(--bg);
+        border-left: 2px solid #000;
+        transform: translateX(100%);
+        transition: transform 0.25s ease;
+        z-index: 201;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .detail-panel.open { transform: translateX(0); }
+      .panel-header {
+        padding: 1rem;
+        border-bottom: 2px solid #000;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+      .panel-close {
+        font-family: "Space Mono", monospace;
+        font-size: 1rem;
+        font-weight: 700;
+        border: 2px solid #000;
+        background: none;
+        cursor: pointer;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .panel-close:hover {
+        background: #000;
+        color: var(--bg);
+      }
+      .panel-title-wrap { flex: 1; }
+      .panel-title {
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+      .panel-type-badge {
+        font-size: 0.6rem;
+        padding: 0.15rem 0.4rem;
+        border: 1px solid #000;
+        display: inline-block;
+        margin-top: 0.3rem;
+      }
+      .type-recommended {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .type-alt {
+        border-color: var(--teal);
+        color: var(--teal);
+      }
+      .panel-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+      }
+      .panel-section { margin-bottom: 1.25rem; }
+      .panel-section-title {
+        font-size: 0.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        border-bottom: 1px solid #000;
+        padding-bottom: 0.3rem;
+        margin-bottom: 0.6rem;
+      }
+      .panel-desc {
+        font-size: 0.72rem;
+        line-height: 1.6;
+        color: #222;
+      }
+      .chip-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+      }
+      .chip {
+        font-size: 0.6rem;
+        border: 1px solid #000;
+        padding: 0.2rem 0.5rem;
+        background: #fff;
+      }
+      .tools-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+      .tool-item {
+        font-size: 0.68rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .tool-item::before {
+        content: "▸";
+        opacity: 0.5;
+      }
+      .resources-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+      .res-item {
+        font-size: 0.65rem;
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 1px dashed var(--accent);
+        display: inline-block;
+        width: fit-content;
+      }
+      .res-item:hover {
+        color: #000;
+        border-color: #000;
+      }
+      .panel-tip {
+        font-size: 0.65rem;
+        font-style: italic;
+        color: #555;
+        background: #fff;
+        border: 1px dashed #000;
+        padding: 0.5rem 0.6rem;
+        line-height: 1.5;
+      }
+      .panel-actions {
+        padding: 1rem;
+        border-top: 2px solid #000;
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+      .btn-action {
+        font-family: "Space Mono", monospace;
+        font-size: 0.65rem;
+        font-weight: 700;
+        border: 2px solid #000;
+        background: var(--bg);
+        padding: 0.4rem 0.75rem;
+        cursor: pointer;
+        flex: 1;
+        text-align: center;
+      }
+      .btn-action:hover {
+        background: #000;
+        color: var(--bg);
+      }
+      .btn-action.learning-active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+      .btn-action.done-active {
+        background: var(--green);
+        border-color: var(--green);
+        color: #fff;
+      }
+      .btn-action.reset-btn {
+        flex: none;
+        border-style: dashed;
+      }
+
+      /* LIST VIEW */
+      .rm-canvas.list-view {
+        flex-direction: column;
+        min-width: unset;
+      }
+      .rm-canvas.list-view .rm-column {
+        width: 100%;
+        min-width: unset;
+        padding: 0;
+        margin-bottom: 1rem;
+      }
+      .rm-canvas.list-view .rm-col-header { margin-bottom: 0.5rem; }
+      .rm-canvas.list-view .rm-connectors { display: none; }
+
+      /* FOOTER */
+      .footer {
+        border-top: 2px solid #000;
+        padding: 1rem 1.25rem;
+        font-size: 0.65rem;
+        color: #555;
+        text-align: center;
+      }
+      .footer a { color: #000; }
+
+      @media (max-width: 640px) {
+        .detail-panel {
+          width: 100%;
+          top: auto;
+          bottom: 0;
+          height: 85vh;
+          border-left: none;
+          border-top: 2px solid #000;
+          transform: translateY(100%);
+        }
+        .detail-panel.open { transform: translateY(0); }
+        .legend { margin-left: 0; }
+        .search-input { width: 100%; }
+        .toolbar { flex-direction: column; align-items: stretch; }
+        .toolbar-row1 { display: flex; gap: 0.75rem; }
+        .search-input { flex: 1; width: auto; }
+        .rm-canvas-wrap { padding: 1rem 0.75rem 2rem; }
+      }
+
+      @media (max-width: 768px) {
+        .rm-node { padding: 0.75rem 0.8rem; margin-bottom: 0.65rem; }
+        .rm-node-label { font-size: 0.75rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav class="nav">
+      <a href="https://ops4life.com" class="nav-back">← ops4life.com</a>
+      <a href="/" class="nav-back">← Roadmaps</a>
+      <img
+        src="/mlops/favicon.svg"
+        alt=""
+        style="width: 28px; height: 28px; display: block"
+      />
+      <span class="nav-title">MLOps Roadmap</span>
+      <span id="nav-view-toggle" style="margin-left: auto">
+        <button class="btn" id="toggle-view-btn" onclick="toggleView()">
+          List View
+        </button>
+      </span>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-heading">MLOps<br />Roadmap</div>
+      <p class="hero-sub">
+        From data pipelines and ML frameworks to model serving, monitoring, and
+        cloud ML platforms. A complete curriculum for production machine
+        learning. Track your progress as you go.
+      </p>
+      <div class="progress-wrap">
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" id="progress-bar"></div>
+        </div>
+        <div class="progress-stats">
+          <div class="pstat">
+            <span class="pstat-n" id="stat-done">0</span
+            ><span class="pstat-l">Done</span>
+          </div>
+          <div class="pstat">
+            <span class="pstat-n" id="stat-learning">0</span
+            ><span class="pstat-l">Learning</span>
+          </div>
+          <div class="pstat">
+            <span class="pstat-n" id="stat-total">0</span
+            ><span class="pstat-l">Total</span>
+          </div>
+          <div class="pstat">
+            <span class="pstat-n" id="stat-pct">0%</span
+            ><span class="pstat-l">Complete</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+      <div class="toolbar-row1">
+        <input
+          type="search"
+          class="search-input"
+          id="search-input"
+          placeholder="Search topics…"
+          oninput="handleSearch(this.value)"
+        />
+        <button class="btn" onclick="resetAll()">Reset All</button>
+      </div>
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-dot ld-accent"></div>
+          Recommended
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot ld-teal"></div>
+          Alternative
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot ld-accent"></div>
+          Learning
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot ld-green"></div>
+          Done
+        </div>
+      </div>
+    </div>
+
+    <!-- ROADMAP CANVAS -->
+    <div class="rm-canvas-wrap" id="canvas-wrap">
+      <div class="rm-canvas" id="rm-canvas">
+        <svg class="rm-connectors" id="rm-connectors"></svg>
+        <!-- Columns injected by JS -->
+      </div>
+    </div>
+
+    <!-- DETAIL PANEL -->
+    <div
+      class="detail-overlay"
+      id="detail-overlay"
+      onclick="closePanel()"
+    ></div>
+    <aside class="detail-panel" id="detail-panel">
+      <div class="panel-header">
+        <button class="panel-close" onclick="closePanel()" aria-label="Close">
+          ✕
+        </button>
+        <div class="panel-title-wrap">
+          <div class="panel-title" id="panel-title">—</div>
+          <span class="panel-type-badge" id="panel-badge">—</span>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="panel-section">
+          <div class="panel-section-title">About</div>
+          <p class="panel-desc" id="panel-desc"></p>
+        </div>
+        <div class="panel-section" id="panel-concepts-sec">
+          <div class="panel-section-title">Key Concepts</div>
+          <div class="chip-wrap" id="panel-concepts"></div>
+        </div>
+        <div class="panel-section" id="panel-tools-sec">
+          <div class="panel-section-title">Tools</div>
+          <div class="tools-list" id="panel-tools"></div>
+        </div>
+        <div class="panel-section" id="panel-resources-sec">
+          <div class="panel-section-title">Resources</div>
+          <div class="resources-list" id="panel-resources"></div>
+        </div>
+        <div class="panel-section" id="panel-tip-sec">
+          <div class="panel-section-title">Tip</div>
+          <div class="panel-tip" id="panel-tip"></div>
+        </div>
+      </div>
+      <div class="panel-actions">
+        <button
+          class="btn-action"
+          id="btn-learning"
+          onclick="markStatus('learning')"
+        >
+          Mark Learning
+        </button>
+        <button class="btn-action" id="btn-done" onclick="markStatus('done')">
+          Mark Done
+        </button>
+        <button class="btn-action reset-btn" onclick="markStatus(null)">
+          Reset
+        </button>
+      </div>
+    </aside>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <a href="https://ops4life.com">ops4life.com</a> · MLOps Roadmap ·
+      inspired by
+      <a href="https://roadmap.sh/mlops" target="_blank" rel="noopener"
+        >roadmap.sh</a
+      >
+    </footer>
+
+    <script>
+      // ─── ROADMAP DATA ──────────────────────────────────────────────────────────
+      const ROADMAP = [
+        {
+          id: "programming",
+          title: "Programming",
+          num: "01",
+          items: [
+            {
+              id: "python-ml",
+              label: "Python",
+              type: "recommended",
+              description:
+                "Python is the primary language of the ML ecosystem. NumPy, pandas, scikit-learn, PyTorch, and TensorFlow are all Python-first.",
+              concepts: ["NumPy", "pandas", "Jupyter", "Virtual environments", "Type hints", "Async"],
+              tools: ["Python 3", "pip", "conda", "poetry"],
+              resources: [
+                { label: "Python Docs", url: "https://docs.python.org/3/" },
+                { label: "NumPy Docs", url: "https://numpy.org/doc/" },
+              ],
+              tip: "Learn NumPy broadcasting well — most ML performance issues trace back to inefficient tensor operations that broadcasting would solve.",
+            },
+            {
+              id: "sql-ml",
+              label: "SQL",
+              type: "recommended",
+              description:
+                "SQL is essential for feature engineering, data exploration, and querying from data warehouses. Most ML data starts in a database.",
+              concepts: ["SELECT/JOIN/GROUP BY", "Window functions", "CTEs", "Query optimization", "EXPLAIN"],
+              tools: ["PostgreSQL", "BigQuery", "Redshift", "DuckDB"],
+              resources: [
+                { label: "SQL Tutorial", url: "https://sqlzoo.net/" },
+                { label: "Mode SQL Tutorial", url: "https://mode.com/sql-tutorial/" },
+              ],
+              tip: "Window functions (ROW_NUMBER, LAG, LEAD, running sums) are the most underused SQL feature for feature engineering.",
+            },
+            {
+              id: "bash-ml",
+              label: "Bash",
+              type: "recommended",
+              description:
+                "Bash scripting for data preprocessing, pipeline orchestration glue, environment setup, and automation of ML workflows.",
+              concepts: ["Scripting", "File processing", "Pipelines", "Environment variables", "Scheduling"],
+              tools: ["bash", "make", "cron"],
+              resources: [
+                { label: "The Art of Command Line", url: "https://github.com/jlevy/the-art-of-command-line" },
+              ],
+              tip: "A Makefile is often the best way to document and run your ML pipeline steps — it shows dependencies and only re-runs what changed.",
+            },
+            {
+              id: "go-ml",
+              label: "Go",
+              type: "alt",
+              description:
+                "Go is used for building high-performance model serving infrastructure, CLI tooling, and data pipeline components.",
+              concepts: ["Goroutines", "Channels", "gRPC", "Static binaries"],
+              tools: ["Go", "gRPC", "go-torch"],
+              resources: [
+                { label: "Go Tour", url: "https://go.dev/tour/" },
+              ],
+              tip: "If you're building a model serving layer that needs high throughput and low latency, Go is a strong alternative to Python/FastAPI.",
+            },
+          ],
+        },
+        {
+          id: "version-control",
+          title: "Version Control",
+          num: "02",
+          items: [
+            {
+              id: "git-ml",
+              label: "Git",
+              type: "recommended",
+              description:
+                "Git for code versioning — the foundation of reproducible ML. Every experiment's code should be tracked at a known commit.",
+              concepts: ["Branching", "Tags", "Hooks", "Monorepos", "Submodules"],
+              tools: ["git", "GitHub", "GitLab"],
+              resources: [
+                { label: "Pro Git (free)", url: "https://git-scm.com/book" },
+              ],
+              tip: "Tag git commits that correspond to model training runs — you can always reconstruct the exact code that produced a model artifact.",
+            },
+            {
+              id: "dvc",
+              label: "DVC",
+              type: "recommended",
+              description:
+                "Data Version Control — versioning large datasets, model artifacts, and ML pipelines alongside code in git.",
+              concepts: ["Data versioning", "Pipeline DAGs", "Remote storage", "Stages", "Cache"],
+              tools: ["DVC", "S3/GCS/Azure Blob"],
+              resources: [
+                { label: "DVC Docs", url: "https://dvc.org/doc" },
+              ],
+              tip: "DVC integrates with git — `dvc push` + `git push` together give you reproducible experiments where code and data are always in sync.",
+            },
+            {
+              id: "data-lineage",
+              label: "Data Lineage",
+              type: "alt",
+              description:
+                "Tracking the origin and transformations of data as it flows through pipelines — essential for debugging data quality issues and compliance.",
+              concepts: ["Lineage tracking", "Data cataloging", "Column-level lineage", "Impact analysis"],
+              tools: ["OpenLineage", "Marquez", "DataHub", "Apache Atlas"],
+              resources: [
+                { label: "OpenLineage Docs", url: "https://openlineage.io/" },
+              ],
+              tip: "Integrate OpenLineage with Airflow to automatically capture lineage for every DAG run — you get data lineage for free.",
+            },
+          ],
+        },
+        {
+          id: "data-engineering",
+          title: "Data Engineering",
+          num: "03",
+          items: [
+            {
+              id: "data-pipelines",
+              label: "Data Pipelines",
+              type: "recommended",
+              description:
+                "Building reliable, observable data pipelines for ingestion, transformation, and feature generation for ML models.",
+              concepts: ["ETL/ELT", "Batch vs streaming", "Schema evolution", "Data quality", "Idempotency"],
+              tools: ["Airflow", "dbt", "Spark", "Kafka"],
+              resources: [
+                { label: "Data Engineering Zoomcamp", url: "https://github.com/DataTalksClub/data-engineering-zoomcamp" },
+              ],
+              tip: "Design pipelines to be idempotent — running them twice should produce the same result. This makes retries and backfills safe.",
+            },
+            {
+              id: "feature-stores",
+              label: "Feature Stores",
+              type: "recommended",
+              description:
+                "Centralized repositories for storing, serving, and reusing ML features — ensuring training/serving consistency.",
+              concepts: ["Online vs offline store", "Feature freshness", "Point-in-time lookup", "Feature reuse", "Training/serving skew"],
+              tools: ["Feast", "Hopsworks", "Tecton", "AWS SageMaker Feature Store"],
+              resources: [
+                { label: "Feast Docs", url: "https://docs.feast.dev/" },
+              ],
+              tip: "Training/serving skew — features computed differently at training vs inference time — is the most common silent killer of ML model performance.",
+            },
+            {
+              id: "data-lakes",
+              label: "Data Lakes",
+              type: "recommended",
+              description:
+                "Scalable storage for raw structured and unstructured data — the foundation for ML training datasets at scale.",
+              concepts: ["Object storage", "Parquet/ORC", "Delta Lake", "Iceberg", "Partitioning"],
+              tools: ["S3", "GCS", "Delta Lake", "Apache Iceberg", "Apache Hudi"],
+              resources: [
+                { label: "Delta Lake Docs", url: "https://docs.delta.io/latest/index.html" },
+              ],
+              tip: "Use Parquet for ML training data — it's columnar, compressed, and pandas/Spark/Arrow all read it natively.",
+            },
+            {
+              id: "data-warehouses",
+              label: "Data Warehouses",
+              type: "alt",
+              description:
+                "Structured analytical databases for feature engineering and model evaluation queries at scale.",
+              concepts: ["Columnar storage", "Query optimization", "Materialized views", "Cost-based queries"],
+              tools: ["BigQuery", "Snowflake", "Redshift", "DuckDB"],
+              resources: [
+                { label: "BigQuery Docs", url: "https://cloud.google.com/bigquery/docs" },
+              ],
+              tip: "DuckDB is excellent for local development — it queries Parquet files directly without loading them into memory, handling datasets larger than RAM.",
+            },
+          ],
+        },
+        {
+          id: "pipeline-tools",
+          title: "Pipeline Tools",
+          num: "04",
+          items: [
+            {
+              id: "airflow",
+              label: "Airflow",
+              type: "recommended",
+              description:
+                "The dominant workflow orchestration platform for data and ML pipelines — DAG-based scheduling with rich operators and integrations.",
+              concepts: ["DAGs", "Operators", "XComs", "Sensors", "TaskFlow API", "Hooks"],
+              tools: ["Apache Airflow", "Astronomer", "MWAA"],
+              resources: [
+                { label: "Airflow Docs", url: "https://airflow.apache.org/docs/" },
+              ],
+              tip: "Use the TaskFlow API (Python decorators) for new Airflow DAGs — it's cleaner than the classic Operator approach and reduces boilerplate significantly.",
+            },
+            {
+              id: "spark",
+              label: "Spark",
+              type: "recommended",
+              description:
+                "Distributed data processing for large-scale feature engineering, data transformation, and batch ML inference.",
+              concepts: ["RDDs", "DataFrames", "Spark SQL", "Partitioning", "Broadcast joins", "Checkpointing"],
+              tools: ["PySpark", "Spark SQL", "Delta Lake", "Databricks"],
+              resources: [
+                { label: "Spark Docs", url: "https://spark.apache.org/docs/latest/" },
+              ],
+              tip: "Understand Spark's lazy evaluation — nothing runs until an action is called. This mental model is essential for writing efficient Spark code.",
+            },
+            {
+              id: "kafka",
+              label: "Kafka",
+              type: "alt",
+              description:
+                "Distributed event streaming for real-time feature computation and online ML inference at scale.",
+              concepts: ["Topics", "Partitions", "Consumer groups", "Kafka Streams", "Exactly-once semantics"],
+              tools: ["Apache Kafka", "Confluent", "Kafka Streams", "ksqlDB"],
+              resources: [
+                { label: "Kafka Docs", url: "https://kafka.apache.org/documentation/" },
+              ],
+              tip: "For real-time ML, Kafka + Faust (Python) or Kafka Streams is a common pattern for computing features in a streaming fashion.",
+            },
+            {
+              id: "dbt",
+              label: "dbt",
+              type: "alt",
+              description:
+                "SQL-based data transformation tool for building feature engineering pipelines in your data warehouse.",
+              concepts: ["Models", "Tests", "Macros", "Seeds", "Documentation", "Lineage"],
+              tools: ["dbt Core", "dbt Cloud"],
+              resources: [
+                { label: "dbt Docs", url: "https://docs.getdbt.com/" },
+              ],
+              tip: "dbt tests on your feature tables catch data quality issues before they silently corrupt model training — add tests from the start.",
+            },
+          ],
+        },
+        {
+          id: "ml-frameworks",
+          title: "ML Frameworks",
+          num: "05",
+          items: [
+            {
+              id: "pytorch",
+              label: "PyTorch",
+              type: "recommended",
+              description:
+                "The dominant framework for deep learning research and production. Dynamic computation graphs, intuitive Python API, and a massive ecosystem.",
+              concepts: ["Tensors", "Autograd", "nn.Module", "DataLoader", "Training loops", "CUDA"],
+              tools: ["PyTorch", "torchvision", "torchtext", "Lightning"],
+              resources: [
+                { label: "PyTorch Tutorials", url: "https://pytorch.org/tutorials/" },
+              ],
+              tip: "Use PyTorch Lightning to separate your research code from the engineering boilerplate — it makes models dramatically easier to scale and deploy.",
+            },
+            {
+              id: "tensorflow",
+              label: "TensorFlow / Keras",
+              type: "alt",
+              description:
+                "Google's ML framework with a strong production deployment story — TF Serving, TFLite, and TF.js for browser/mobile/edge.",
+              concepts: ["Keras Sequential/Functional API", "tf.data", "SavedModel", "TF Serving", "TFLite"],
+              tools: ["TensorFlow", "Keras", "TF Serving", "TFLite"],
+              resources: [
+                { label: "TF Tutorials", url: "https://www.tensorflow.org/tutorials" },
+              ],
+              tip: "If your deployment target is mobile (Android/iOS) or the browser, TensorFlow's ecosystem (TFLite, TF.js) has no real PyTorch equivalent.",
+            },
+            {
+              id: "sklearn",
+              label: "Scikit-learn",
+              type: "recommended",
+              description:
+                "The standard library for classical ML algorithms — preprocessing, feature selection, model evaluation, and pipelines.",
+              concepts: ["Estimator API", "Pipelines", "Cross-validation", "Hyperparameter search", "Preprocessing"],
+              tools: ["scikit-learn", "joblib", "imbalanced-learn"],
+              resources: [
+                { label: "Scikit-learn Docs", url: "https://scikit-learn.org/stable/" },
+              ],
+              tip: "Use sklearn Pipelines to bundle preprocessing + model — it prevents data leakage by fitting transformers only on training data.",
+            },
+            {
+              id: "xgboost",
+              label: "XGBoost / LightGBM",
+              type: "recommended",
+              description:
+                "Gradient boosting frameworks — still the dominant approach for tabular data, often outperforming deep learning on structured datasets.",
+              concepts: ["Gradient boosting", "Tree pruning", "Regularization", "Early stopping", "Feature importance"],
+              tools: ["XGBoost", "LightGBM", "CatBoost"],
+              resources: [
+                { label: "XGBoost Docs", url: "https://xgboost.readthedocs.io/" },
+                { label: "LightGBM Docs", url: "https://lightgbm.readthedocs.io/" },
+              ],
+              tip: "For tabular data with < 1M rows, try LightGBM before deep learning. It's faster to train, easier to interpret, and often more accurate.",
+            },
+          ],
+        },
+        {
+          id: "experiment-tracking",
+          title: "Experiment Tracking",
+          num: "06",
+          items: [
+            {
+              id: "mlflow",
+              label: "MLflow",
+              type: "recommended",
+              description:
+                "Open-source ML lifecycle management — experiment tracking, model registry, model serving, and project packaging.",
+              concepts: ["Runs", "Experiments", "Artifacts", "Model registry", "MLflow Projects"],
+              tools: ["MLflow", "MLflow Tracking Server"],
+              resources: [
+                { label: "MLflow Docs", url: "https://mlflow.org/docs/latest/index.html" },
+              ],
+              tip: "Log everything — parameters, metrics at each step, artifacts, and environment. You'll be grateful when debugging why a model regressed six months later.",
+            },
+            {
+              id: "wandb",
+              label: "Weights & Biases",
+              type: "alt",
+              description:
+                "Hosted ML experiment tracking with rich visualizations, hyperparameter sweeps, model registry, and collaboration features.",
+              concepts: ["Runs", "Sweeps", "Artifacts", "Reports", "Model registry"],
+              tools: ["W&B", "wandb CLI"],
+              resources: [
+                { label: "W&B Docs", url: "https://docs.wandb.ai/" },
+              ],
+              tip: "W&B Sweeps implement Bayesian hyperparameter optimization with minimal code — much more efficient than random or grid search.",
+            },
+            {
+              id: "dvc-exp",
+              label: "DVC Experiments",
+              type: "alt",
+              description:
+                "DVC's experiment management layer — tracking ML experiments as git commits with associated data and model artifacts.",
+              concepts: ["Experiment branches", "Metrics tracking", "Params files", "Comparison", "GTO"],
+              tools: ["DVC", "dvc exp run"],
+              resources: [
+                { label: "DVC Experiments", url: "https://dvc.org/doc/user-guide/experiment-management" },
+              ],
+              tip: "DVC experiments integrate directly with git history — every experiment is a git commit, making reproducibility trivial.",
+            },
+          ],
+        },
+        {
+          id: "cicd-ml",
+          title: "CI/CD for ML",
+          num: "07",
+          items: [
+            {
+              id: "github-actions-ml",
+              label: "GitHub Actions",
+              type: "recommended",
+              description:
+                "Automating ML pipeline stages — data validation, model training triggers, evaluation gates, and deployment workflows.",
+              concepts: ["Workflows", "Matrix builds", "Caching", "Artifacts", "OIDC federation"],
+              tools: ["GitHub Actions", "act (local runner)"],
+              resources: [
+                { label: "GitHub Actions Docs", url: "https://docs.github.com/en/actions" },
+              ],
+              tip: "Cache your pip/conda dependencies and dataset checksums in GitHub Actions — it can reduce CI run times from 20 minutes to 2.",
+            },
+            {
+              id: "cml",
+              label: "CML",
+              type: "recommended",
+              description:
+                "Continuous Machine Learning — a library for automating ML model evaluation reports as CI pipeline comments on PRs.",
+              concepts: ["Metric reporting", "Model comparison", "Plots in PRs", "Runner management"],
+              tools: ["CML by Iterative", "GitHub Actions", "GitLab CI"],
+              resources: [
+                { label: "CML Docs", url: "https://cml.dev/doc" },
+              ],
+              tip: "CML posts model metrics and plots as comments on every PR — reviewers can see if a model regressed without checking out the branch.",
+            },
+            {
+              id: "gitlab-ci-ml",
+              label: "GitLab CI",
+              type: "alt",
+              description:
+                "GitLab's built-in CI/CD for ML pipelines — good for self-hosted environments with GPU runners.",
+              concepts: ["Pipelines", "Jobs", "Artifacts", "Caching", "GPU runners"],
+              tools: ["GitLab CI", "GitLab Runner"],
+              resources: [
+                { label: "GitLab CI Docs", url: "https://docs.gitlab.com/ee/ci/" },
+              ],
+              tip: "GitLab's native integration with GitLab Container Registry and Kubernetes makes it powerful for end-to-end MLOps in self-hosted setups.",
+            },
+            {
+              id: "tekton",
+              label: "Tekton",
+              type: "alt",
+              description:
+                "Kubernetes-native CI/CD framework for building ML pipelines — Tasks, Pipelines, and PipelineRuns as Kubernetes CRDs.",
+              concepts: ["Tasks", "Pipelines", "PipelineRuns", "Workspaces", "Triggers"],
+              tools: ["Tekton Pipelines", "Tekton Triggers", "Tekton Dashboard"],
+              resources: [
+                { label: "Tekton Docs", url: "https://tekton.dev/docs/" },
+              ],
+              tip: "Tekton's Kubernetes-native approach means you get native GPU scheduling, persistent volumes, and RBAC for free — but the learning curve is steep.",
+            },
+          ],
+        },
+        {
+          id: "model-serving",
+          title: "Model Serving",
+          num: "08",
+          items: [
+            {
+              id: "fastapi-serving",
+              label: "FastAPI",
+              type: "recommended",
+              description:
+                "Python web framework for building model inference APIs — fast, async, and generates OpenAPI docs automatically.",
+              concepts: ["Async handlers", "Pydantic models", "Middleware", "Background tasks", "OpenAPI"],
+              tools: ["FastAPI", "uvicorn", "gunicorn"],
+              resources: [
+                { label: "FastAPI Docs", url: "https://fastapi.tiangolo.com/" },
+              ],
+              tip: "Load your model once at startup (lifespan context), not on every request. Model loading is slow and will kill your latency.",
+            },
+            {
+              id: "triton",
+              label: "Triton Inference Server",
+              type: "recommended",
+              description:
+                "NVIDIA's high-performance inference server supporting multiple frameworks — dynamic batching, model ensembles, and GPU optimization.",
+              concepts: ["Model repository", "Dynamic batching", "Model ensembles", "Backend APIs", "Performance analyzer"],
+              tools: ["Triton Inference Server", "NVIDIA perf_analyzer"],
+              resources: [
+                { label: "Triton Docs", url: "https://docs.nvidia.com/deeplearning/triton-inference-server/" },
+              ],
+              tip: "Enable dynamic batching in Triton — it dramatically increases GPU utilization by batching concurrent requests automatically.",
+            },
+            {
+              id: "tf-serving",
+              label: "TF Serving",
+              type: "alt",
+              description:
+                "TensorFlow's production serving system — optimized for TF SavedModels with built-in versioning, A/B testing, and gRPC/REST APIs.",
+              concepts: ["SavedModel", "Versioning", "A/B testing", "Warmup", "gRPC vs REST"],
+              tools: ["TensorFlow Serving", "Docker", "Kubernetes"],
+              resources: [
+                { label: "TF Serving Docs", url: "https://www.tensorflow.org/tfx/guide/serving" },
+              ],
+              tip: "Use gRPC with TF Serving for production — it has significantly lower latency than REST for repeated inference calls.",
+            },
+            {
+              id: "seldon",
+              label: "Seldon Core",
+              type: "alt",
+              description:
+                "Kubernetes-native model serving platform with support for multi-model pipelines, A/B tests, canary deployments, and explainability.",
+              concepts: ["SeldonDeployments", "Pre/post processors", "A/B routing", "Canary deployments", "Alibi explainers"],
+              tools: ["Seldon Core", "Kubernetes", "Istio"],
+              resources: [
+                { label: "Seldon Docs", url: "https://docs.seldon.io/projects/seldon-core/en/latest/" },
+              ],
+              tip: "Seldon's pre/post-processor pipeline is powerful for feature transformation and response formatting without modifying the core model container.",
+            },
+          ],
+        },
+        {
+          id: "containers-orchestration",
+          title: "Containers & Orchestration",
+          num: "09",
+          items: [
+            {
+              id: "docker-ml",
+              label: "Docker",
+              type: "recommended",
+              description:
+                "Containerizing ML training and inference environments for reproducibility — packaging code, dependencies, and CUDA libraries together.",
+              concepts: ["Multi-stage builds", "GPU support (nvidia-docker)", "Layer caching", "Base images", "Build args"],
+              tools: ["Docker", "Docker Compose", "NVIDIA Container Toolkit"],
+              resources: [
+                { label: "Docker Docs", url: "https://docs.docker.com/" },
+              ],
+              tip: "Use multi-stage Docker builds for ML images — a `builder` stage installs dependencies, then a lean final stage only copies what's needed.",
+            },
+            {
+              id: "kubernetes-ml",
+              label: "Kubernetes",
+              type: "recommended",
+              description:
+                "Orchestrating ML workloads — GPU-accelerated training jobs, auto-scaling inference deployments, and resource quota management.",
+              concepts: ["Jobs", "Deployments", "HPA", "Resource requests/limits", "Node selectors", "GPU scheduling"],
+              tools: ["kubectl", "Helm", "kustomize", "KEDA"],
+              resources: [
+                { label: "Kubernetes Docs", url: "https://kubernetes.io/docs/" },
+              ],
+              tip: "Set both CPU/memory requests and limits for ML inference pods. Unbounded pods cause noisy-neighbor problems on shared GPU nodes.",
+            },
+            {
+              id: "kubeflow",
+              label: "Kubeflow",
+              type: "recommended",
+              description:
+                "ML toolkit for Kubernetes — Kubeflow Pipelines for workflow orchestration, KServe for serving, Katib for HPO, and training operators.",
+              concepts: ["KFP Pipelines", "KServe", "Katib", "Training Operators", "Notebooks"],
+              tools: ["Kubeflow Pipelines", "KServe", "Katib"],
+              resources: [
+                { label: "Kubeflow Docs", url: "https://www.kubeflow.org/docs/" },
+              ],
+              tip: "Start with Kubeflow Pipelines — it's the most mature component. KServe is also worth adopting early for its powerful inference routing.",
+            },
+            {
+              id: "argo-workflows",
+              label: "Argo Workflows",
+              type: "alt",
+              description:
+                "Kubernetes-native workflow engine for ML pipelines — simpler than Kubeflow Pipelines and more flexible than Airflow for container-native workflows.",
+              concepts: ["Workflow templates", "DAG tasks", "Artifacts", "Cron workflows", "Argo Events"],
+              tools: ["Argo Workflows", "Argo Events", "Argo CD"],
+              resources: [
+                { label: "Argo Workflows Docs", url: "https://argoproj.github.io/argo-workflows/" },
+              ],
+              tip: "Argo Workflows + Argo Events gives you event-driven ML pipeline triggering — new data arriving in S3 can automatically trigger a retraining pipeline.",
+            },
+          ],
+        },
+        {
+          id: "iac-ml",
+          title: "Infrastructure as Code",
+          num: "10",
+          items: [
+            {
+              id: "terraform-ml",
+              label: "Terraform",
+              type: "recommended",
+              description:
+                "Provisioning ML infrastructure — GPU clusters, managed ML platforms, data warehouses, and networking with declarative HCL.",
+              concepts: ["HCL", "State management", "Modules", "Providers", "Workspaces"],
+              tools: ["Terraform", "OpenTofu", "Terragrunt"],
+              resources: [
+                { label: "Terraform Docs", url: "https://developer.hashicorp.com/terraform/docs" },
+              ],
+              tip: "Store Terraform state in S3 with DynamoDB locking for team use — never use local state for shared infrastructure.",
+            },
+            {
+              id: "helm-ml",
+              label: "Helm",
+              type: "recommended",
+              description:
+                "Packaging and deploying ML infrastructure on Kubernetes — Kubeflow, MLflow tracking servers, Triton, and monitoring stacks.",
+              concepts: ["Charts", "Values", "Templates", "Releases", "Hooks"],
+              tools: ["Helm", "Helmfile", "helm-secrets"],
+              resources: [
+                { label: "Helm Docs", url: "https://helm.sh/docs/" },
+              ],
+              tip: "Pin Helm chart versions in production — `helm upgrade --install` with a floating version tag will silently upgrade on the next deployment.",
+            },
+            {
+              id: "ansible-ml",
+              label: "Ansible",
+              type: "alt",
+              description:
+                "Configuration management for ML training machines — installing CUDA drivers, configuring GPU nodes, and bootstrapping bare-metal clusters.",
+              concepts: ["Playbooks", "Roles", "Inventory", "Idempotency", "Vault for secrets"],
+              tools: ["Ansible", "ansible-galaxy"],
+              resources: [
+                { label: "Ansible Docs", url: "https://docs.ansible.com/" },
+              ],
+              tip: "Use Ansible for one-time GPU driver installation and cluster bootstrap. For ongoing config, drift detection via Ansible check mode is valuable.",
+            },
+          ],
+        },
+        {
+          id: "monitoring-ml",
+          title: "Monitoring & Observability",
+          num: "11",
+          items: [
+            {
+              id: "prometheus-ml",
+              label: "Prometheus / Grafana",
+              type: "recommended",
+              description:
+                "Infrastructure and application metrics for ML systems — GPU utilization, inference latency, throughput, and error rates.",
+              concepts: ["Metrics", "Alerting", "Dashboards", "PromQL", "DCGM exporter (GPU)"],
+              tools: ["Prometheus", "Grafana", "DCGM Exporter", "alertmanager"],
+              resources: [
+                { label: "Prometheus Docs", url: "https://prometheus.io/docs/" },
+              ],
+              tip: "Monitor GPU utilization with NVIDIA DCGM Exporter — an idle GPU at 5% utilization during training is a data loading bottleneck, not a model problem.",
+            },
+            {
+              id: "evidently",
+              label: "Evidently",
+              type: "recommended",
+              description:
+                "Open-source ML monitoring for data drift, model performance degradation, and data quality in production.",
+              concepts: ["Data drift", "Concept drift", "Target drift", "Statistical tests", "Reports"],
+              tools: ["Evidently", "Evidently Cloud"],
+              resources: [
+                { label: "Evidently Docs", url: "https://docs.evidentlyai.com/" },
+              ],
+              tip: "Set up data drift monitoring from day one of production deployment. Models often degrade silently — drift is the first signal.",
+            },
+            {
+              id: "whylabs",
+              label: "WhyLabs / Fiddler",
+              type: "alt",
+              description:
+                "Managed ML observability platforms for monitoring data quality, model performance, and feature drift in production.",
+              concepts: ["Data sketches", "Feature profiles", "Anomaly detection", "Alerting", "Explanation"],
+              tools: ["WhyLabs", "Fiddler AI", "Arize AI"],
+              resources: [
+                { label: "WhyLabs Docs", url: "https://whylabs.ai/docs/" },
+              ],
+              tip: "Managed monitoring platforms are worth the cost if you're running many models — building drift detection from scratch is significant engineering work.",
+            },
+          ],
+        },
+        {
+          id: "cloud-ml",
+          title: "Cloud ML Platforms",
+          num: "12",
+          items: [
+            {
+              id: "sagemaker",
+              label: "AWS SageMaker",
+              type: "recommended",
+              description:
+                "AWS's end-to-end ML platform — managed notebooks, training jobs, hyperparameter tuning, model registry, and real-time inference.",
+              concepts: ["Training Jobs", "Endpoints", "Pipelines", "Feature Store", "Model Registry", "Clarify"],
+              tools: ["SageMaker SDK", "SageMaker Studio", "boto3"],
+              resources: [
+                { label: "SageMaker Docs", url: "https://docs.aws.amazon.com/sagemaker/" },
+              ],
+              tip: "Use SageMaker Training Jobs with Spot instances for development runs — up to 70% cost reduction with automatic checkpointing.",
+            },
+            {
+              id: "vertex-ai",
+              label: "GCP Vertex AI",
+              type: "alt",
+              description:
+                "Google Cloud's unified ML platform — Workbench notebooks, custom training, AutoML, Model Registry, and online/batch prediction.",
+              concepts: ["Vertex Pipelines", "Custom Training", "Model Registry", "Feature Store", "Matching Engine"],
+              tools: ["Vertex AI SDK", "Kubeflow Pipelines on Vertex", "BigQuery ML"],
+              resources: [
+                { label: "Vertex AI Docs", url: "https://cloud.google.com/vertex-ai/docs" },
+              ],
+              tip: "Vertex AI's tight BigQuery integration makes it powerful for tabular ML — you can train models directly from BQ tables without data extraction.",
+            },
+            {
+              id: "azure-ml",
+              label: "Azure ML",
+              type: "alt",
+              description:
+                "Microsoft's ML platform with strong enterprise integration — managed compute, MLflow-based tracking, and deployment to AKS.",
+              concepts: ["Workspaces", "Compute clusters", "Pipelines", "Environments", "Endpoints", "Responsible AI"],
+              tools: ["Azure ML SDK v2", "Azure ML CLI v2", "MLflow on Azure"],
+              resources: [
+                { label: "Azure ML Docs", url: "https://learn.microsoft.com/en-us/azure/machine-learning/" },
+              ],
+              tip: "Azure ML's Responsible AI dashboard provides model fairness, explainability, and error analysis in one view — valuable for regulated industries.",
+            },
+            {
+              id: "databricks",
+              label: "Databricks",
+              type: "alt",
+              description:
+                "Unified analytics platform built on Spark — strong for data engineering + ML in a single platform with MLflow natively integrated.",
+              concepts: ["Lakehouse", "Unity Catalog", "MLflow", "Delta Live Tables", "Model Serving"],
+              tools: ["Databricks Runtime", "MLflow", "Delta Lake", "Feature Store"],
+              resources: [
+                { label: "Databricks Docs", url: "https://docs.databricks.com/" },
+              ],
+              tip: "Databricks Unity Catalog provides fine-grained access control for data, ML models, and features in one place — valuable for enterprise data governance.",
+            },
+          ],
+        },
+        {
+          id: "advanced-topics",
+          title: "Advanced Topics",
+          num: "13",
+          items: [
+            {
+              id: "llmops",
+              label: "LLMOps",
+              type: "recommended",
+              description:
+                "Operationalizing large language models — prompt management, fine-tuning pipelines, RAG systems, evaluation, and cost optimization.",
+              concepts: ["Prompt versioning", "RAG", "Fine-tuning", "Evals", "Guardrails", "Token cost management"],
+              tools: ["LangChain", "LlamaIndex", "LangSmith", "Weights & Biases", "RAGAS"],
+              resources: [
+                { label: "LangSmith Docs", url: "https://docs.smith.langchain.com/" },
+              ],
+              tip: "Build an eval harness before deploying LLMs. Without automated evaluation, you're flying blind when prompt changes or model updates affect quality.",
+            },
+            {
+              id: "edge-ai",
+              label: "Edge AI",
+              type: "alt",
+              description:
+                "Deploying ML models on edge devices — model quantization, pruning, and conversion to optimized formats for mobile and embedded systems.",
+              concepts: ["Quantization", "Pruning", "Knowledge distillation", "Model conversion", "Latency profiling"],
+              tools: ["TFLite", "ONNX", "Core ML", "OpenVINO", "TensorRT"],
+              resources: [
+                { label: "TFLite Guide", url: "https://www.tensorflow.org/lite/guide" },
+                { label: "ONNX Runtime", url: "https://onnxruntime.ai/docs/" },
+              ],
+              tip: "ONNX is a common intermediate format — convert from PyTorch or TF to ONNX, then optimize for your target hardware with ONNX Runtime or TensorRT.",
+            },
+            {
+              id: "xai",
+              label: "Explainable AI",
+              type: "recommended",
+              description:
+                "Making ML models interpretable — feature importance, SHAP values, LIME explanations, and counterfactual analysis.",
+              concepts: ["SHAP values", "LIME", "Feature importance", "Counterfactuals", "Partial dependence plots"],
+              tools: ["SHAP", "LIME", "Alibi Explain", "InterpretML"],
+              resources: [
+                { label: "SHAP Docs", url: "https://shap.readthedocs.io/en/latest/" },
+              ],
+              tip: "Use SHAP over LIME for tree models — SHAP has strong theoretical guarantees (Shapley values) and runs efficiently on XGBoost/LightGBM.",
+            },
+            {
+              id: "responsible-ai",
+              label: "Responsible AI",
+              type: "recommended",
+              description:
+                "Building fair, accountable, and transparent ML systems — bias detection, fairness metrics, model cards, and governance frameworks.",
+              concepts: ["Fairness metrics", "Bias detection", "Model cards", "AI governance", "Privacy-preserving ML"],
+              tools: ["Fairlearn", "AI Fairness 360", "Responsible AI Toolbox"],
+              resources: [
+                { label: "Fairlearn Docs", url: "https://fairlearn.org/" },
+                { label: "Model Cards", url: "https://modelcards.withgoogle.com/" },
+              ],
+              tip: "Write a model card for every production model. It forces you to document intended use, limitations, and performance across subgroups — and becomes invaluable when models are challenged.",
+            },
+          ],
+        },
+      ];
+
+      // ─── STATE ─────────────────────────────────────────────────────────────────
+      const STORAGE_KEY = "mlops-roadmap-progress";
+      let progress = {};
+      let listViewMode = false;
+      let currentItem = null;
+
+      function loadProgress() {
+        try {
+          progress = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+        } catch (e) {
+          progress = {};
+        }
+      }
+
+      function saveProgress() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+      }
+
+      // ─── RENDER ────────────────────────────────────────────────────────────────
+      function render() {
+        loadProgress();
+        const canvas = document.getElementById("rm-canvas");
+        Array.from(canvas.querySelectorAll(".rm-column")).forEach((el) =>
+          el.remove(),
+        );
+
+        ROADMAP.forEach((section) => {
+          const col = document.createElement("div");
+          col.className = "rm-column";
+          col.dataset.section = section.id;
+
+          const hdr = document.createElement("div");
+          hdr.className = "rm-col-header";
+          hdr.innerHTML = `<span class="rm-col-num">${section.num}</span>${section.title}`;
+          col.appendChild(hdr);
+
+          section.items.forEach((item) => {
+            const status = progress[item.id];
+            const node = document.createElement("div");
+            node.className = `rm-node ${item.type}${status ? " status-" + status : ""}`;
+            node.dataset.id = item.id;
+            node.dataset.label = item.label.toLowerCase();
+            node.innerHTML = `
+        <div class="rm-node-label">
+          ${status ? `<span class="status-dot ${status}"></span>` : ""}
+          ${item.label}
+        </div>
+        <div class="rm-node-sub">${item.type === "recommended" ? "Recommended" : "Alternative"}</div>
+      `;
+            node.addEventListener("click", () => openPanel(item));
+            col.appendChild(node);
+          });
+
+          canvas.appendChild(col);
+        });
+
+        updateStats();
+        setTimeout(drawConnectors, 50);
+      }
+
+      // ─── STATS ─────────────────────────────────────────────────────────────────
+      function updateStats() {
+        let total = 0, done = 0, learning = 0;
+        ROADMAP.forEach((s) =>
+          s.items.forEach((item) => {
+            total++;
+            if (progress[item.id] === "done") done++;
+            else if (progress[item.id] === "learning") learning++;
+          }),
+        );
+        const pct = total ? Math.round((done / total) * 100) : 0;
+        document.getElementById("stat-total").textContent = total;
+        document.getElementById("stat-done").textContent = done;
+        document.getElementById("stat-learning").textContent = learning;
+        document.getElementById("stat-pct").textContent = pct + "%";
+        document.getElementById("progress-bar").style.width = pct + "%";
+      }
+
+      // ─── SVG CONNECTORS ────────────────────────────────────────────────────────
+      function drawConnectors() {
+        const svg = document.getElementById("rm-connectors");
+        const wrap = document.getElementById("canvas-wrap");
+        const canvas = document.getElementById("rm-canvas");
+        if (listViewMode) {
+          svg.innerHTML = "";
+          return;
+        }
+
+        svg.setAttribute("width", canvas.scrollWidth);
+        svg.setAttribute("height", canvas.scrollHeight);
+
+        const cols = Array.from(canvas.querySelectorAll(".rm-column"));
+        if (cols.length < 2) return;
+
+        const wrapRect = canvas.getBoundingClientRect();
+        const scrollLeft = wrap.scrollLeft;
+        const scrollTop = wrap.scrollTop;
+
+        let paths = "";
+        for (let i = 0; i < cols.length - 1; i++) {
+          const a = cols[i].querySelector(".rm-col-header");
+          const b = cols[i + 1].querySelector(".rm-col-header");
+          if (!a || !b) continue;
+          const ar = a.getBoundingClientRect();
+          const br = b.getBoundingClientRect();
+          const x1 = ar.right - wrapRect.left + scrollLeft;
+          const y1 = ar.top + ar.height / 2 - wrapRect.top + scrollTop;
+          const x2 = br.left - wrapRect.left + scrollLeft;
+          const y2 = br.top + br.height / 2 - wrapRect.top + scrollTop;
+          const cx = (x1 + x2) / 2;
+          paths += `<path d="M${x1},${y1} C${cx},${y1} ${cx},${y2} ${x2},${y2}"/>`;
+        }
+        svg.innerHTML = paths;
+      }
+
+      const ro = new ResizeObserver(() => drawConnectors());
+      ro.observe(document.getElementById("rm-canvas"));
+
+      // ─── PANEL ─────────────────────────────────────────────────────────────────
+      function openPanel(item) {
+        currentItem = item;
+        document.getElementById("panel-title").textContent = item.label;
+
+        const badge = document.getElementById("panel-badge");
+        badge.textContent = item.type === "recommended" ? "Recommended" : "Alternative";
+        badge.className =
+          "panel-type-badge " +
+          (item.type === "recommended" ? "type-recommended" : "type-alt");
+
+        document.getElementById("panel-desc").textContent = item.description;
+
+        const conSec = document.getElementById("panel-concepts-sec");
+        const conWrap = document.getElementById("panel-concepts");
+        if (item.concepts && item.concepts.length) {
+          conWrap.innerHTML = item.concepts.map((c) => `<span class="chip">${c}</span>`).join("");
+          conSec.style.display = "";
+        } else {
+          conSec.style.display = "none";
+        }
+
+        const toolSec = document.getElementById("panel-tools-sec");
+        const toolWrap = document.getElementById("panel-tools");
+        if (item.tools && item.tools.length) {
+          toolWrap.innerHTML = item.tools.map((t) => `<div class="tool-item">${t}</div>`).join("");
+          toolSec.style.display = "";
+        } else {
+          toolSec.style.display = "none";
+        }
+
+        const resSec = document.getElementById("panel-resources-sec");
+        const resWrap = document.getElementById("panel-resources");
+        if (item.resources && item.resources.length) {
+          resWrap.innerHTML = item.resources
+            .map((r) => `<a class="res-item" href="${r.url}" target="_blank" rel="noopener">${r.label}</a>`)
+            .join("");
+          resSec.style.display = "";
+        } else {
+          resSec.style.display = "none";
+        }
+
+        const tipSec = document.getElementById("panel-tip-sec");
+        const tipEl = document.getElementById("panel-tip");
+        if (item.tip) {
+          tipEl.textContent = item.tip;
+          tipSec.style.display = "";
+        } else {
+          tipSec.style.display = "none";
+        }
+
+        updateActionButtons();
+        document.getElementById("detail-overlay").classList.add("open");
+        document.getElementById("detail-panel").classList.add("open");
+      }
+
+      function closePanel() {
+        document.getElementById("detail-overlay").classList.remove("open");
+        document.getElementById("detail-panel").classList.remove("open");
+        currentItem = null;
+      }
+
+      function updateActionButtons() {
+        if (!currentItem) return;
+        const status = progress[currentItem.id];
+        document.getElementById("btn-learning").className =
+          "btn-action" + (status === "learning" ? " learning-active" : "");
+        document.getElementById("btn-done").className =
+          "btn-action" + (status === "done" ? " done-active" : "");
+      }
+
+      function markStatus(status) {
+        if (!currentItem) return;
+        if (status === null) {
+          delete progress[currentItem.id];
+        } else {
+          progress[currentItem.id] = status;
+        }
+        saveProgress();
+        updateActionButtons();
+
+        const node = document.querySelector(`.rm-node[data-id="${currentItem.id}"]`);
+        if (node) {
+          node.classList.remove("status-learning", "status-done");
+          if (status) node.classList.add("status-" + status);
+          const label = node.querySelector(".rm-node-label");
+          const existing = label.querySelector(".status-dot");
+          if (existing) existing.remove();
+          if (status) {
+            const dot = document.createElement("span");
+            dot.className = "status-dot " + status;
+            label.prepend(dot);
+          }
+        }
+
+        updateStats();
+      }
+
+      // ─── SEARCH ────────────────────────────────────────────────────────────────
+      function handleSearch(q) {
+        const term = q.toLowerCase().trim();
+        document.querySelectorAll(".rm-node").forEach((node) => {
+          if (!term) {
+            node.classList.remove("faded");
+          } else {
+            const label = node.dataset.label || "";
+            node.classList.toggle("faded", !label.includes(term));
+          }
+        });
+      }
+
+      // ─── RESET ─────────────────────────────────────────────────────────────────
+      function resetAll() {
+        if (!confirm("Reset all progress? This cannot be undone.")) return;
+        progress = {};
+        saveProgress();
+        document.querySelectorAll(".rm-node").forEach((node) => {
+          node.classList.remove("status-learning", "status-done");
+          const dot = node.querySelector(".status-dot");
+          if (dot) dot.remove();
+        });
+        updateStats();
+        if (currentItem) updateActionButtons();
+      }
+
+      // ─── LIST VIEW ─────────────────────────────────────────────────────────────
+      function toggleView() {
+        listViewMode = !listViewMode;
+        const canvas = document.getElementById("rm-canvas");
+        const btn = document.getElementById("toggle-view-btn");
+        canvas.classList.toggle("list-view", listViewMode);
+        btn.textContent = listViewMode ? "Grid View" : "List View";
+        drawConnectors();
+      }
+
+      // ─── INIT ──────────────────────────────────────────────────────────────────
+      render();
+    </script>
+  </body>
+</html>

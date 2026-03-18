@@ -1,0 +1,2014 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevSecOps Roadmap — ops4life</title>
+    <link rel="icon" type="image/svg+xml" href="/devsecops/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #e9e9e9;
+        --border: #000;
+        --accent: #0d9488;
+        --green: #16a34a;
+        --orange: #f97316;
+        --done-bg: #dcfce7;
+        --learning-bg: #fff7ed;
+        --node-border: 2px solid #000;
+        --panel-w: 380px;
+      }
+
+      body {
+        font-family: "Space Mono", monospace;
+        background: var(--bg);
+        color: #000;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* NAV */
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem 1.25rem;
+        border-bottom: 2px solid var(--border);
+        background: var(--bg);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .nav-back {
+        font-size: 0.75rem;
+        color: #000;
+        text-decoration: none;
+        border: 1px solid #000;
+        padding: 0.25rem 0.6rem;
+        transition: background 0.15s;
+      }
+      .nav-back:hover {
+        background: #000;
+        color: var(--bg);
+      }
+      .nav-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        flex: 1;
+        min-width: 0;
+      }
+
+      /* HERO */
+      .hero {
+        border-bottom: 2px solid var(--border);
+        padding: 2rem 1.25rem 1.5rem;
+      }
+      .hero-heading {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(3rem, 8vw, 6rem);
+        line-height: 0.9;
+        letter-spacing: 0.02em;
+        margin-bottom: 1rem;
+      }
+      .hero-sub {
+        font-size: 0.75rem;
+        color: #444;
+        margin-bottom: 1.5rem;
+        max-width: 520px;
+      }
+      .progress-wrap {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .progress-bar-outer {
+        flex: 1;
+        min-width: 160px;
+        height: 14px;
+        border: 2px solid #000;
+        background: #fff;
+        position: relative;
+        overflow: hidden;
+      }
+      .progress-bar-inner {
+        height: 100%;
+        background: var(--accent);
+        transition: width 0.4s ease;
+        width: 0%;
+      }
+      .progress-stats {
+        font-size: 0.7rem;
+        display: flex;
+        gap: 1.2rem;
+        flex-wrap: wrap;
+      }
+      .pstat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .pstat-n {
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
+      .pstat-l {
+        font-size: 0.65rem;
+        color: #555;
+      }
+
+      /* TOOLBAR */
+      .toolbar {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1.25rem;
+        border-bottom: 2px solid var(--border);
+        flex-wrap: wrap;
+      }
+      .search-input {
+        font-family: "Space Mono", monospace;
+        font-size: 0.75rem;
+        border: 2px solid #000;
+        background: #fff;
+        padding: 0.4rem 0.75rem;
+        outline: none;
+        width: 220px;
+      }
+      .search-input:focus {
+        background: #f5f5f5;
+      }
+      .btn {
+        font-family: "Space Mono", monospace;
+        font-size: 0.7rem;
+        font-weight: 700;
+        border: 2px solid #000;
+        background: var(--bg);
+        padding: 0.35rem 0.75rem;
+        cursor: pointer;
+        transition: background 0.15s;
+        white-space: nowrap;
+      }
+      .btn:hover {
+        background: #000;
+        color: var(--bg);
+      }
+      .legend {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-left: auto;
+        flex-wrap: wrap;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.65rem;
+      }
+      .legend-dot {
+        width: 10px;
+        height: 10px;
+        border: 1.5px solid #000;
+        border-radius: 50%;
+      }
+      .ld-accent { background: var(--accent); }
+      .ld-orange { background: var(--orange); }
+      .ld-green { background: var(--green); }
+
+      /* CANVAS */
+      .rm-canvas-wrap {
+        position: relative;
+        overflow-x: auto;
+        overflow-y: visible;
+        padding: 2rem 1.25rem 3rem;
+      }
+      .rm-canvas {
+        display: flex;
+        gap: 0;
+        min-width: max-content;
+        position: relative;
+      }
+      svg.rm-connectors {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: visible;
+      }
+      svg.rm-connectors path {
+        fill: none;
+        stroke: #888;
+        stroke-width: 1.5;
+        stroke-dasharray: 4 3;
+      }
+
+      /* COLUMN */
+      .rm-column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 180px;
+        min-width: 180px;
+        padding: 0 0.5rem;
+        position: relative;
+      }
+      .rm-col-header {
+        font-size: 0.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        background: #000;
+        color: var(--bg);
+        padding: 0.35rem 0.6rem;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 0.75rem;
+        border: 2px solid #000;
+      }
+      .rm-col-num {
+        font-size: 0.5rem;
+        opacity: 0.6;
+        display: block;
+        margin-bottom: 0.1rem;
+      }
+
+      /* NODE */
+      .rm-node {
+        width: 100%;
+        border: var(--node-border);
+        background: #fff;
+        padding: 0.5rem 0.6rem;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+        transition:
+          transform 0.12s,
+          box-shadow 0.12s,
+          opacity 0.2s;
+        position: relative;
+      }
+      .rm-node:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 4px 4px 0 #000;
+      }
+      .rm-node.recommended {
+        border-left: 4px solid var(--accent);
+      }
+      .rm-node.alt {
+        border-left: 4px solid var(--orange);
+      }
+      .rm-node.status-learning {
+        background: var(--learning-bg);
+      }
+      .rm-node.status-done {
+        background: var(--done-bg);
+      }
+      .rm-node.faded {
+        opacity: 0.2;
+        pointer-events: none;
+      }
+      .rm-node-label {
+        font-size: 0.68rem;
+        font-weight: 700;
+        line-height: 1.3;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+      .rm-node-label .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .status-dot.learning { background: var(--orange); }
+      .status-dot.done { background: var(--green); }
+      .rm-node-sub {
+        font-size: 0.58rem;
+        color: #555;
+        margin-top: 0.2rem;
+      }
+
+      /* DETAIL PANEL */
+      .detail-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.25);
+        z-index: 200;
+      }
+      .detail-overlay.open { display: block; }
+      .detail-panel {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: var(--panel-w);
+        height: 100vh;
+        background: var(--bg);
+        border-left: 2px solid #000;
+        transform: translateX(100%);
+        transition: transform 0.25s ease;
+        z-index: 201;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .detail-panel.open { transform: translateX(0); }
+      .panel-header {
+        padding: 1rem;
+        border-bottom: 2px solid #000;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+      .panel-close {
+        font-family: "Space Mono", monospace;
+        font-size: 1rem;
+        font-weight: 700;
+        border: 2px solid #000;
+        background: none;
+        cursor: pointer;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .panel-close:hover {
+        background: #000;
+        color: var(--bg);
+      }
+      .panel-title-wrap { flex: 1; }
+      .panel-title {
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+      .panel-type-badge {
+        font-size: 0.6rem;
+        padding: 0.15rem 0.4rem;
+        border: 1px solid #000;
+        display: inline-block;
+        margin-top: 0.3rem;
+      }
+      .type-recommended {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .type-alt {
+        border-color: var(--orange);
+        color: var(--orange);
+      }
+      .panel-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+      }
+      .panel-section { margin-bottom: 1.25rem; }
+      .panel-section-title {
+        font-size: 0.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        border-bottom: 1px solid #000;
+        padding-bottom: 0.3rem;
+        margin-bottom: 0.6rem;
+      }
+      .panel-desc {
+        font-size: 0.72rem;
+        line-height: 1.6;
+        color: #222;
+      }
+      .chip-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+      }
+      .chip {
+        font-size: 0.6rem;
+        border: 1px solid #000;
+        padding: 0.2rem 0.5rem;
+        background: #fff;
+      }
+      .tools-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+      .tool-item {
+        font-size: 0.68rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .tool-item::before {
+        content: "▸";
+        opacity: 0.5;
+      }
+      .resources-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+      .res-item {
+        font-size: 0.65rem;
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 1px dashed var(--accent);
+        display: inline-block;
+        width: fit-content;
+      }
+      .res-item:hover {
+        color: #000;
+        border-color: #000;
+      }
+      .panel-tip {
+        font-size: 0.65rem;
+        font-style: italic;
+        color: #555;
+        background: #fff;
+        border: 1px dashed #000;
+        padding: 0.5rem 0.6rem;
+        line-height: 1.5;
+      }
+      .panel-actions {
+        padding: 1rem;
+        border-top: 2px solid #000;
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+      .btn-action {
+        font-family: "Space Mono", monospace;
+        font-size: 0.65rem;
+        font-weight: 700;
+        border: 2px solid #000;
+        background: var(--bg);
+        padding: 0.4rem 0.75rem;
+        cursor: pointer;
+        flex: 1;
+        text-align: center;
+      }
+      .btn-action:hover {
+        background: #000;
+        color: var(--bg);
+      }
+      .btn-action.learning-active {
+        background: var(--orange);
+        border-color: var(--orange);
+        color: #fff;
+      }
+      .btn-action.done-active {
+        background: var(--green);
+        border-color: var(--green);
+        color: #fff;
+      }
+      .btn-action.reset-btn {
+        flex: none;
+        border-style: dashed;
+      }
+
+      /* LIST VIEW */
+      .rm-canvas.list-view {
+        flex-direction: column;
+        min-width: unset;
+      }
+      .rm-canvas.list-view .rm-column {
+        width: 100%;
+        min-width: unset;
+        padding: 0;
+        margin-bottom: 1rem;
+      }
+      .rm-canvas.list-view .rm-col-header { margin-bottom: 0.5rem; }
+      .rm-canvas.list-view .rm-connectors { display: none; }
+
+      /* FOOTER */
+      .footer {
+        border-top: 2px solid #000;
+        padding: 1rem 1.25rem;
+        font-size: 0.65rem;
+        color: #555;
+        text-align: center;
+      }
+      .footer a { color: #000; }
+
+      @media (max-width: 640px) {
+        .detail-panel {
+          width: 100%;
+          top: auto;
+          bottom: 0;
+          height: 85vh;
+          border-left: none;
+          border-top: 2px solid #000;
+          transform: translateY(100%);
+        }
+        .detail-panel.open { transform: translateY(0); }
+        .legend { margin-left: 0; }
+        .search-input { width: 100%; }
+        .toolbar { flex-direction: column; align-items: stretch; }
+        .toolbar-row1 { display: flex; gap: 0.75rem; }
+        .search-input { flex: 1; width: auto; }
+        .rm-canvas-wrap { padding: 1rem 0.75rem 2rem; }
+      }
+
+      @media (max-width: 768px) {
+        .rm-node { padding: 0.75rem 0.8rem; margin-bottom: 0.65rem; }
+        .rm-node-label { font-size: 0.75rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav class="nav">
+      <a href="https://ops4life.com" class="nav-back">← ops4life.com</a>
+      <a href="/" class="nav-back">← Roadmaps</a>
+      <img
+        src="/devsecops/favicon.svg"
+        alt=""
+        style="width: 28px; height: 28px; display: block"
+      />
+      <span class="nav-title">DevSecOps Roadmap</span>
+      <span id="nav-view-toggle" style="margin-left: auto">
+        <button class="btn" id="toggle-view-btn" onclick="toggleView()">
+          List View
+        </button>
+      </span>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-heading">DevSecOps<br />Roadmap</div>
+      <p class="hero-sub">
+        Security integrated into every phase of the DevOps lifecycle — from
+        secure coding and threat modeling to CI/CD hardening, cloud security, and
+        compliance. Track your progress as you go.
+      </p>
+      <div class="progress-wrap">
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" id="progress-bar"></div>
+        </div>
+        <div class="progress-stats">
+          <div class="pstat">
+            <span class="pstat-n" id="stat-done">0</span
+            ><span class="pstat-l">Done</span>
+          </div>
+          <div class="pstat">
+            <span class="pstat-n" id="stat-learning">0</span
+            ><span class="pstat-l">Learning</span>
+          </div>
+          <div class="pstat">
+            <span class="pstat-n" id="stat-total">0</span
+            ><span class="pstat-l">Total</span>
+          </div>
+          <div class="pstat">
+            <span class="pstat-n" id="stat-pct">0%</span
+            ><span class="pstat-l">Complete</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+      <div class="toolbar-row1">
+        <input
+          type="search"
+          class="search-input"
+          id="search-input"
+          placeholder="Search topics…"
+          oninput="handleSearch(this.value)"
+        />
+        <button class="btn" onclick="resetAll()">Reset All</button>
+      </div>
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-dot ld-accent"></div>
+          Core
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot ld-orange"></div>
+          Alternative
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot ld-orange" style="background:var(--orange)"></div>
+          Learning
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot ld-green"></div>
+          Done
+        </div>
+      </div>
+    </div>
+
+    <!-- ROADMAP CANVAS -->
+    <div class="rm-canvas-wrap" id="canvas-wrap">
+      <div class="rm-canvas" id="rm-canvas">
+        <svg class="rm-connectors" id="rm-connectors"></svg>
+        <!-- Columns injected by JS -->
+      </div>
+    </div>
+
+    <!-- DETAIL PANEL -->
+    <div
+      class="detail-overlay"
+      id="detail-overlay"
+      onclick="closePanel()"
+    ></div>
+    <aside class="detail-panel" id="detail-panel">
+      <div class="panel-header">
+        <button class="panel-close" onclick="closePanel()" aria-label="Close">
+          ✕
+        </button>
+        <div class="panel-title-wrap">
+          <div class="panel-title" id="panel-title">—</div>
+          <span class="panel-type-badge" id="panel-badge">—</span>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="panel-section">
+          <div class="panel-section-title">About</div>
+          <p class="panel-desc" id="panel-desc"></p>
+        </div>
+        <div class="panel-section" id="panel-concepts-sec">
+          <div class="panel-section-title">Key Concepts</div>
+          <div class="chip-wrap" id="panel-concepts"></div>
+        </div>
+        <div class="panel-section" id="panel-tools-sec">
+          <div class="panel-section-title">Tools</div>
+          <div class="tools-list" id="panel-tools"></div>
+        </div>
+        <div class="panel-section" id="panel-resources-sec">
+          <div class="panel-section-title">Resources</div>
+          <div class="resources-list" id="panel-resources"></div>
+        </div>
+        <div class="panel-section" id="panel-tip-sec">
+          <div class="panel-section-title">Tip</div>
+          <div class="panel-tip" id="panel-tip"></div>
+        </div>
+      </div>
+      <div class="panel-actions">
+        <button
+          class="btn-action"
+          id="btn-learning"
+          onclick="markStatus('learning')"
+        >
+          Mark Learning
+        </button>
+        <button class="btn-action" id="btn-done" onclick="markStatus('done')">
+          Mark Done
+        </button>
+        <button class="btn-action reset-btn" onclick="markStatus(null)">
+          Reset
+        </button>
+      </div>
+    </aside>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <a href="https://ops4life.com">ops4life.com</a> · DevSecOps Roadmap ·
+      inspired by
+      <a href="https://roadmap.sh/devsecops" target="_blank" rel="noopener"
+        >roadmap.sh</a
+      >
+    </footer>
+
+    <script>
+      // ─── ROADMAP DATA ──────────────────────────────────────────────────────────
+      const ROADMAP = [
+        {
+          id: "intro",
+          title: "Introduction",
+          num: "01",
+          items: [
+            {
+              id: "devsecops-vs-devops",
+              label: "DevSecOps vs DevOps",
+              type: "recommended",
+              description:
+                "DevSecOps extends DevOps by integrating security practices at every stage of the software development lifecycle, rather than bolting security on at the end.",
+              concepts: ["Shared responsibility", "Security as code", "Culture shift", "Risk management", "Policy enforcement"],
+              tools: ["OWASP", "NIST", "CIS Controls"],
+              resources: [
+                { label: "OWASP DevSecOps Guideline", url: "https://owasp.org/www-project-devsecops-guideline/" },
+              ],
+              tip: "The biggest shift in DevSecOps is cultural: developers own security outcomes, not just a separate security team.",
+            },
+            {
+              id: "shift-left",
+              label: "Shift Left Security",
+              type: "recommended",
+              description:
+                "Moving security testing and controls earlier in the SDLC — catching vulnerabilities during development rather than in production.",
+              concepts: ["Early testing", "Security gates", "Developer tooling", "Feedback loops", "Cost of defects"],
+              tools: ["pre-commit hooks", "IDE plugins", "SAST scanners"],
+              resources: [
+                { label: "Shift Left Testing", url: "https://www.softwaretestingnews.co.uk/shift-left-testing/" },
+              ],
+              tip: "A vulnerability found during code review costs 10x less to fix than one found in production.",
+            },
+            {
+              id: "security-culture",
+              label: "Security Culture",
+              type: "recommended",
+              description:
+                "Building a security-aware engineering culture through training, blameless postmortems, threat awareness, and making security easy to do correctly.",
+              concepts: ["Security champions", "Blameless postmortems", "Training programs", "Risk appetite", "Psychological safety"],
+              tools: ["Security training platforms", "Bug bounty programs"],
+              resources: [
+                { label: "Building a Security Culture", url: "https://www.cisa.gov/secure-by-design" },
+              ],
+              tip: "Make the secure path the easy path — if security controls add too much friction, developers will route around them.",
+            },
+          ],
+        },
+        {
+          id: "foundations",
+          title: "Foundations",
+          num: "02",
+          items: [
+            {
+              id: "cia-triad",
+              label: "CIA Triad",
+              type: "recommended",
+              description:
+                "Confidentiality, Integrity, and Availability form the core security model. Every security control maps back to protecting one or more of these properties.",
+              concepts: ["Confidentiality", "Integrity", "Availability", "Non-repudiation", "Authentication"],
+              tools: ["Access controls", "Encryption", "Hashing"],
+              resources: [
+                { label: "NIST Security Concepts", url: "https://www.nist.gov/cybersecurity" },
+              ],
+              tip: "When evaluating any security control, ask: which CIA property does this protect, and what is the residual risk?",
+            },
+            {
+              id: "owasp-top10",
+              label: "OWASP Top 10",
+              type: "recommended",
+              description:
+                "The most critical web application security risks, updated regularly by the Open Web Application Security Project.",
+              concepts: ["Injection", "Broken Auth", "XSS", "IDOR", "Security Misconfiguration", "SSRF"],
+              tools: ["OWASP ZAP", "Burp Suite", "OWASP Juice Shop"],
+              resources: [
+                { label: "OWASP Top 10", url: "https://owasp.org/www-project-top-ten/" },
+                { label: "OWASP Juice Shop", url: "https://owasp.org/www-project-juice-shop/" },
+              ],
+              tip: "Practice with OWASP Juice Shop — it's an intentionally vulnerable app that teaches all Top 10 vulnerabilities hands-on.",
+            },
+            {
+              id: "encryption",
+              label: "Encryption Basics",
+              type: "recommended",
+              description:
+                "Symmetric and asymmetric encryption, hashing, and how they underpin TLS, authentication, and data protection.",
+              concepts: ["Symmetric encryption", "Asymmetric encryption", "Hashing", "Digital signatures", "Key exchange"],
+              tools: ["OpenSSL", "GPG", "age"],
+              resources: [
+                { label: "Cryptography I (Coursera)", url: "https://www.coursera.org/learn/crypto" },
+              ],
+              tip: "Never roll your own crypto. Use battle-tested libraries and algorithms — the edge cases will kill you.",
+            },
+            {
+              id: "networking-sec",
+              label: "Networking Security",
+              type: "recommended",
+              description:
+                "Understanding network security fundamentals: firewalls, network segmentation, VPNs, and traffic analysis for defenders.",
+              concepts: ["Firewalls", "Network segmentation", "VPN", "Zero Trust networking", "Traffic analysis"],
+              tools: ["iptables", "nftables", "Wireshark", "tcpdump"],
+              resources: [
+                { label: "Network Security Basics", url: "https://www.cisco.com/c/en/us/products/security/what-is-network-security.html" },
+              ],
+              tip: "Default deny for all inbound traffic. Only explicitly open what is required — every open port is a potential attack surface.",
+            },
+            {
+              id: "authn-authz",
+              label: "Authentication & Authorization",
+              type: "recommended",
+              description:
+                "Designing and implementing secure authentication (proving identity) and authorization (proving permission) systems.",
+              concepts: ["Passwords & hashing", "MFA", "Sessions & JWTs", "RBAC", "ABAC", "Least privilege"],
+              tools: ["OAuth2", "OIDC", "Auth0", "Keycloak"],
+              resources: [
+                { label: "OWASP Auth Cheat Sheet", url: "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html" },
+              ],
+              tip: "Store passwords with bcrypt or Argon2 — never MD5 or SHA1. The cost factor matters as much as the algorithm.",
+            },
+          ],
+        },
+        {
+          id: "secure-coding",
+          title: "Secure Coding",
+          num: "03",
+          items: [
+            {
+              id: "sql-injection",
+              label: "SQL Injection",
+              type: "recommended",
+              description:
+                "Understanding and preventing SQL injection — the most consistently exploited vulnerability class for over two decades.",
+              concepts: ["Parameterized queries", "Prepared statements", "ORM usage", "Input sanitization", "Error handling"],
+              tools: ["SQLMap", "OWASP ZAP"],
+              resources: [
+                { label: "OWASP SQL Injection", url: "https://owasp.org/www-community/attacks/SQL_Injection" },
+              ],
+              tip: "Always use parameterized queries. String concatenation in SQL is the root cause — no amount of input sanitization fully compensates.",
+            },
+            {
+              id: "xss",
+              label: "XSS Prevention",
+              type: "recommended",
+              description:
+                "Cross-Site Scripting attacks and defenses — output encoding, Content Security Policy, and framework-level protections.",
+              concepts: ["Reflected XSS", "Stored XSS", "DOM-based XSS", "Output encoding", "CSP"],
+              tools: ["DOM Purify", "CSP Evaluator", "Burp Suite"],
+              resources: [
+                { label: "OWASP XSS Prevention", url: "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html" },
+              ],
+              tip: "Content Security Policy is your second line of defense against XSS. Implement it alongside output encoding, not instead of it.",
+            },
+            {
+              id: "input-validation",
+              label: "Input Validation",
+              type: "recommended",
+              description:
+                "Validating and sanitizing all inputs at trust boundaries — preventing injection, buffer overflows, and business logic attacks.",
+              concepts: ["Allow-listing", "Type checking", "Length limits", "Regex validation", "Trust boundaries"],
+              tools: ["Joi", "Zod", "Pydantic", "Bean Validation"],
+              resources: [
+                { label: "OWASP Input Validation", url: "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html" },
+              ],
+              tip: "Validate on the server side — client-side validation is UX only. Assume every request is adversarial.",
+            },
+            {
+              id: "rbac",
+              label: "RBAC",
+              type: "recommended",
+              description:
+                "Role-Based Access Control design patterns — assigning permissions to roles, not users, and enforcing authorization consistently.",
+              concepts: ["Roles", "Permissions", "Role hierarchy", "Separation of duties", "Authorization enforcement"],
+              tools: ["OPA", "Casbin", "AWS IAM"],
+              resources: [
+                { label: "RBAC Guide", url: "https://www.nist.gov/publications/role-based-access-controls" },
+              ],
+              tip: "Check authorization on every resource access, server-side. Never rely on the UI to hide sensitive functionality.",
+            },
+            {
+              id: "least-privilege",
+              label: "Least Privilege",
+              type: "recommended",
+              description:
+                "Every process, user, and service should have only the minimum permissions required to function — limiting blast radius from compromise.",
+              concepts: ["Minimal permissions", "Just-in-time access", "Privilege escalation prevention", "Service accounts"],
+              tools: ["AWS IAM", "GCP IAM", "Vault"],
+              resources: [
+                { label: "NIST Least Privilege", url: "https://csrc.nist.gov/glossary/term/least_privilege" },
+              ],
+              tip: "Start with no permissions and add as needed. It's far harder to remove permissions that are already in use.",
+            },
+          ],
+        },
+        {
+          id: "scripting",
+          title: "Scripting",
+          num: "04",
+          items: [
+            {
+              id: "python-sec",
+              label: "Python",
+              type: "recommended",
+              description:
+                "Python is the dominant language for security tooling, automation, and scripting. Essential for writing custom scanners, exploits, and automation.",
+              concepts: ["Scripting", "Security libraries", "API clients", "Parsing", "Automation"],
+              tools: ["Python 3", "requests", "scapy", "paramiko", "cryptography"],
+              resources: [
+                { label: "Python Docs", url: "https://docs.python.org/3/" },
+              ],
+              tip: "The Python `cryptography` library is the go-to for crypto primitives. Avoid older `pycrypto` / `pycryptodome`.",
+            },
+            {
+              id: "bash-sec",
+              label: "Bash",
+              type: "recommended",
+              description:
+                "Bash scripting for security automation — log analysis, incident response scripts, system hardening, and CI/CD integration.",
+              concepts: ["Script hardening", "Error handling", "Input sanitization", "Pipelines", "Secure coding patterns"],
+              tools: ["bash", "shellcheck", "bats"],
+              resources: [
+                { label: "ShellCheck", url: "https://www.shellcheck.net/" },
+              ],
+              tip: "Always quote variables in bash: `\"$var\"` not `$var`. Unquoted variables are a common source of injection vulnerabilities.",
+            },
+            {
+              id: "go-sec",
+              label: "Go",
+              type: "alt",
+              description:
+                "Go is increasingly popular for writing security tools — fast, statically compiled, and with a strong standard library for networking and crypto.",
+              concepts: ["Static binaries", "Networking", "Crypto stdlib", "Race detection"],
+              tools: ["Go", "gosec", "govulncheck"],
+              resources: [
+                { label: "Go Security", url: "https://pkg.go.dev/crypto" },
+              ],
+              tip: "Use `gosec` to scan Go code for common security issues — it catches things like hardcoded credentials and weak random.",
+            },
+            {
+              id: "powershell",
+              label: "PowerShell",
+              type: "alt",
+              description:
+                "PowerShell for Windows environment security automation, Active Directory management, and incident response on Windows systems.",
+              concepts: ["Windows automation", "AD administration", "Script execution policy", "Constrained Language Mode"],
+              tools: ["PowerShell", "PowerShell Empire", "PSScriptAnalyzer"],
+              resources: [
+                { label: "PowerShell Docs", url: "https://learn.microsoft.com/en-us/powershell/" },
+              ],
+              tip: "Enable PowerShell logging (Module Logging, Script Block Logging) — it's one of the most valuable forensic data sources on Windows.",
+            },
+          ],
+        },
+        {
+          id: "monitoring-logs",
+          title: "Monitoring & Logs",
+          num: "05",
+          items: [
+            {
+              id: "siem",
+              label: "SIEM",
+              type: "recommended",
+              description:
+                "Security Information and Event Management — centralizing, correlating, and alerting on security events across your entire infrastructure.",
+              concepts: ["Log aggregation", "Correlation rules", "Alerting", "Threat detection", "Retention policies"],
+              tools: ["Splunk", "Elastic SIEM", "Microsoft Sentinel", "Wazuh"],
+              resources: [
+                { label: "Elastic SIEM", url: "https://www.elastic.co/siem" },
+              ],
+              tip: "Start with a small set of high-confidence detection rules rather than drowning in alert noise. Tune ruthlessly.",
+            },
+            {
+              id: "elk-stack",
+              label: "ELK Stack",
+              type: "recommended",
+              description:
+                "Elasticsearch, Logstash, and Kibana for centralized log management and security analytics — a common open-source alternative to commercial SIEMs.",
+              concepts: ["Index management", "Ingest pipelines", "Kibana dashboards", "Alerting", "Retention"],
+              tools: ["Elasticsearch", "Logstash", "Kibana", "Filebeat", "Metricbeat"],
+              resources: [
+                { label: "Elastic Docs", url: "https://www.elastic.co/guide/" },
+              ],
+              tip: "Use ILM (Index Lifecycle Management) in Elasticsearch from day one. Log data grows faster than you expect.",
+            },
+            {
+              id: "alert-triage",
+              label: "Alert Triage",
+              type: "recommended",
+              description:
+                "The practice of efficiently evaluating security alerts to distinguish true positives from false positives and prioritize response.",
+              concepts: ["Alert fatigue", "Triage workflow", "Severity scoring", "Context enrichment", "Escalation"],
+              tools: ["TheHive", "PagerDuty", "OpsGenie"],
+              resources: [
+                { label: "Alert Triage Best Practices", url: "https://www.sans.org/white-papers/" },
+              ],
+              tip: "Track false positive rates by rule. A rule firing 99% false positives should be tuned or disabled — it trains analysts to ignore alerts.",
+            },
+            {
+              id: "log-analysis",
+              label: "Log Analysis",
+              type: "recommended",
+              description:
+                "Techniques for extracting security insights from logs — identifying attack patterns, reconnaissance, lateral movement, and exfiltration.",
+              concepts: ["Pattern recognition", "Baseline behavior", "Anomaly detection", "Log parsing", "Correlation"],
+              tools: ["jq", "awk", "grep", "Kibana", "Splunk SPL"],
+              resources: [
+                { label: "SANS Log Analysis", url: "https://www.sans.org/reading-room/whitepapers/logging/" },
+              ],
+              tip: "Know your normal. Anomaly detection is only useful when you have a baseline of expected behavior to compare against.",
+            },
+          ],
+        },
+        {
+          id: "security-testing",
+          title: "Security Testing",
+          num: "06",
+          items: [
+            {
+              id: "burp-suite",
+              label: "Burp Suite",
+              type: "recommended",
+              description:
+                "The industry-standard tool for web application security testing — intercepting proxies, scanners, and extensible testing workflows.",
+              concepts: ["Intercepting proxy", "Active scanning", "Repeater", "Intruder", "Extensions"],
+              tools: ["Burp Suite Community", "Burp Suite Pro"],
+              resources: [
+                { label: "PortSwigger Web Academy", url: "https://portswigger.net/web-security" },
+              ],
+              tip: "Work through PortSwigger Web Academy labs — it's the best structured curriculum for learning web application security testing.",
+            },
+            {
+              id: "wireshark",
+              label: "Wireshark",
+              type: "recommended",
+              description:
+                "Network packet analyzer for capturing and inspecting network traffic — essential for network forensics and protocol analysis.",
+              concepts: ["Packet capture", "Display filters", "Protocol dissection", "Traffic analysis", "Export objects"],
+              tools: ["Wireshark", "tshark", "tcpdump"],
+              resources: [
+                { label: "Wireshark Docs", url: "https://www.wireshark.org/docs/" },
+              ],
+              tip: "Learn Wireshark display filters well — `http.request`, `tcp.flags.syn == 1`, `dns.qry.name contains \"evil\"` are starting points.",
+            },
+            {
+              id: "nmap",
+              label: "Nmap",
+              type: "recommended",
+              description:
+                "Network discovery and security auditing — scanning for open ports, service versions, OS detection, and running NSE scripts.",
+              concepts: ["Port scanning", "Service detection", "OS fingerprinting", "NSE scripts", "Firewall evasion"],
+              tools: ["nmap", "masscan", "Nessus"],
+              resources: [
+                { label: "Nmap Book (free)", url: "https://nmap.org/book/" },
+              ],
+              tip: "`nmap -sV -sC -oA output <target>` is the standard enumeration command. `-sC` runs default NSE scripts that often reveal misconfigurations.",
+            },
+            {
+              id: "owasp-zap",
+              label: "OWASP ZAP",
+              type: "alt",
+              description:
+                "Open-source web application scanner from OWASP — good for automated scanning in CI/CD pipelines and as a free Burp Suite alternative.",
+              concepts: ["Automated scanning", "API testing", "AJAX spider", "Active vs passive scan", "CI/CD integration"],
+              tools: ["ZAP", "ZAP CLI", "ZAP Docker"],
+              resources: [
+                { label: "ZAP Docs", url: "https://www.zaproxy.org/docs/" },
+              ],
+              tip: "ZAP's API mode makes it easy to integrate into CI pipelines — run a passive scan on every PR to catch obvious issues early.",
+            },
+          ],
+        },
+        {
+          id: "threat-modeling",
+          title: "Threat Modeling",
+          num: "07",
+          items: [
+            {
+              id: "stride",
+              label: "STRIDE",
+              type: "recommended",
+              description:
+                "Microsoft's threat classification framework: Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege.",
+              concepts: ["Spoofing", "Tampering", "Repudiation", "Info disclosure", "DoS", "EoP"],
+              tools: ["Microsoft Threat Modeling Tool", "OWASP Threat Dragon"],
+              resources: [
+                { label: "STRIDE Explained", url: "https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-threats" },
+              ],
+              tip: "For each component in your system, apply STRIDE systematically. The process reveals threats you'd never think of intuitively.",
+            },
+            {
+              id: "pasta",
+              label: "PASTA",
+              type: "alt",
+              description:
+                "Process for Attack Simulation and Threat Analysis — a risk-centric methodology that aligns threat analysis with business objectives.",
+              concepts: ["Business impact", "Attack simulation", "Risk scoring", "Attacker profiling", "Countermeasures"],
+              tools: ["IriusRisk", "ThreatModeler"],
+              resources: [
+                { label: "PASTA Methodology", url: "https://owasp.org/www-pdf-archive/AppSecEU2012_PASTA.pdf" },
+              ],
+              tip: "PASTA works best for applications with clear business context — when you need to tie technical risks to business impact for executives.",
+            },
+            {
+              id: "attack-trees",
+              label: "Attack Trees",
+              type: "recommended",
+              description:
+                "Hierarchical diagrams representing attack goals and the sub-goals required to achieve them — useful for visualizing complex attack paths.",
+              concepts: ["Attack goals", "AND/OR nodes", "Attack paths", "Countermeasures", "Cost analysis"],
+              tools: ["SecurITree", "draw.io", "AttackTree+"],
+              resources: [
+                { label: "Schneier on Attack Trees", url: "https://www.schneier.com/academic/archives/1999/12/attack_trees.html" },
+              ],
+              tip: "Draw attack trees from the attacker's goal (root) down to primitive attacks (leaves). Use AND nodes for prerequisites, OR for alternatives.",
+            },
+            {
+              id: "dfd",
+              label: "Data Flow Diagrams",
+              type: "recommended",
+              description:
+                "Mapping data flows between processes, data stores, and external entities — the foundation for identifying trust boundaries in threat modeling.",
+              concepts: ["Processes", "Data stores", "External entities", "Data flows", "Trust boundaries"],
+              tools: ["OWASP Threat Dragon", "Microsoft Threat Modeling Tool", "Lucidchart"],
+              resources: [
+                { label: "OWASP Threat Modeling", url: "https://owasp.org/www-community/Threat_Modeling" },
+              ],
+              tip: "Every trust boundary crossing in a DFD is a potential attack surface. Focus your threat analysis there first.",
+            },
+          ],
+        },
+        {
+          id: "container-security",
+          title: "Container Security",
+          num: "08",
+          items: [
+            {
+              id: "image-scanning",
+              label: "Image Scanning",
+              type: "recommended",
+              description:
+                "Scanning container images for known CVEs in OS packages and application dependencies before deploying to production.",
+              concepts: ["CVE databases", "Layer scanning", "Base image selection", "Minimal images", "Distroless"],
+              tools: ["Trivy", "Grype", "Snyk Container", "Clair"],
+              resources: [
+                { label: "Trivy Docs", url: "https://aquasecurity.github.io/trivy/" },
+              ],
+              tip: "Scan in CI and fail builds on critical/high CVEs without exceptions — start with a clean baseline and maintain it.",
+            },
+            {
+              id: "docker-bench",
+              label: "Docker Bench",
+              type: "recommended",
+              description:
+                "CIS Docker Benchmark checks for production-ready Docker configurations — seccomp profiles, capabilities, read-only filesystems, and more.",
+              concepts: ["CIS benchmarks", "seccomp", "AppArmor", "Capabilities", "Root user avoidance"],
+              tools: ["Docker Bench for Security", "CIS Docker Benchmark"],
+              resources: [
+                { label: "Docker Bench", url: "https://github.com/docker/docker-bench-security" },
+              ],
+              tip: "Run containers as non-root, drop all capabilities and add back only what's needed, and use read-only filesystems where possible.",
+            },
+            {
+              id: "falco",
+              label: "Falco",
+              type: "recommended",
+              description:
+                "Cloud-native runtime security — detecting anomalous behavior in containers and Kubernetes by monitoring kernel system calls.",
+              concepts: ["Runtime security", "System calls", "Threat detection rules", "Alerts", "Kubernetes integration"],
+              tools: ["Falco", "Falcosidekick"],
+              resources: [
+                { label: "Falco Docs", url: "https://falco.org/docs/" },
+              ],
+              tip: "Falco's default ruleset is a good starting point, but the real value comes from writing custom rules for your specific workloads.",
+            },
+            {
+              id: "opa",
+              label: "OPA / Gatekeeper",
+              type: "recommended",
+              description:
+                "Open Policy Agent for enforcing security policies on Kubernetes resources — preventing privileged containers, host namespace access, and policy violations.",
+              concepts: ["Rego policy language", "Admission control", "Policy as code", "Constraints", "Audit mode"],
+              tools: ["OPA", "Gatekeeper", "Kyverno"],
+              resources: [
+                { label: "OPA Docs", url: "https://www.openpolicyagent.org/docs/" },
+              ],
+              tip: "Start in audit mode to understand what would be blocked before enforcing. Switching directly to enforce can break running workloads.",
+            },
+            {
+              id: "k8s-rbac",
+              label: "Kubernetes RBAC",
+              type: "recommended",
+              description:
+                "Controlling access to Kubernetes API resources with Roles, ClusterRoles, RoleBindings, and ServiceAccount token management.",
+              concepts: ["Roles & ClusterRoles", "RoleBindings", "ServiceAccounts", "Least privilege", "Token projection"],
+              tools: ["kubectl auth can-i", "rbac-lookup", "audit2rbac"],
+              resources: [
+                { label: "K8s RBAC Docs", url: "https://kubernetes.io/docs/reference/access-authn-authz/rbac/" },
+              ],
+              tip: "Avoid `ClusterAdmin` bindings for workloads. Use namespace-scoped roles with only the verbs and resources actually required.",
+            },
+          ],
+        },
+        {
+          id: "vuln-scanning",
+          title: "Vulnerability Scanning",
+          num: "09",
+          items: [
+            {
+              id: "trivy",
+              label: "Trivy",
+              type: "recommended",
+              description:
+                "Comprehensive open-source scanner for containers, filesystems, git repos, and Kubernetes — finds CVEs, misconfigurations, and secrets.",
+              concepts: ["CVE scanning", "Misconfiguration detection", "Secret scanning", "SBOM generation", "CI integration"],
+              tools: ["Trivy", "Trivy Operator"],
+              resources: [
+                { label: "Trivy Docs", url: "https://aquasecurity.github.io/trivy/" },
+              ],
+              tip: "Use `trivy fs --scanners secret .` in pre-commit hooks to catch accidentally committed credentials before they reach the repo.",
+            },
+            {
+              id: "grype",
+              label: "Grype",
+              type: "alt",
+              description:
+                "Fast open-source vulnerability scanner for container images and filesystems from Anchore — pairs well with Syft for SBOM generation.",
+              concepts: ["Container scanning", "SBOM scanning", "CVE matching", "Policy enforcement"],
+              tools: ["Grype", "Syft"],
+              resources: [
+                { label: "Grype GitHub", url: "https://github.com/anchore/grype" },
+              ],
+              tip: "Generate SBOMs with Syft and scan them with Grype — this approach decouples scanning from the build artifact lifecycle.",
+            },
+            {
+              id: "nessus",
+              label: "Nessus / OpenVAS",
+              type: "recommended",
+              description:
+                "Network vulnerability scanners for host-based vulnerability assessment — identifying missing patches, weak configurations, and open services.",
+              concepts: ["Plugin-based scanning", "Credentialed vs uncredentialed", "Remediation prioritization", "Compliance checks"],
+              tools: ["Nessus", "OpenVAS", "Qualys"],
+              resources: [
+                { label: "OpenVAS Docs", url: "https://www.openvas.org/" },
+              ],
+              tip: "Credentialed scans find dramatically more vulnerabilities than uncredentialed — always use service accounts for authenticated scanning.",
+            },
+          ],
+        },
+        {
+          id: "cloud-security",
+          title: "Cloud Security",
+          num: "10",
+          items: [
+            {
+              id: "cspm",
+              label: "CSPM",
+              type: "recommended",
+              description:
+                "Cloud Security Posture Management — continuously auditing cloud configurations for misconfigurations that create risk.",
+              concepts: ["Misconfiguration detection", "CIS benchmarks", "Compliance reporting", "Auto-remediation", "Drift detection"],
+              tools: ["Prowler", "Checkov", "AWS Security Hub", "Prisma Cloud"],
+              resources: [
+                { label: "Prowler GitHub", url: "https://github.com/prowler-cloud/prowler" },
+              ],
+              tip: "Run Prowler against your AWS account and triage the findings by severity. Public S3 buckets and wide-open security groups are the most urgent.",
+            },
+            {
+              id: "zero-trust",
+              label: "Zero Trust",
+              type: "recommended",
+              description:
+                "Security model where no network location is trusted implicitly — every request is authenticated and authorized regardless of network position.",
+              concepts: ["Never trust always verify", "Microsegmentation", "Identity as perimeter", "Continuous verification"],
+              tools: ["BeyondCorp", "Cloudflare Access", "Tailscale", "Istio"],
+              resources: [
+                { label: "NIST Zero Trust", url: "https://www.nist.gov/publications/zero-trust-architecture" },
+              ],
+              tip: "Start Zero Trust with your admin access patterns — VPN-less admin access via identity-aware proxy is the highest-impact first step.",
+            },
+            {
+              id: "key-management",
+              label: "Key Management",
+              type: "recommended",
+              description:
+                "Secure generation, storage, rotation, and revocation of cryptographic keys and secrets at scale.",
+              concepts: ["KMS", "HSM", "Key rotation", "Envelope encryption", "Secret lifecycle"],
+              tools: ["AWS KMS", "Azure Key Vault", "HashiCorp Vault", "GCP KMS"],
+              resources: [
+                { label: "Vault Docs", url: "https://developer.hashicorp.com/vault/docs" },
+              ],
+              tip: "Use envelope encryption: encrypt your data with a DEK, encrypt the DEK with a KMS CMK. The CMK never leaves the HSM.",
+            },
+            {
+              id: "secure-apis",
+              label: "Secure APIs",
+              type: "recommended",
+              description:
+                "Security for REST and GraphQL APIs — authentication, authorization, rate limiting, input validation, and the OWASP API Security Top 10.",
+              concepts: ["OWASP API Top 10", "OAuth2 scopes", "Rate limiting", "Input validation", "API keys vs tokens"],
+              tools: ["Kong", "AWS API Gateway", "Apigee"],
+              resources: [
+                { label: "OWASP API Security", url: "https://owasp.org/www-project-api-security/" },
+              ],
+              tip: "BOLA (Broken Object Level Authorization) is the #1 API vulnerability. Always check that the authenticated user owns the object they're requesting.",
+            },
+            {
+              id: "iam-cloud",
+              label: "IAM",
+              type: "recommended",
+              description:
+                "Cloud Identity and Access Management — designing least-privilege policies, service account management, and cross-account access patterns.",
+              concepts: ["IAM policies", "Service accounts", "Role assumption", "Permission boundaries", "SCPs"],
+              tools: ["AWS IAM", "GCP IAM", "Azure RBAC", "iamlive"],
+              resources: [
+                { label: "AWS IAM Best Practices", url: "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html" },
+              ],
+              tip: "Use `iamlive` to capture the exact IAM actions your application actually calls, then use that to build a minimal policy.",
+            },
+          ],
+        },
+        {
+          id: "identity-access",
+          title: "Identity & Access",
+          num: "11",
+          items: [
+            {
+              id: "oauth2",
+              label: "OAuth2 / OIDC",
+              type: "recommended",
+              description:
+                "OAuth2 authorization and OpenID Connect identity layer — the standard protocols for delegated authorization and federated identity.",
+              concepts: ["Authorization code flow", "PKCE", "Access tokens", "Refresh tokens", "ID tokens", "Scopes"],
+              tools: ["Auth0", "Keycloak", "Okta", "Dex"],
+              resources: [
+                { label: "OAuth2 RFC 6749", url: "https://www.rfc-editor.org/rfc/rfc6749" },
+                { label: "OAuth Security BCP", url: "https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics" },
+              ],
+              tip: "Always use PKCE for public clients (mobile, SPA). The implicit flow is deprecated and should never be used.",
+            },
+            {
+              id: "saml",
+              label: "SAML",
+              type: "alt",
+              description:
+                "Security Assertion Markup Language — the XML-based enterprise SSO standard still dominant in corporate environments.",
+              concepts: ["Assertions", "IdP", "SP", "SSO", "SLO", "Metadata"],
+              tools: ["ADFS", "Okta", "Auth0", "SimpleSAMLphp"],
+              resources: [
+                { label: "SAML Explained", url: "https://www.onelogin.com/learn/saml" },
+              ],
+              tip: "Validate the SAML signature on every assertion — XML signature wrapping attacks bypass authentication when validation is skipped.",
+            },
+            {
+              id: "mfa",
+              label: "MFA",
+              type: "recommended",
+              description:
+                "Multi-Factor Authentication — adding a second factor to prevent account compromise even when credentials are stolen.",
+              concepts: ["TOTP", "FIDO2/WebAuthn", "Hardware tokens", "Push notifications", "SMS (avoid)", "Phishing resistance"],
+              tools: ["Google Authenticator", "YubiKey", "Duo", "FIDO2 keys"],
+              resources: [
+                { label: "NIST 800-63B", url: "https://pages.nist.gov/800-63-3/sp800-63b.html" },
+              ],
+              tip: "Prefer FIDO2/WebAuthn over TOTP — it's phishing-resistant because the credential is bound to the origin URL.",
+            },
+            {
+              id: "pam",
+              label: "PAM / Privileged Access",
+              type: "recommended",
+              description:
+                "Privileged Access Management — controlling, monitoring, and auditing access to critical systems and sensitive accounts.",
+              concepts: ["Just-in-time access", "Session recording", "Credential vaulting", "Bastion hosts", "Break-glass accounts"],
+              tools: ["HashiCorp Vault", "CyberArk", "AWS SSM Session Manager", "Teleport"],
+              resources: [
+                { label: "Teleport Docs", url: "https://goteleport.com/docs/" },
+              ],
+              tip: "Eliminate standing privileged access — use JIT access patterns where elevated permissions expire automatically after a defined window.",
+            },
+          ],
+        },
+        {
+          id: "incident-response",
+          title: "Incident Response",
+          num: "12",
+          items: [
+            {
+              id: "ir-lifecycle",
+              label: "IR Lifecycle",
+              type: "recommended",
+              description:
+                "The NIST incident response lifecycle: Preparation, Detection & Analysis, Containment, Eradication, Recovery, and Post-Incident Activity.",
+              concepts: ["Preparation", "Detection", "Containment", "Eradication", "Recovery", "Lessons learned"],
+              tools: ["TheHive", "MISP", "Velociraptor"],
+              resources: [
+                { label: "NIST SP 800-61", url: "https://csrc.nist.gov/publications/detail/sp/800-61/rev-2/final" },
+              ],
+              tip: "Write your playbooks before you need them. During an incident is the worst time to figure out your procedures.",
+            },
+            {
+              id: "forensics",
+              label: "Digital Forensics",
+              type: "recommended",
+              description:
+                "Collecting and preserving digital evidence from compromised systems — disk imaging, memory analysis, and log preservation.",
+              concepts: ["Chain of custody", "Disk imaging", "Memory forensics", "Timeline analysis", "Artifact collection"],
+              tools: ["Volatility", "Autopsy", "The Sleuth Kit", "Velociraptor"],
+              resources: [
+                { label: "SANS FOR508", url: "https://www.sans.org/cyber-security-courses/advanced-incident-response-threat-hunting-training/" },
+              ],
+              tip: "Memory is volatile — capture it first. A memory dump often reveals running malware that has been wiped from disk.",
+            },
+            {
+              id: "containment",
+              label: "Containment",
+              type: "recommended",
+              description:
+                "Strategies for limiting the spread of an incident — network isolation, account lockout, and service shutdown while preserving evidence.",
+              concepts: ["Network isolation", "Account lockout", "IOC extraction", "Evidence preservation", "Communication"],
+              tools: ["Cloud security groups", "Host-based firewall", "EDR isolation"],
+              resources: [
+                { label: "CISA Incident Response", url: "https://www.cisa.gov/sites/default/files/publications/Federal_Government_Cybersecurity_Incident_and_Vulnerability_Response_Playbooks_508C.pdf" },
+              ],
+              tip: "Containment before eradication. Pulling the plug too fast destroys forensic evidence; moving too slow lets the attacker deepen their foothold.",
+            },
+            {
+              id: "rca",
+              label: "Root Cause Analysis",
+              type: "recommended",
+              description:
+                "Post-incident analysis to identify the underlying vulnerability, how it was exploited, and how to prevent recurrence.",
+              concepts: ["5 Whys", "Timeline reconstruction", "Attack path analysis", "Contributing factors", "Lessons learned"],
+              tools: ["Incident timelines", "MITRE ATT&CK"],
+              resources: [
+                { label: "MITRE ATT&CK", url: "https://attack.mitre.org/" },
+              ],
+              tip: "Map the incident to MITRE ATT&CK tactics. This structures the RCA and highlights detection gaps in your monitoring.",
+            },
+          ],
+        },
+        {
+          id: "cicd-security",
+          title: "CI/CD Security",
+          num: "13",
+          items: [
+            {
+              id: "sast",
+              label: "SAST",
+              type: "recommended",
+              description:
+                "Static Application Security Testing — analyzing source code for security vulnerabilities without executing the application.",
+              concepts: ["Taint analysis", "Data flow analysis", "Rule sets", "False positive management", "IDE integration"],
+              tools: ["Semgrep", "SonarQube", "CodeQL", "Bandit (Python)", "gosec"],
+              resources: [
+                { label: "Semgrep", url: "https://semgrep.dev/" },
+                { label: "CodeQL Docs", url: "https://codeql.github.com/docs/" },
+              ],
+              tip: "Run SAST on every PR. Focus on fixing high-confidence rules first — low-confidence rules create noise that trains developers to ignore findings.",
+            },
+            {
+              id: "dast",
+              label: "DAST",
+              type: "recommended",
+              description:
+                "Dynamic Application Security Testing — testing running applications by sending crafted requests to find vulnerabilities.",
+              concepts: ["Black-box testing", "Crawler", "Active scanning", "API fuzzing", "Environment isolation"],
+              tools: ["OWASP ZAP", "Burp Suite Pro", "Nuclei"],
+              resources: [
+                { label: "OWASP DAST", url: "https://owasp.org/www-community/Vulnerability_Scanning_Tools" },
+              ],
+              tip: "Run DAST against a dedicated staging environment, not production. Active scanning sends malicious payloads that can corrupt data.",
+            },
+            {
+              id: "secrets-scanning",
+              label: "Secrets Scanning",
+              type: "recommended",
+              description:
+                "Detecting accidentally committed secrets — API keys, passwords, and tokens — before they reach or are exposed in version control.",
+              concepts: ["Pre-commit hooks", "Regex patterns", "Entropy detection", "Git history scanning", "Rotation workflows"],
+              tools: ["Gitleaks", "TruffleHog", "GitHub Secret Scanning", "detect-secrets"],
+              resources: [
+                { label: "Gitleaks", url: "https://gitleaks.io/" },
+              ],
+              tip: "Install Gitleaks as a pre-commit hook — catching secrets before they're committed is far better than scanning after the fact.",
+            },
+            {
+              id: "signed-commits",
+              label: "Signed Commits",
+              type: "recommended",
+              description:
+                "Using GPG or SSH keys to sign git commits, providing cryptographic proof of authorship and preventing commit spoofing.",
+              concepts: ["GPG signing", "SSH signing", "Vigilant mode", "Verified badge", "Commit attribution"],
+              tools: ["GPG", "GitHub commit signing", "Sigstore gitsign"],
+              resources: [
+                { label: "GitHub Commit Signing", url: "https://docs.github.com/en/authentication/managing-commit-signature-verification" },
+              ],
+              tip: "Enable GitHub Vigilant Mode — it marks unsigned commits as 'unverified' and makes it obvious when someone spoofs authorship.",
+            },
+            {
+              id: "policy-as-code",
+              label: "Policy as Code",
+              type: "recommended",
+              description:
+                "Encoding security and compliance policies as machine-readable code that can be version-controlled, tested, and automatically enforced.",
+              concepts: ["OPA/Rego", "Conftest", "Admission control", "Compliance gates", "Policy testing"],
+              tools: ["OPA", "Conftest", "Checkov", "Kyverno"],
+              resources: [
+                { label: "OPA Docs", url: "https://www.openpolicyagent.org/docs/" },
+              ],
+              tip: "Test your policies — write unit tests with `opa test` to ensure policies block what they should and don't block what they shouldn't.",
+            },
+          ],
+        },
+        {
+          id: "cryptography",
+          title: "Cryptography",
+          num: "14",
+          items: [
+            {
+              id: "pki",
+              label: "PKI",
+              type: "recommended",
+              description:
+                "Public Key Infrastructure — the ecosystem of CAs, certificates, trust chains, and revocation that underpins TLS and code signing.",
+              concepts: ["CA hierarchy", "Certificate chain", "Root vs intermediate CA", "CRL", "OCSP"],
+              tools: ["cfssl", "step-ca", "Vault PKI", "Let's Encrypt"],
+              resources: [
+                { label: "Smallstep PKI Guide", url: "https://smallstep.com/blog/everything-pki/" },
+              ],
+              tip: "Run your own internal CA for service-to-service mTLS. Smallstep's `step-ca` makes it operationally manageable.",
+            },
+            {
+              id: "tls-mtls",
+              label: "TLS / mTLS",
+              type: "recommended",
+              description:
+                "TLS configuration best practices and mutual TLS for service-to-service authentication in microservices architectures.",
+              concepts: ["TLS 1.3", "Cipher suites", "Certificate validation", "mTLS", "Service mesh"],
+              tools: ["OpenSSL", "Istio", "Linkerd", "Envoy"],
+              resources: [
+                { label: "TLS Best Practices", url: "https://ssl-config.mozilla.org/" },
+              ],
+              tip: "Use Mozilla's SSL Config Generator for nginx/Apache/HAProxy TLS configuration — it outputs battle-tested cipher suite configurations.",
+            },
+            {
+              id: "cert-lifecycle",
+              label: "Certificate Lifecycle",
+              type: "recommended",
+              description:
+                "Automating certificate issuance, renewal, and revocation to prevent outages from expired certificates and reduce manual toil.",
+              concepts: ["ACME protocol", "Auto-renewal", "Short-lived certs", "Revocation", "Monitoring expiry"],
+              tools: ["cert-manager", "Let's Encrypt", "Certbot", "Vault PKI"],
+              resources: [
+                { label: "cert-manager Docs", url: "https://cert-manager.io/docs/" },
+              ],
+              tip: "Set certificate expiry alerts at 30, 14, and 7 days. Automate renewal but keep manual fallback procedures documented and tested.",
+            },
+            {
+              id: "hashing",
+              label: "Hashing",
+              type: "recommended",
+              description:
+                "Cryptographic hash functions and their applications: password hashing, data integrity verification, and digital signatures.",
+              concepts: ["SHA-256/512", "Bcrypt/Argon2", "HMAC", "Hash collision resistance", "Rainbow tables"],
+              tools: ["openssl dgst", "bcrypt libraries", "hashcat"],
+              resources: [
+                { label: "Password Hashing", url: "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html" },
+              ],
+              tip: "For password storage: Argon2id is the current best practice. For data integrity: SHA-256. For authentication codes: HMAC-SHA256.",
+            },
+          ],
+        },
+        {
+          id: "detection-response",
+          title: "Detection & Response",
+          num: "15",
+          items: [
+            {
+              id: "ids-ips",
+              label: "IDS / IPS",
+              type: "recommended",
+              description:
+                "Intrusion Detection and Prevention Systems — monitoring network traffic and host activity for attack signatures and anomalies.",
+              concepts: ["Signature-based detection", "Anomaly detection", "Inline vs passive", "Tuning", "False positive management"],
+              tools: ["Snort", "Suricata", "Zeek", "OSSEC/Wazuh"],
+              resources: [
+                { label: "Suricata Docs", url: "https://suricata.io/documentation/" },
+              ],
+              tip: "Start with Suricata in passive (IDS) mode before enabling inline prevention. Blocking mode needs careful tuning to avoid disrupting legitimate traffic.",
+            },
+            {
+              id: "edr",
+              label: "EDR",
+              type: "recommended",
+              description:
+                "Endpoint Detection and Response — continuous monitoring of endpoint activity to detect, investigate, and respond to threats.",
+              concepts: ["Process monitoring", "File integrity", "Network connections", "Behavioral detection", "Threat hunting"],
+              tools: ["CrowdStrike", "SentinelOne", "Wazuh", "Velociraptor"],
+              resources: [
+                { label: "Velociraptor Docs", url: "https://docs.velociraptor.app/" },
+              ],
+              tip: "Velociraptor is a powerful open-source DFIR platform — it can query thousands of endpoints simultaneously for IOCs during incident response.",
+            },
+            {
+              id: "soar",
+              label: "SOAR",
+              type: "alt",
+              description:
+                "Security Orchestration, Automation and Response — automating repetitive security operations tasks like alert triage, IOC enrichment, and ticketing.",
+              concepts: ["Playbook automation", "Case management", "Enrichment", "Alert deduplication", "Integration"],
+              tools: ["Cortex XSOAR", "Shuffle", "TheHive + Cortex"],
+              resources: [
+                { label: "Shuffle SOAR", url: "https://shuffler.io/" },
+              ],
+              tip: "Start by automating one high-volume, low-complexity task (like IP reputation lookups) before building complex multi-step playbooks.",
+            },
+            {
+              id: "threat-hunting",
+              label: "Threat Hunting",
+              type: "recommended",
+              description:
+                "Proactive search for hidden threats that have evaded existing security controls — hypothesis-driven investigation using security data.",
+              concepts: ["Hypothesis generation", "IOC hunting", "TTP-based hunting", "Data analysis", "MITRE ATT&CK"],
+              tools: ["Elastic Stack", "Splunk", "Velociraptor", "MITRE ATT&CK Navigator"],
+              resources: [
+                { label: "MITRE ATT&CK", url: "https://attack.mitre.org/" },
+              ],
+              tip: "Start hunts from MITRE ATT&CK techniques relevant to your threat model — not from random hypotheses. Prioritize techniques used by threat actors targeting your industry.",
+            },
+          ],
+        },
+        {
+          id: "supply-chain",
+          title: "Supply Chain",
+          num: "16",
+          items: [
+            {
+              id: "sbom",
+              label: "SBOMs",
+              type: "recommended",
+              description:
+                "Software Bill of Materials — a formal inventory of components, libraries, and their versions used in a software product.",
+              concepts: ["CycloneDX", "SPDX", "Component inventory", "License compliance", "Vulnerability correlation"],
+              tools: ["Syft", "Trivy", "CycloneDX tools"],
+              resources: [
+                { label: "CISA SBOM", url: "https://www.cisa.gov/sbom" },
+              ],
+              tip: "Generate SBOMs at build time and attach them to your release artifacts. They become invaluable when a new CVE drops — you know immediately what's affected.",
+            },
+            {
+              id: "sigstore",
+              label: "Sigstore",
+              type: "recommended",
+              description:
+                "A Linux Foundation project providing free code signing infrastructure — Cosign for containers, Fulcio CA, and Rekor transparency log.",
+              concepts: ["Keyless signing", "OIDC identity", "Transparency log", "Artifact attestations", "Cosign"],
+              tools: ["Cosign", "Fulcio", "Rekor", "slsa-verifier"],
+              resources: [
+                { label: "Sigstore Docs", url: "https://docs.sigstore.dev/" },
+              ],
+              tip: "Use keyless signing with Cosign in GitHub Actions — the OIDC token from the workflow provides the signing identity, no key management required.",
+            },
+            {
+              id: "dependency-scanning",
+              label: "Dependency Scanning",
+              type: "recommended",
+              description:
+                "Automated scanning of third-party dependencies for known vulnerabilities and keeping them updated.",
+              concepts: ["CVE matching", "License scanning", "Transitive dependencies", "Patch management", "Renovate/Dependabot"],
+              tools: ["Dependabot", "Renovate", "Snyk", "OWASP Dependency Check"],
+              resources: [
+                { label: "Dependabot Docs", url: "https://docs.github.com/en/code-security/dependabot" },
+              ],
+              tip: "Enable Dependabot security updates on all repositories — it automatically opens PRs for dependencies with known CVEs.",
+            },
+            {
+              id: "build-hardening",
+              label: "Build Hardening",
+              type: "recommended",
+              description:
+                "Securing the CI/CD build environment itself — hermetic builds, pinned actions, network isolation, and build provenance.",
+              concepts: ["Hermetic builds", "SLSA framework", "Pinned dependencies", "Ephemeral build environments", "Provenance"],
+              tools: ["SLSA", "Tekton Chains", "GitHub Actions pinning"],
+              resources: [
+                { label: "SLSA Framework", url: "https://slsa.dev/" },
+              ],
+              tip: "Pin GitHub Actions to commit SHAs, not tags — a tag can be moved to point to malicious code, but a commit SHA cannot.",
+            },
+          ],
+        },
+        {
+          id: "compliance",
+          title: "Compliance",
+          num: "17",
+          items: [
+            {
+              id: "soc2",
+              label: "SOC 2",
+              type: "recommended",
+              description:
+                "AICPA Trust Services Criteria audit framework — demonstrating controls for security, availability, processing integrity, confidentiality, and privacy.",
+              concepts: ["Trust Service Criteria", "Type I vs Type II", "Control evidence", "Continuous compliance", "Auditor relationship"],
+              tools: ["Vanta", "Drata", "Secureframe", "AWS Audit Manager"],
+              resources: [
+                { label: "SOC 2 Overview", url: "https://www.aicpa.org/resources/landing/system-and-organization-controls-soc-suite-of-services" },
+              ],
+              tip: "Start compliance prep 12 months before your first Type II audit. Evidence collection for a full year period takes time you can't compress.",
+            },
+            {
+              id: "iso27001",
+              label: "ISO 27001",
+              type: "alt",
+              description:
+                "International standard for Information Security Management Systems — a risk-based framework recognized globally for enterprise security governance.",
+              concepts: ["ISMS", "Risk assessment", "Controls (Annex A)", "Statement of Applicability", "Continual improvement"],
+              tools: ["ISO 27001 controls", "Risk management tools"],
+              resources: [
+                { label: "ISO 27001 Overview", url: "https://www.iso.org/isoiec-27001-information-security.html" },
+              ],
+              tip: "ISO 27001 is more flexible than prescriptive compliance frameworks — the risk assessment drives which controls you implement.",
+            },
+            {
+              id: "nist-csf",
+              label: "NIST CSF",
+              type: "recommended",
+              description:
+                "NIST Cybersecurity Framework — Identify, Protect, Detect, Respond, Recover. A flexible framework for organizing your security program.",
+              concepts: ["Identify", "Protect", "Detect", "Respond", "Recover", "Profiles", "Tiers"],
+              tools: ["NIST CSF Navigator", "CISA resources"],
+              resources: [
+                { label: "NIST CSF 2.0", url: "https://www.nist.gov/cyberframework" },
+              ],
+              tip: "Use the CSF to benchmark your current security posture and communicate gaps to executives in business terms.",
+            },
+            {
+              id: "cis-benchmarks",
+              label: "CIS Benchmarks",
+              type: "recommended",
+              description:
+                "Consensus-based security configuration guidelines for operating systems, cloud providers, containers, and applications.",
+              concepts: ["Level 1 vs Level 2", "Scored vs unscored", "Hardening scripts", "Benchmark deviation", "Automated assessment"],
+              tools: ["CIS-CAT", "InSpec", "Lynis", "OpenSCAP"],
+              resources: [
+                { label: "CIS Benchmarks", url: "https://www.cisecurity.org/cis-benchmarks/" },
+              ],
+              tip: "Apply CIS Level 1 benchmarks to all production systems. Level 2 can break functionality — validate in staging first.",
+            },
+            {
+              id: "gdpr",
+              label: "GDPR / Privacy",
+              type: "recommended",
+              description:
+                "General Data Protection Regulation compliance — data minimization, consent management, data subject rights, and breach notification.",
+              concepts: ["Lawful basis", "Data minimization", "Consent", "DSAR", "Breach notification", "DPA"],
+              tools: ["OneTrust", "Osano", "Data mapping tools"],
+              resources: [
+                { label: "GDPR Official Text", url: "https://gdpr-info.eu/" },
+              ],
+              tip: "Build a data map before anything else — you can't protect data you don't know you have, and you can't respond to DSARs without knowing where data lives.",
+            },
+          ],
+        },
+      ];
+
+      // ─── STATE ─────────────────────────────────────────────────────────────────
+      const STORAGE_KEY = "devsecops-roadmap-progress";
+      let progress = {};
+      let listViewMode = false;
+      let currentItem = null;
+
+      function loadProgress() {
+        try {
+          progress = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+        } catch (e) {
+          progress = {};
+        }
+      }
+
+      function saveProgress() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+      }
+
+      // ─── RENDER ────────────────────────────────────────────────────────────────
+      function render() {
+        loadProgress();
+        const canvas = document.getElementById("rm-canvas");
+        Array.from(canvas.querySelectorAll(".rm-column")).forEach((el) =>
+          el.remove(),
+        );
+
+        ROADMAP.forEach((section) => {
+          const col = document.createElement("div");
+          col.className = "rm-column";
+          col.dataset.section = section.id;
+
+          const hdr = document.createElement("div");
+          hdr.className = "rm-col-header";
+          hdr.innerHTML = `<span class="rm-col-num">${section.num}</span>${section.title}`;
+          col.appendChild(hdr);
+
+          section.items.forEach((item) => {
+            const status = progress[item.id];
+            const node = document.createElement("div");
+            node.className = `rm-node ${item.type}${status ? " status-" + status : ""}`;
+            node.dataset.id = item.id;
+            node.dataset.label = item.label.toLowerCase();
+            node.innerHTML = `
+        <div class="rm-node-label">
+          ${status ? `<span class="status-dot ${status}"></span>` : ""}
+          ${item.label}
+        </div>
+        <div class="rm-node-sub">${item.type === "recommended" ? "Core" : "Alternative"}</div>
+      `;
+            node.addEventListener("click", () => openPanel(item));
+            col.appendChild(node);
+          });
+
+          canvas.appendChild(col);
+        });
+
+        updateStats();
+        setTimeout(drawConnectors, 50);
+      }
+
+      // ─── STATS ─────────────────────────────────────────────────────────────────
+      function updateStats() {
+        let total = 0, done = 0, learning = 0;
+        ROADMAP.forEach((s) =>
+          s.items.forEach((item) => {
+            total++;
+            if (progress[item.id] === "done") done++;
+            else if (progress[item.id] === "learning") learning++;
+          }),
+        );
+        const pct = total ? Math.round((done / total) * 100) : 0;
+        document.getElementById("stat-total").textContent = total;
+        document.getElementById("stat-done").textContent = done;
+        document.getElementById("stat-learning").textContent = learning;
+        document.getElementById("stat-pct").textContent = pct + "%";
+        document.getElementById("progress-bar").style.width = pct + "%";
+      }
+
+      // ─── SVG CONNECTORS ────────────────────────────────────────────────────────
+      function drawConnectors() {
+        const svg = document.getElementById("rm-connectors");
+        const wrap = document.getElementById("canvas-wrap");
+        const canvas = document.getElementById("rm-canvas");
+        if (listViewMode) {
+          svg.innerHTML = "";
+          return;
+        }
+
+        svg.setAttribute("width", canvas.scrollWidth);
+        svg.setAttribute("height", canvas.scrollHeight);
+
+        const cols = Array.from(canvas.querySelectorAll(".rm-column"));
+        if (cols.length < 2) return;
+
+        const wrapRect = canvas.getBoundingClientRect();
+        const scrollLeft = wrap.scrollLeft;
+        const scrollTop = wrap.scrollTop;
+
+        let paths = "";
+        for (let i = 0; i < cols.length - 1; i++) {
+          const a = cols[i].querySelector(".rm-col-header");
+          const b = cols[i + 1].querySelector(".rm-col-header");
+          if (!a || !b) continue;
+          const ar = a.getBoundingClientRect();
+          const br = b.getBoundingClientRect();
+          const x1 = ar.right - wrapRect.left + scrollLeft;
+          const y1 = ar.top + ar.height / 2 - wrapRect.top + scrollTop;
+          const x2 = br.left - wrapRect.left + scrollLeft;
+          const y2 = br.top + br.height / 2 - wrapRect.top + scrollTop;
+          const cx = (x1 + x2) / 2;
+          paths += `<path d="M${x1},${y1} C${cx},${y1} ${cx},${y2} ${x2},${y2}"/>`;
+        }
+        svg.innerHTML = paths;
+      }
+
+      const ro = new ResizeObserver(() => drawConnectors());
+      ro.observe(document.getElementById("rm-canvas"));
+
+      // ─── PANEL ─────────────────────────────────────────────────────────────────
+      function openPanel(item) {
+        currentItem = item;
+        document.getElementById("panel-title").textContent = item.label;
+
+        const badge = document.getElementById("panel-badge");
+        badge.textContent = item.type === "recommended" ? "Core" : "Alternative";
+        badge.className =
+          "panel-type-badge " +
+          (item.type === "recommended" ? "type-recommended" : "type-alt");
+
+        document.getElementById("panel-desc").textContent = item.description;
+
+        const conSec = document.getElementById("panel-concepts-sec");
+        const conWrap = document.getElementById("panel-concepts");
+        if (item.concepts && item.concepts.length) {
+          conWrap.innerHTML = item.concepts.map((c) => `<span class="chip">${c}</span>`).join("");
+          conSec.style.display = "";
+        } else {
+          conSec.style.display = "none";
+        }
+
+        const toolSec = document.getElementById("panel-tools-sec");
+        const toolWrap = document.getElementById("panel-tools");
+        if (item.tools && item.tools.length) {
+          toolWrap.innerHTML = item.tools.map((t) => `<div class="tool-item">${t}</div>`).join("");
+          toolSec.style.display = "";
+        } else {
+          toolSec.style.display = "none";
+        }
+
+        const resSec = document.getElementById("panel-resources-sec");
+        const resWrap = document.getElementById("panel-resources");
+        if (item.resources && item.resources.length) {
+          resWrap.innerHTML = item.resources
+            .map((r) => `<a class="res-item" href="${r.url}" target="_blank" rel="noopener">${r.label}</a>`)
+            .join("");
+          resSec.style.display = "";
+        } else {
+          resSec.style.display = "none";
+        }
+
+        const tipSec = document.getElementById("panel-tip-sec");
+        const tipEl = document.getElementById("panel-tip");
+        if (item.tip) {
+          tipEl.textContent = item.tip;
+          tipSec.style.display = "";
+        } else {
+          tipSec.style.display = "none";
+        }
+
+        updateActionButtons();
+        document.getElementById("detail-overlay").classList.add("open");
+        document.getElementById("detail-panel").classList.add("open");
+      }
+
+      function closePanel() {
+        document.getElementById("detail-overlay").classList.remove("open");
+        document.getElementById("detail-panel").classList.remove("open");
+        currentItem = null;
+      }
+
+      function updateActionButtons() {
+        if (!currentItem) return;
+        const status = progress[currentItem.id];
+        document.getElementById("btn-learning").className =
+          "btn-action" + (status === "learning" ? " learning-active" : "");
+        document.getElementById("btn-done").className =
+          "btn-action" + (status === "done" ? " done-active" : "");
+      }
+
+      function markStatus(status) {
+        if (!currentItem) return;
+        if (status === null) {
+          delete progress[currentItem.id];
+        } else {
+          progress[currentItem.id] = status;
+        }
+        saveProgress();
+        updateActionButtons();
+
+        const node = document.querySelector(`.rm-node[data-id="${currentItem.id}"]`);
+        if (node) {
+          node.classList.remove("status-learning", "status-done");
+          if (status) node.classList.add("status-" + status);
+          const label = node.querySelector(".rm-node-label");
+          const existing = label.querySelector(".status-dot");
+          if (existing) existing.remove();
+          if (status) {
+            const dot = document.createElement("span");
+            dot.className = "status-dot " + status;
+            label.prepend(dot);
+          }
+        }
+
+        updateStats();
+      }
+
+      // ─── SEARCH ────────────────────────────────────────────────────────────────
+      function handleSearch(q) {
+        const term = q.toLowerCase().trim();
+        document.querySelectorAll(".rm-node").forEach((node) => {
+          if (!term) {
+            node.classList.remove("faded");
+          } else {
+            const label = node.dataset.label || "";
+            node.classList.toggle("faded", !label.includes(term));
+          }
+        });
+      }
+
+      // ─── RESET ─────────────────────────────────────────────────────────────────
+      function resetAll() {
+        if (!confirm("Reset all progress? This cannot be undone.")) return;
+        progress = {};
+        saveProgress();
+        document.querySelectorAll(".rm-node").forEach((node) => {
+          node.classList.remove("status-learning", "status-done");
+          const dot = node.querySelector(".status-dot");
+          if (dot) dot.remove();
+        });
+        updateStats();
+        if (currentItem) updateActionButtons();
+      }
+
+      // ─── LIST VIEW ─────────────────────────────────────────────────────────────
+      function toggleView() {
+        listViewMode = !listViewMode;
+        const canvas = document.getElementById("rm-canvas");
+        const btn = document.getElementById("toggle-view-btn");
+        canvas.classList.toggle("list-view", listViewMode);
+        btn.textContent = listViewMode ? "Grid View" : "List View";
+        drawConnectors();
+      }
+
+      // ─── INIT ──────────────────────────────────────────────────────────────────
+      render();
+    </script>
+  </body>
+</html>
