@@ -195,184 +195,137 @@
         font-size: 0.68rem;
         color: #555;
       }
-      .rel-diagram-outer {
-        overflow-x: auto;
+      .rel-diagram-wrap {
         display: flex;
-        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        overflow-x: auto;
       }
-      .rel-iso-scene {
-        position: relative;
-        width: 540px;
-        height: 310px;
+      .rel-axis-label {
+        font-size: 0.6rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: #555;
+        white-space: nowrap;
         flex-shrink: 0;
       }
-
-      /* Isometric slabs */
-      .rel-slab {
+      .rel-venn-scene {
+        position: relative;
+        width: 640px;
+        height: 300px;
+        flex-shrink: 0;
+        isolation: isolate;
+      }
+      .venn-circle {
         position: absolute;
-        border: 2px solid #000;
-        transition: transform 0.2s;
-        cursor: default;
-      }
-      .rel-slab::after {
-        content: "";
-        position: absolute;
-        bottom: -10px;
-        left: 4px;
-        right: -4px;
-        height: 10px;
-        border-left: 2px solid #000;
-        border-bottom: 2px solid #000;
-        border-right: 2px solid #000;
-        filter: brightness(0.6);
-      }
-      .rel-slab:hover {
-        transform: translateY(-4px) !important;
-      }
-
-      .rel-slab--devops {
-        width: 500px;
-        height: 90px;
-        background: #ede9fe;
-        bottom: 30px;
-        left: 20px;
-        animation: rel-float 4s ease-in-out infinite;
-      }
-      .rel-slab--devops::after {
-        background: #6d28d9;
-        opacity: 0.35;
-      }
-      .rel-slab--devsecops {
-        width: 230px;
-        height: 105px;
-        background: #ccfbf1;
-        top: 20px;
-        right: 20px;
-        animation: rel-float 4s ease-in-out 1.8s infinite;
-      }
-      .rel-slab--devsecops::after {
-        background: #0d9488;
-        opacity: 0.35;
-      }
-      .rel-slab--mlops {
-        width: 230px;
-        height: 105px;
-        background: #ffedd5;
-        top: 20px;
-        left: 20px;
-        animation: rel-float 4s ease-in-out 3.4s infinite;
-      }
-      .rel-slab--mlops::after {
-        background: #f97316;
-        opacity: 0.35;
-      }
-
-      @keyframes rel-float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-6px); }
-      }
-      .rel-iso-scene:hover .rel-slab {
-        animation-play-state: paused;
-      }
-
-      /* Slab labels */
-      .slab-label {
+        border-radius: 50%;
+        mix-blend-mode: multiply;
         display: flex;
         flex-direction: column;
+        align-items: center;
         justify-content: center;
-        height: 100%;
-        padding: 0.75rem 1rem;
-        gap: 0.25rem;
+        gap: 0.2rem;
       }
-      .slab-name {
+      .venn-circle--devops {
+        width: 280px; height: 280px;
+        left: 180px; top: 10px;
+        background: rgba(109, 40, 217, 0.18);
+        border: 2px solid rgba(109, 40, 217, 0.5);
+        animation: venn-pulse-purple 5s ease-in-out infinite;
+      }
+      .venn-circle--mlops {
+        width: 250px; height: 250px;
+        left: 50px; top: 25px;
+        background: rgba(249, 115, 22, 0.18);
+        border: 2px solid rgba(249, 115, 22, 0.5);
+        animation: venn-pulse-orange 5s ease-in-out 1.7s infinite;
+      }
+      .venn-circle--devsecops {
+        width: 250px; height: 250px;
+        left: 340px; top: 25px;
+        background: rgba(13, 148, 136, 0.18);
+        border: 2px solid rgba(13, 148, 136, 0.5);
+        animation: venn-pulse-teal 5s ease-in-out 3.3s infinite;
+      }
+      @keyframes venn-pulse-purple {
+        0%,100% { box-shadow: 0 0 0 0 rgba(109,40,217,0); }
+        50% { box-shadow: 0 0 24px 6px rgba(109,40,217,0.12); }
+      }
+      @keyframes venn-pulse-orange {
+        0%,100% { box-shadow: 0 0 0 0 rgba(249,115,22,0); }
+        50% { box-shadow: 0 0 24px 6px rgba(249,115,22,0.12); }
+      }
+      @keyframes venn-pulse-teal {
+        0%,100% { box-shadow: 0 0 0 0 rgba(13,148,136,0); }
+        50% { box-shadow: 0 0 24px 6px rgba(13,148,136,0.12); }
+      }
+      .rel-venn-scene:hover .venn-circle {
+        animation-play-state: paused;
+      }
+      .venn-name {
         font-family: "Bebas Neue", sans-serif;
-        font-size: 1.4rem;
+        font-size: 1.1rem;
         letter-spacing: 0.06em;
         line-height: 1;
       }
-      .slab-tag {
-        font-size: 0.62rem;
+      .venn-sub {
+        font-size: 0.52rem;
         font-weight: 700;
         letter-spacing: 0.08em;
-        color: #444;
         text-transform: uppercase;
-      }
-      .slab-tools {
-        font-size: 0.6rem;
         color: #555;
-        margin-top: 0.15rem;
       }
-
-      /* SVG arrows */
-      .rel-arrows {
+      .venn-pill {
         position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        overflow: visible;
-      }
-
-      /* Legend */
-      .rel-legend {
-        display: flex;
-        gap: 1.25rem;
-        margin-top: 1.5rem;
-        flex-wrap: wrap;
-      }
-      .rel-leg {
-        font-size: 0.62rem;
+        background: #111;
+        color: #fff;
+        font-size: 0.58rem;
         font-weight: 700;
-        letter-spacing: 0.06em;
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
+        letter-spacing: 0.04em;
+        padding: 0.2rem 0.55rem;
+        border-radius: 999px;
+        white-space: nowrap;
+        pointer-events: none;
       }
-      .rel-leg::before {
-        content: "";
-        display: inline-block;
-        width: 12px;
-        height: 12px;
-        border: 2px solid #000;
+      .venn-zone-pill {
+        position: absolute;
+        background: rgba(0,0,0,0.06);
+        color: #333;
+        font-size: 0.55rem;
+        letter-spacing: 0.02em;
+        padding: 0.18rem 0.5rem;
+        border-radius: 999px;
+        border: 1px solid rgba(0,0,0,0.15);
+        white-space: nowrap;
+        pointer-events: none;
       }
-      .rel-leg--purple::before { background: #ede9fe; }
-      .rel-leg--teal::before   { background: #ccfbf1; }
-      .rel-leg--orange::before { background: #ffedd5; }
 
       @media (max-width: 640px) {
-        .rel-iso-scene {
+        .rel-diagram-wrap { flex-direction: column; align-items: flex-start; }
+        .rel-axis-label { display: none; }
+        .rel-venn-scene {
           width: 100%;
           height: auto;
           display: flex;
           flex-direction: column;
           gap: 0.75rem;
+          isolation: auto;
         }
-        .rel-slab {
+        .venn-circle {
           position: static;
           width: 100% !important;
           height: auto !important;
+          border-radius: 0;
+          mix-blend-mode: normal;
+          padding: 1rem;
+          border: 2px solid #000 !important;
           animation: none !important;
+          align-items: flex-start;
         }
-        .rel-slab::after {
-          display: none;
-        }
-        .slab-label {
-          padding: 0.75rem 1rem;
-        }
-        .slab-tools {
-          opacity: 1;
-        }
-        .rel-arrows {
-          display: none;
-        }
-        .rel-diagram-outer {
-          justify-content: flex-start;
-        }
+        .venn-pill, .venn-zone-pill { display: none; }
       }
       @media (prefers-reduced-motion: reduce) {
-        .rel-slab {
-          animation: none !important;
-        }
+        .venn-circle { animation: none !important; }
       }
     </style>
   </head>
@@ -405,36 +358,33 @@
           <div class="rel-subtitle">DevOps is the foundation — extended for security and ML</div>
         </div>
       </div>
-      <div class="rel-diagram-outer">
-        <div class="rel-iso-scene" id="rel-iso-scene">
-          <div class="rel-slab rel-slab--devops" id="slab-devops">
-            <div class="slab-label">
-              <span class="slab-name">DevOps</span>
-              <span class="slab-tag">Foundation</span>
-              <span class="slab-tools">CI/CD · Automation · Culture · IaC</span>
-            </div>
+      <div class="rel-diagram-wrap">
+        <span class="rel-axis-label">← ML Lifecycle</span>
+        <div class="rel-venn-scene" id="rel-venn-scene">
+          <!-- Circles (render order: mlops, devsecops, devops on top) -->
+          <div class="venn-circle venn-circle--mlops">
+            <span class="venn-name" style="color:#f97316">MLOps</span>
+            <span class="venn-sub">+ ML Lifecycle</span>
           </div>
-          <div class="rel-slab rel-slab--devsecops" id="slab-devsecops">
-            <div class="slab-label">
-              <span class="slab-name">DevSecOps</span>
-              <span class="slab-tag">+ Security</span>
-              <span class="slab-tools">SAST · DAST · Secrets Mgmt · Compliance</span>
-            </div>
+          <div class="venn-circle venn-circle--devsecops">
+            <span class="venn-name" style="color:#0d9488">DevSecOps</span>
+            <span class="venn-sub">+ Security</span>
           </div>
-          <div class="rel-slab rel-slab--mlops" id="slab-mlops">
-            <div class="slab-label">
-              <span class="slab-name">MLOps</span>
-              <span class="slab-tag">+ ML Lifecycle</span>
-              <span class="slab-tools">Feature Stores · Model Registry · Drift</span>
-            </div>
+          <div class="venn-circle venn-circle--devops">
+            <span class="venn-name" style="color:#6d28d9">DevOps</span>
+            <span class="venn-sub">Foundation</span>
           </div>
-          <svg class="rel-arrows" id="rel-arrows" aria-hidden="true"></svg>
+          <!-- Intersection pills -->
+          <div class="venn-pill" style="left:168px; top:108px">Pipelines · IaC</div>
+          <div class="venn-pill" style="left:396px; top:108px">CI/CD · Hardening</div>
+          <!-- Zone-only pills -->
+          <div class="venn-zone-pill" style="left:68px; top:160px">Drift · Serving</div>
+          <div class="venn-zone-pill" style="left:68px; top:182px">Feature Stores</div>
+          <div class="venn-zone-pill" style="left:266px; top:190px">Culture · Monitoring</div>
+          <div class="venn-zone-pill" style="left:468px; top:160px">SAST · DAST</div>
+          <div class="venn-zone-pill" style="left:468px; top:182px">Compliance</div>
         </div>
-      </div>
-      <div class="rel-legend">
-        <span class="rel-leg rel-leg--purple">DevOps</span>
-        <span class="rel-leg rel-leg--teal">DevSecOps</span>
-        <span class="rel-leg rel-leg--orange">MLOps</span>
+        <span class="rel-axis-label">Security Integrated →</span>
       </div>
     </section>
 
@@ -513,113 +463,5 @@
       <a href="https://roadmap.sh" target="_blank" rel="noopener">roadmap.sh</a>
       · <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener">GitHub</a>
     </footer>
-    <script>
-      function drawRelArrows() {
-        const svg = document.getElementById('rel-arrows');
-        if (!svg) return;
-        svg.innerHTML = '';
-        if (window.innerWidth <= 640) return;
-
-        const scene = document.getElementById('rel-iso-scene');
-        const sceneRect = scene.getBoundingClientRect();
-
-        function edges(el) {
-          const r = el.getBoundingClientRect();
-          const x = r.left - sceneRect.left;
-          const y = r.top - sceneRect.top;
-          return {
-            top:    { x: x + r.width / 2, y: y },
-            bottom: { x: x + r.width / 2, y: y + r.height },
-            left:   { x: x,               y: y + r.height / 2 },
-            right:  { x: x + r.width,     y: y + r.height / 2 },
-            cx:     x + r.width / 2,
-            cy:     y + r.height / 2,
-          };
-        }
-
-        const devops    = edges(document.getElementById('slab-devops'));
-        const devsecops = edges(document.getElementById('slab-devsecops'));
-        const mlops     = edges(document.getElementById('slab-mlops'));
-
-        const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-        defs.innerHTML = `
-          <marker id="arr-teal" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
-            <path d="M0,0 L0,7 L9,3.5 z" fill="#0d9488"/>
-          </marker>
-          <marker id="arr-orange" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
-            <path d="M0,0 L0,7 L9,3.5 z" fill="#f97316"/>
-          </marker>
-        `;
-        svg.appendChild(defs);
-
-        function addConnector(x1, y1, x2, y2, color, marker, label, delay) {
-          const cx = (x1 + x2) / 2;
-          const cy = Math.min(y1, y2) - 30;
-          const d = `M${x1},${y1} Q${cx},${cy} ${x2},${y2}`;
-
-          // Shadow path for thickness
-          const shadow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-          shadow.setAttribute('d', d);
-          shadow.setAttribute('fill', 'none');
-          shadow.setAttribute('stroke', '#000');
-          shadow.setAttribute('stroke-width', '4');
-          shadow.setAttribute('stroke-dasharray', '8,5');
-          shadow.setAttribute('opacity', '0.15');
-          svg.appendChild(shadow);
-
-          // Main animated path
-          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-          path.setAttribute('d', d);
-          path.setAttribute('fill', 'none');
-          path.setAttribute('stroke', color);
-          path.setAttribute('stroke-width', '2.5');
-          path.setAttribute('stroke-dasharray', '8,5');
-          path.setAttribute('marker-end', `url(#${marker})`);
-          path.innerHTML = `<animate attributeName="stroke-dashoffset" from="52" to="0" dur="1.4s" begin="${delay}s" repeatCount="indefinite"/>`;
-          svg.appendChild(path);
-
-          // Traveling pulse dot
-          const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-          dot.setAttribute('r', '5');
-          dot.setAttribute('fill', color);
-          dot.setAttribute('stroke', '#000');
-          dot.setAttribute('stroke-width', '1.5');
-          dot.innerHTML = `<animateMotion dur="1.8s" begin="${delay}s" repeatCount="indefinite" calcMode="spline" keyTimes="0;1" keySplines="0.4 0 0.6 1"><mpath href="#rel-path-${marker}"/></animateMotion>`;
-          // Use a real path reference via a clone with ID
-          path.setAttribute('id', `rel-path-${marker}`);
-          svg.appendChild(dot);
-
-          // Label badge at midpoint of curve (approx)
-          const t = 0.5;
-          const lx = (1-t)*(1-t)*x1 + 2*(1-t)*t*cx + t*t*x2;
-          const ly = (1-t)*(1-t)*y1 + 2*(1-t)*t*cy + t*t*y2;
-          const tw = label.length * 6 + 12;
-          const badge = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-          badge.setAttribute('x', lx - tw/2); badge.setAttribute('y', ly - 10);
-          badge.setAttribute('width', tw); badge.setAttribute('height', 16);
-          badge.setAttribute('fill', '#e9e9e9');
-          badge.setAttribute('stroke', color);
-          badge.setAttribute('stroke-width', '1.5');
-          badge.setAttribute('rx', '2');
-          svg.appendChild(badge);
-          const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-          txt.setAttribute('x', lx); txt.setAttribute('y', ly + 1);
-          txt.setAttribute('text-anchor', 'middle');
-          txt.setAttribute('dominant-baseline', 'middle');
-          txt.setAttribute('font-family', 'Space Mono, monospace');
-          txt.setAttribute('font-size', '9');
-          txt.setAttribute('font-weight', '700');
-          txt.setAttribute('fill', color);
-          txt.textContent = label;
-          svg.appendChild(txt);
-        }
-
-        addConnector(devops.top.x - 60, devops.top.y, mlops.bottom.x, mlops.bottom.y,     '#f97316', 'arr-orange', '+ ML',  0);
-        addConnector(devops.top.x + 60, devops.top.y, devsecops.bottom.x, devsecops.bottom.y, '#0d9488', 'arr-teal',   '+ Sec', 0.7);
-      }
-
-      window.addEventListener('load', drawRelArrows);
-      window.addEventListener('resize', drawRelArrows);
-    </script>
   </body>
 </html>
