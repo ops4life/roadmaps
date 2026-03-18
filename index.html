@@ -552,59 +552,99 @@
         const scene = document.getElementById('rel-iso-scene');
         const sceneRect = scene.getBoundingClientRect();
 
-        function center(el) {
+        function edges(el) {
           const r = el.getBoundingClientRect();
+          const x = r.left - sceneRect.left;
+          const y = r.top - sceneRect.top;
           return {
-            x: r.left - sceneRect.left + r.width / 2,
-            y: r.top - sceneRect.top + r.height / 2,
+            top:    { x: x + r.width / 2, y: y },
+            bottom: { x: x + r.width / 2, y: y + r.height },
+            left:   { x: x,               y: y + r.height / 2 },
+            right:  { x: x + r.width,     y: y + r.height / 2 },
+            cx:     x + r.width / 2,
+            cy:     y + r.height / 2,
           };
         }
 
-        const devops = center(document.getElementById('slab-devops'));
-        const devsecops = center(document.getElementById('slab-devsecops'));
-        const mlops = center(document.getElementById('slab-mlops'));
+        const devops    = edges(document.getElementById('slab-devops'));
+        const devsecops = edges(document.getElementById('slab-devsecops'));
+        const mlops     = edges(document.getElementById('slab-mlops'));
 
-        // defs: arrowhead marker
         const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-        defs.innerHTML = `<marker id="rel-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-          <path d="M0,0 L0,6 L8,3 z" fill="#000"/>
-        </marker>`;
+        defs.innerHTML = `
+          <marker id="arr-teal" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
+            <path d="M0,0 L0,7 L9,3.5 z" fill="#0d9488"/>
+          </marker>
+          <marker id="arr-orange" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
+            <path d="M0,0 L0,7 L9,3.5 z" fill="#f97316"/>
+          </marker>
+        `;
         svg.appendChild(defs);
 
-        function addArrow(x1, y1, x2, y2, label) {
-          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          line.setAttribute('x1', x1); line.setAttribute('y1', y1);
-          line.setAttribute('x2', x2); line.setAttribute('y2', y2);
-          line.setAttribute('stroke', '#000');
-          line.setAttribute('stroke-width', '1.5');
-          line.setAttribute('stroke-dasharray', '5,3');
-          line.setAttribute('marker-end', 'url(#rel-arrow)');
-          svg.appendChild(line);
+        function addConnector(x1, y1, x2, y2, color, marker, label, delay) {
+          const cx = (x1 + x2) / 2;
+          const cy = Math.min(y1, y2) - 30;
+          const d = `M${x1},${y1} Q${cx},${cy} ${x2},${y2}`;
 
-          const mx = (x1 + x2) / 2;
-          const my = (y1 + y2) / 2;
-          const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-          const tw = label.length * 5.5 + 8;
-          rect.setAttribute('x', mx - tw / 2); rect.setAttribute('y', my - 9);
-          rect.setAttribute('width', tw); rect.setAttribute('height', 14);
-          rect.setAttribute('fill', '#e9e9e9');
-          rect.setAttribute('stroke', '#000');
-          rect.setAttribute('stroke-width', '1');
-          svg.appendChild(rect);
+          // Shadow path for thickness
+          const shadow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          shadow.setAttribute('d', d);
+          shadow.setAttribute('fill', 'none');
+          shadow.setAttribute('stroke', '#000');
+          shadow.setAttribute('stroke-width', '4');
+          shadow.setAttribute('stroke-dasharray', '8,5');
+          shadow.setAttribute('opacity', '0.15');
+          svg.appendChild(shadow);
 
-          const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-          text.setAttribute('x', mx); text.setAttribute('y', my + 1);
-          text.setAttribute('text-anchor', 'middle');
-          text.setAttribute('dominant-baseline', 'middle');
-          text.setAttribute('font-family', 'Space Mono, monospace');
-          text.setAttribute('font-size', '8');
-          text.setAttribute('fill', '#000');
-          text.textContent = label;
-          svg.appendChild(text);
+          // Main animated path
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('d', d);
+          path.setAttribute('fill', 'none');
+          path.setAttribute('stroke', color);
+          path.setAttribute('stroke-width', '2.5');
+          path.setAttribute('stroke-dasharray', '8,5');
+          path.setAttribute('marker-end', `url(#${marker})`);
+          path.innerHTML = `<animate attributeName="stroke-dashoffset" from="52" to="0" dur="1.4s" begin="${delay}s" repeatCount="indefinite"/>`;
+          svg.appendChild(path);
+
+          // Traveling pulse dot
+          const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          dot.setAttribute('r', '5');
+          dot.setAttribute('fill', color);
+          dot.setAttribute('stroke', '#000');
+          dot.setAttribute('stroke-width', '1.5');
+          dot.innerHTML = `<animateMotion dur="1.8s" begin="${delay}s" repeatCount="indefinite" calcMode="spline" keyTimes="0;1" keySplines="0.4 0 0.6 1"><mpath href="#rel-path-${marker}"/></animateMotion>`;
+          // Use a real path reference via a clone with ID
+          path.setAttribute('id', `rel-path-${marker}`);
+          svg.appendChild(dot);
+
+          // Label badge at midpoint of curve (approx)
+          const t = 0.5;
+          const lx = (1-t)*(1-t)*x1 + 2*(1-t)*t*cx + t*t*x2;
+          const ly = (1-t)*(1-t)*y1 + 2*(1-t)*t*cy + t*t*y2;
+          const tw = label.length * 6 + 12;
+          const badge = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          badge.setAttribute('x', lx - tw/2); badge.setAttribute('y', ly - 10);
+          badge.setAttribute('width', tw); badge.setAttribute('height', 16);
+          badge.setAttribute('fill', '#e9e9e9');
+          badge.setAttribute('stroke', color);
+          badge.setAttribute('stroke-width', '1.5');
+          badge.setAttribute('rx', '2');
+          svg.appendChild(badge);
+          const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          txt.setAttribute('x', lx); txt.setAttribute('y', ly + 1);
+          txt.setAttribute('text-anchor', 'middle');
+          txt.setAttribute('dominant-baseline', 'middle');
+          txt.setAttribute('font-family', 'Space Mono, monospace');
+          txt.setAttribute('font-size', '9');
+          txt.setAttribute('font-weight', '700');
+          txt.setAttribute('fill', color);
+          txt.textContent = label;
+          svg.appendChild(txt);
         }
 
-        addArrow(devops.x, devops.y, devsecops.x, devsecops.y, 'extends');
-        addArrow(devops.x, devops.y, mlops.x, mlops.y, 'extends');
+        addConnector(devops.top.x - 60, devops.top.y, mlops.bottom.x, mlops.bottom.y,     '#f97316', 'arr-orange', '+ ML',  0);
+        addConnector(devops.top.x + 60, devops.top.y, devsecops.bottom.x, devsecops.bottom.y, '#0d9488', 'arr-teal',   '+ Sec', 0.7);
       }
 
       window.addEventListener('load', drawRelArrows);
