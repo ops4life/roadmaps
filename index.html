@@ -171,70 +171,6 @@
           grid-template-columns: 1fr;
         }
       }
-
-      /* RELATIONSHIP DIAGRAM */
-      .rel-section {
-        border-bottom: 2px solid var(--border);
-        padding: 2rem 1.25rem;
-      }
-      .rel-header {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 1rem;
-        margin-bottom: 2rem;
-      }
-      .rel-title {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 1.6rem;
-        letter-spacing: 0.04em;
-        line-height: 1;
-        margin-bottom: 0.3rem;
-      }
-      .rel-subtitle {
-        font-size: 0.68rem;
-        color: #555;
-      }
-
-      /* Isometric block diagram */
-      .iso-wrap {
-        display: flex;
-        justify-content: center;
-        overflow-x: auto;
-      }
-      .iso-svg {
-        width: 100%;
-        max-width: 560px;
-        height: auto;
-      }
-      .iso-group { cursor: pointer; text-decoration: none; }
-      .iso-face { }
-      .iso-group--devops .iso-face--front { fill: #c4b5fd; stroke: #111; stroke-width: 1.5; }
-      .iso-group--devops .iso-face--top   { fill: #ede9fe; stroke: #111; stroke-width: 1.5; }
-      .iso-group--devops .iso-face--right { fill: #a78bfa; stroke: #111; stroke-width: 1.5; }
-      .iso-group--mlops .iso-face--front { fill: #fed7aa; stroke: #111; stroke-width: 1.5; }
-      .iso-group--mlops .iso-face--top   { fill: #ffedd5; stroke: #111; stroke-width: 1.5; }
-      .iso-group--mlops .iso-face--right { fill: #fdba74; stroke: #111; stroke-width: 1.5; }
-      .iso-group--devsecops .iso-face--front { fill: #99f6e4; stroke: #111; stroke-width: 1.5; }
-      .iso-group--devsecops .iso-face--top   { fill: #ccfbf1; stroke: #111; stroke-width: 1.5; }
-      .iso-group--devsecops .iso-face--right { fill: #5eead4; stroke: #111; stroke-width: 1.5; }
-      .iso-group:hover .iso-face { filter: brightness(1.08); }
-      .iso-label {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 15px;
-        letter-spacing: 0.06em;
-        text-anchor: middle;
-        pointer-events: none;
-      }
-      .iso-sublabel {
-        font-family: "Space Mono", monospace;
-        font-size: 6.5px;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        text-anchor: middle;
-        fill: #555;
-        pointer-events: none;
-      }
     </style>
   </head>
   <body>
@@ -256,44 +192,6 @@
         Interactive learning paths for DevOps, DevSecOps, and MLOps. Track your
         progress through each curriculum as you build real skills.
       </p>
-    </section>
-
-    <!-- RELATIONSHIP DIAGRAM -->
-    <section class="rel-section" id="rel-section">
-      <div class="rel-header">
-        <div>
-          <div class="rel-title">How They Relate</div>
-          <div class="rel-subtitle">DevOps is the foundation — extended for security and ML</div>
-        </div>
-      </div>
-      <div class="iso-wrap">
-        <svg class="iso-svg" viewBox="0 95 355 170" xmlns="http://www.w3.org/2000/svg">
-          <!-- DevOps base block -->
-          <a href="/devops/" class="iso-group iso-group--devops">
-            <polygon class="iso-face iso-face--top"   points="10,200 270,200 339,160 79,160" />
-            <polygon class="iso-face iso-face--right" points="270,250 339,210 339,160 270,200" />
-            <polygon class="iso-face iso-face--front" points="10,250 270,250 270,200 10,200" />
-            <text class="iso-label" x="140" y="230" fill="#111">DevOps</text>
-            <text class="iso-sublabel" x="140" y="243">Foundation</text>
-          </a>
-          <!-- MLOps extension block -->
-          <a href="/mlops/" class="iso-group iso-group--mlops">
-            <polygon class="iso-face iso-face--top"   points="10,155 125,155 194,115 79,115" />
-            <polygon class="iso-face iso-face--right" points="125,200 194,160 194,115 125,155" />
-            <polygon class="iso-face iso-face--front" points="10,200 125,200 125,155 10,155" />
-            <text class="iso-label" x="68" y="180" fill="#111">MLOps</text>
-            <text class="iso-sublabel" x="68" y="192">+ ML Lifecycle</text>
-          </a>
-          <!-- DevSecOps extension block -->
-          <a href="/devsecops/" class="iso-group iso-group--devsecops">
-            <polygon class="iso-face iso-face--top"   points="145,155 270,155 339,115 214,115" />
-            <polygon class="iso-face iso-face--right" points="270,200 339,160 339,115 270,155" />
-            <polygon class="iso-face iso-face--front" points="145,200 270,200 270,155 145,155" />
-            <text class="iso-label" x="208" y="180" fill="#111">DevSecOps</text>
-            <text class="iso-sublabel" x="208" y="192">+ Security</text>
-          </a>
-        </svg>
-      </div>
     </section>
 
     <!-- ROADMAP CARDS -->
