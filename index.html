@@ -208,17 +208,17 @@
         height: auto;
       }
       .iso-group { cursor: pointer; text-decoration: none; }
-      .iso-face { transition: filter 0.15s; }
-      .iso-group--devops .iso-face--front { fill: rgba(109,40,217,0.28); stroke: #6d28d9; stroke-width: 2; }
-      .iso-group--devops .iso-face--top   { fill: rgba(109,40,217,0.14); stroke: #6d28d9; stroke-width: 2; }
-      .iso-group--devops .iso-face--right { fill: rgba(109,40,217,0.21); stroke: #6d28d9; stroke-width: 2; }
-      .iso-group--mlops .iso-face--front { fill: rgba(249,115,22,0.28); stroke: #f97316; stroke-width: 2; }
-      .iso-group--mlops .iso-face--top   { fill: rgba(249,115,22,0.14); stroke: #f97316; stroke-width: 2; }
-      .iso-group--mlops .iso-face--right { fill: rgba(249,115,22,0.21); stroke: #f97316; stroke-width: 2; }
-      .iso-group--devsecops .iso-face--front { fill: rgba(13,148,136,0.28); stroke: #0d9488; stroke-width: 2; }
-      .iso-group--devsecops .iso-face--top   { fill: rgba(13,148,136,0.14); stroke: #0d9488; stroke-width: 2; }
-      .iso-group--devsecops .iso-face--right { fill: rgba(13,148,136,0.21); stroke: #0d9488; stroke-width: 2; }
-      .iso-group:hover .iso-face { filter: brightness(1.15); }
+      .iso-face { }
+      .iso-group--devops .iso-face--front { fill: #c4b5fd; stroke: #111; stroke-width: 1.5; }
+      .iso-group--devops .iso-face--top   { fill: #ede9fe; stroke: #111; stroke-width: 1.5; }
+      .iso-group--devops .iso-face--right { fill: #a78bfa; stroke: #111; stroke-width: 1.5; }
+      .iso-group--mlops .iso-face--front { fill: #fed7aa; stroke: #111; stroke-width: 1.5; }
+      .iso-group--mlops .iso-face--top   { fill: #ffedd5; stroke: #111; stroke-width: 1.5; }
+      .iso-group--mlops .iso-face--right { fill: #fdba74; stroke: #111; stroke-width: 1.5; }
+      .iso-group--devsecops .iso-face--front { fill: #99f6e4; stroke: #111; stroke-width: 1.5; }
+      .iso-group--devsecops .iso-face--top   { fill: #ccfbf1; stroke: #111; stroke-width: 1.5; }
+      .iso-group--devsecops .iso-face--right { fill: #5eead4; stroke: #111; stroke-width: 1.5; }
+      .iso-group:hover .iso-face { filter: brightness(1.08); }
       .iso-label {
         font-family: "Bebas Neue", sans-serif;
         font-size: 15px;
@@ -234,20 +234,6 @@
         text-anchor: middle;
         fill: #555;
         pointer-events: none;
-      }
-      .iso-group--mlops   { animation: iso-float 5s ease-in-out infinite; }
-      .iso-group--devsecops { animation: iso-float 5s ease-in-out 2.5s infinite; }
-      @keyframes iso-float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-3px); }
-      }
-      .iso-wrap:hover .iso-group--mlops,
-      .iso-wrap:hover .iso-group--devsecops {
-        animation-play-state: paused;
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .iso-group--mlops, .iso-group--devsecops { animation: none !important; }
       }
     </style>
   </head>
@@ -287,7 +273,7 @@
             <polygon class="iso-face iso-face--top"   points="10,200 270,200 339,160 79,160" />
             <polygon class="iso-face iso-face--right" points="270,250 339,210 339,160 270,200" />
             <polygon class="iso-face iso-face--front" points="10,250 270,250 270,200 10,200" />
-            <text class="iso-label" x="140" y="230" fill="#6d28d9">DevOps</text>
+            <text class="iso-label" x="140" y="230" fill="#111">DevOps</text>
             <text class="iso-sublabel" x="140" y="243">Foundation</text>
           </a>
           <!-- MLOps extension block -->
@@ -295,7 +281,7 @@
             <polygon class="iso-face iso-face--top"   points="10,155 125,155 194,115 79,115" />
             <polygon class="iso-face iso-face--right" points="125,200 194,160 194,115 125,155" />
             <polygon class="iso-face iso-face--front" points="10,200 125,200 125,155 10,155" />
-            <text class="iso-label" x="68" y="180" fill="#f97316">MLOps</text>
+            <text class="iso-label" x="68" y="180" fill="#111">MLOps</text>
             <text class="iso-sublabel" x="68" y="192">+ ML Lifecycle</text>
           </a>
           <!-- DevSecOps extension block -->
@@ -303,7 +289,7 @@
             <polygon class="iso-face iso-face--top"   points="145,155 270,155 339,115 214,115" />
             <polygon class="iso-face iso-face--right" points="270,200 339,160 339,115 270,155" />
             <polygon class="iso-face iso-face--front" points="145,200 270,200 270,155 145,155" />
-            <text class="iso-label" x="208" y="180" fill="#0d9488">DevSecOps</text>
+            <text class="iso-label" x="208" y="180" fill="#111">DevSecOps</text>
             <text class="iso-sublabel" x="208" y="192">+ Security</text>
           </a>
         </svg>
