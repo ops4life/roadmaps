@@ -54,6 +54,7 @@ function render() {
 
   updateStats();
   setTimeout(drawConnectors, 50);
+  initFeedback();
 }
 
 // ─── STATS ─────────────────────────────────────────────────────────────────
@@ -291,6 +292,60 @@ window.addEventListener("resize", () => {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(initResponsive, 150);
 });
+
+// ─── FEEDBACK ──────────────────────────────────────────────────────────────
+function initFeedback() {
+  if (document.getElementById("feedback-btn")) return; // already injected
+
+  const btn = document.createElement("button");
+  btn.id = "feedback-btn";
+  btn.className = "feedback-btn";
+  btn.textContent = "Feedback";
+  document.body.appendChild(btn);
+
+  const overlay = document.createElement("div");
+  overlay.id = "feedback-overlay";
+  overlay.className = "feedback-overlay";
+  overlay.innerHTML = `
+    <div class="feedback-modal">
+      <div class="feedback-modal-header">
+        <span class="feedback-modal-title">Send Feedback</span>
+        <button class="feedback-close" id="feedback-close-btn" aria-label="Close">✕</button>
+      </div>
+      <p class="feedback-modal-sub">Pick a type — GitHub will open in a new tab.</p>
+      <div class="feedback-grid">
+        <a href="https://github.com/ops4life/roadmaps/issues/new?template=bug.yml&labels=roadmap,bug"
+           target="_blank" rel="noopener noreferrer" class="feedback-card">
+          <span class="feedback-card-icon">🐛</span>
+          <div class="feedback-card-label">Bug Report</div>
+          <div class="feedback-card-sub">Something is broken or wrong</div>
+        </a>
+        <a href="https://github.com/ops4life/roadmaps/issues/new?template=idea.yml&labels=roadmap,idea"
+           target="_blank" rel="noopener noreferrer" class="feedback-card">
+          <span class="feedback-card-icon">💡</span>
+          <div class="feedback-card-label">Idea</div>
+          <div class="feedback-card-sub">Suggest a new capability</div>
+        </a>
+        <a href="https://github.com/ops4life/roadmaps/discussions"
+           target="_blank" rel="noopener noreferrer" class="feedback-card">
+          <span class="feedback-card-icon">💬</span>
+          <div class="feedback-card-label">Discussions</div>
+          <div class="feedback-card-sub">Thoughts or suggestions</div>
+        </a>
+        <a href="https://github.com/ops4life/roadmaps/issues/new?template=question.yml&labels=roadmap,question"
+           target="_blank" rel="noopener noreferrer" class="feedback-card">
+          <span class="feedback-card-icon">❓</span>
+          <div class="feedback-card-label">Question</div>
+          <div class="feedback-card-sub">Something else entirely</div>
+        </a>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+
+  btn.addEventListener("click", () => overlay.classList.add("open"));
+  document.getElementById("feedback-close-btn").addEventListener("click", () => overlay.classList.remove("open"));
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) overlay.classList.remove("open"); });
+}
 
 // ─── INIT ──────────────────────────────────────────────────────────────────
 render();
