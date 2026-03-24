@@ -299,9 +299,14 @@ function initFeedback() {
 
   const btn = document.createElement("button");
   btn.id = "feedback-btn";
-  btn.className = "feedback-btn";
+  btn.className = "btn feedback-btn";
   btn.textContent = "Feedback";
-  document.body.appendChild(btn);
+  const toggleBtn = document.getElementById("toggle-view-btn");
+  if (toggleBtn && toggleBtn.parentNode) {
+    toggleBtn.parentNode.insertBefore(btn, toggleBtn);
+  } else {
+    document.body.appendChild(btn);
+  }
 
   const overlay = document.createElement("div");
   overlay.id = "feedback-overlay";

@@ -685,26 +685,6 @@ svg.rm-connectors path {
 }
 
 /* ── Feedback ───────────────────────────────────── */
-.feedback-btn {
-  position: fixed;
-  bottom: 1.25rem;
-  right: 1.25rem;
-  z-index: 900;
-  background: #fff;
-  border: 2px solid #000;
-  font-family: "Space Mono", monospace;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 0.45rem 0.85rem;
-  cursor: pointer;
-  transition: transform .12s, box-shadow .12s;
-}
-.feedback-btn:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 4px 4px 0 #000;
-}
 
 .feedback-overlay {
   display: none;
