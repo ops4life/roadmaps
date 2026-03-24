@@ -145,7 +145,7 @@ function openPanel(item) {
   const toolWrap = document.getElementById("panel-tools");
   if (item.tools && item.tools.length) {
     toolWrap.innerHTML = item.tools
-      .map((t) => `<div class="tool-item">${t}</div>`)
+      .map((t) => `<div class="tool-item"><a href="https://www.google.com/search?q=${encodeURIComponent(t)}&udm=50" target="_blank" rel="noopener noreferrer">${t}</a></div>`)
       .join("");
     toolSec.style.display = "";
   } else {
