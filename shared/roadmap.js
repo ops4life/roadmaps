@@ -314,25 +314,25 @@ function initFeedback() {
       </div>
       <p class="feedback-modal-sub">Pick a type — GitHub will open in a new tab.</p>
       <div class="feedback-grid">
-        <a href="https://github.com/ops4life/roadmaps/issues/new?template=bug.yml&labels=roadmap,bug"
+        <a href="https://github.com/ops4life/spark/issues/new?template=bug.yml&labels=roadmap,bug"
            target="_blank" rel="noopener noreferrer" class="feedback-card">
           <span class="feedback-card-icon">🐛</span>
           <div class="feedback-card-label">Bug Report</div>
           <div class="feedback-card-sub">Something is broken or wrong</div>
         </a>
-        <a href="https://github.com/ops4life/roadmaps/issues/new?template=idea.yml&labels=roadmap,idea"
+        <a href="https://github.com/ops4life/spark/issues/new?template=idea.yml&labels=roadmap,idea"
            target="_blank" rel="noopener noreferrer" class="feedback-card">
           <span class="feedback-card-icon">💡</span>
           <div class="feedback-card-label">Idea</div>
           <div class="feedback-card-sub">Suggest a new capability</div>
         </a>
-        <a href="https://github.com/ops4life/roadmaps/discussions"
+        <a href="https://github.com/ops4life/spark/discussions"
            target="_blank" rel="noopener noreferrer" class="feedback-card">
           <span class="feedback-card-icon">💬</span>
           <div class="feedback-card-label">Discussions</div>
           <div class="feedback-card-sub">Thoughts or suggestions</div>
         </a>
-        <a href="https://github.com/ops4life/roadmaps/issues/new?template=question.yml&labels=roadmap,question"
+        <a href="https://github.com/ops4life/spark/issues/new?template=question.yml&labels=roadmap,question"
            target="_blank" rel="noopener noreferrer" class="feedback-card">
           <span class="feedback-card-icon">❓</span>
           <div class="feedback-card-label">Question</div>
