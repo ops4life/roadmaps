@@ -433,6 +433,10 @@ svg.rm-connectors path {
   align-items: center;
   gap: 0.4rem;
 }
+.tool-item a {
+  color: var(--accent);
+  text-decoration: none;
+}
 .tool-item::before {
   content: "▸";
   opacity: 0.5;
@@ -446,13 +450,11 @@ svg.rm-connectors path {
   font-size: 0.65rem;
   color: var(--accent);
   text-decoration: none;
-  border-bottom: 1px dashed var(--accent);
   display: inline-block;
   width: fit-content;
 }
 .res-item:hover {
   color: #000;
-  border-color: #000;
 }
 .panel-tip {
   font-size: 0.65rem;
