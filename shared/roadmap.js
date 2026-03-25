@@ -134,7 +134,7 @@ function openPanel(item) {
   const conWrap = document.getElementById("panel-concepts");
   if (item.concepts && item.concepts.length) {
     conWrap.innerHTML = item.concepts
-      .map((c) => `<span class="chip">${c}</span>`)
+      .map((c) => `<a class="chip" href="https://www.google.com/search?q=${encodeURIComponent(item.label + ' ' + c)}&udm=50" target="_blank" rel="noopener noreferrer">${c}</a>`)
       .join("");
     conSec.style.display = "";
   } else {

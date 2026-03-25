@@ -422,6 +422,14 @@ svg.rm-connectors path {
   padding: 0.2rem 0.5rem;
   background: #fff;
 }
+a.chip {
+  color: inherit;
+  text-decoration: none;
+}
+a.chip:hover {
+  background: #000;
+  color: #e9e9e9;
+}
 .tools-list {
   display: flex;
   flex-direction: column;
