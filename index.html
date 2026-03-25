@@ -166,9 +166,74 @@
         color: #000;
       }
 
+      /* NEWSLETTER */
+      .newsletter {
+        border-top: 2px solid var(--border);
+        padding: 2rem 1.25rem;
+      }
+      .nl-heading {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 1.6rem;
+        letter-spacing: 0.03em;
+        margin-bottom: 0.35rem;
+      }
+      .nl-sub {
+        font-size: 0.7rem;
+        color: #444;
+        margin-bottom: 1.25rem;
+      }
+      .nl-form {
+        display: flex;
+        gap: 0.5rem;
+        max-width: 520px;
+      }
+      .nl-input {
+        flex: 1;
+        font-family: "Space Mono", monospace;
+        font-size: 0.75rem;
+        padding: 0.5rem 0.75rem;
+        border: 2px solid var(--border);
+        background: #fff;
+        outline: none;
+        min-width: 0;
+      }
+      .nl-input:focus {
+        background: #f5f5f5;
+      }
+      .nl-btn {
+        font-family: "Space Mono", monospace;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        padding: 0.5rem 1rem;
+        border: 2px solid var(--border);
+        background: var(--bg);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.12s, color 0.12s;
+      }
+      .nl-btn:hover:not(:disabled) {
+        background: #000;
+        color: var(--bg);
+      }
+      .nl-btn:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      .nl-feedback {
+        margin-top: 0.75rem;
+        font-size: 0.7rem;
+        min-height: 1rem;
+      }
+      .nl-feedback.ok { color: #16a34a; }
+      .nl-feedback.err { color: #dc2626; }
+
       @media (max-width: 640px) {
         .roadmap-grid {
           grid-template-columns: 1fr;
+        }
+        .nl-form {
+          flex-direction: column;
         }
       }
     </style>
@@ -262,6 +327,17 @@
 
     </div>
 
+    <!-- NEWSLETTER -->
+    <section class="newsletter">
+      <div class="nl-heading">Stay in the loop</div>
+      <p class="nl-sub">Get notified when new roadmaps and updates drop.</p>
+      <div class="nl-form">
+        <input class="nl-input" type="email" id="nl-email" placeholder="your@email.com" autocomplete="email" />
+        <button class="nl-btn" id="nl-btn">Subscribe</button>
+      </div>
+      <div class="nl-feedback" id="nl-feedback"></div>
+    </section>
+
     <!-- FOOTER -->
     <footer class="footer">
       <a href="https://ops4life.com">ops4life.com</a> · Roadmaps ·
@@ -269,5 +345,57 @@
       <a href="https://roadmap.sh" target="_blank" rel="noopener">roadmap.sh</a>
       · <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener">GitHub</a>
     </footer>
+  <script>
+    const LIST_UUID = "00a8f2c1-3ad4-422d-9ac4-fc70b1f26fc8";
+
+    document.getElementById("nl-btn").addEventListener("click", async () => {
+      const input = document.getElementById("nl-email");
+      const btn = document.getElementById("nl-btn");
+      const feedback = document.getElementById("nl-feedback");
+      const email = input.value.trim();
+
+      feedback.textContent = "";
+      feedback.className = "nl-feedback";
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        feedback.textContent = "Enter a valid email address.";
+        feedback.className = "nl-feedback err";
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "...";
+
+      try {
+        const res = await fetch("/api/subscribe", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, list_uuids: [LIST_UUID] }),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          feedback.textContent = data?.data?.has_optin
+            ? "Check your inbox to confirm your subscription."
+            : "You're subscribed!";
+          feedback.className = "nl-feedback ok";
+          input.value = "";
+        } else {
+          feedback.textContent = "Something went wrong. Try again later.";
+          feedback.className = "nl-feedback err";
+        }
+      } catch {
+        feedback.textContent = "Could not connect. Try again later.";
+        feedback.className = "nl-feedback err";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Subscribe";
+      }
+    });
+
+    document.getElementById("nl-email").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") document.getElementById("nl-btn").click();
+    });
+  </script>
   </body>
 </html>
