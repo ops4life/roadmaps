@@ -373,13 +373,14 @@
           body: JSON.stringify({ email, list_uuids: [LIST_UUID] }),
         });
 
+        const data = await res.json().catch(() => ({}));
         if (res.ok) {
-          const data = await res.json();
-          feedback.textContent = data?.data?.has_optin
-            ? "Check your inbox to confirm your subscription."
-            : "You're subscribed!";
+          feedback.textContent = "Check your inbox to confirm your subscription.";
           feedback.className = "nl-feedback ok";
           input.value = "";
+        } else if (res.status === 409) {
+          feedback.textContent = data?.error || "You're already subscribed.";
+          feedback.className = "nl-feedback err";
         } else {
           feedback.textContent = "Something went wrong. Try again later.";
           feedback.className = "nl-feedback err";
