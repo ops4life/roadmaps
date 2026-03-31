@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevOps to MLOps: 90-Day Roadmap — ops4life</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="../favicon.png" type="image/png" />
+    <link rel="stylesheet" href="../shared/roadmap.css" />
+    <style>
+      :root { --accent: #16a34a; }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav class="nav">
+      <a href="https://ops4life.com" class="nav-back">← ops4life.com</a>
+      <a href="/" class="nav-back">← Roadmaps</a>
+      <img
+        src="../favicon.png"
+        alt=""
+        style="width: 28px; height: 28px; display: block"
+      />
+      <span class="nav-title">DevOps to MLOps: 90-Day Roadmap</span>
+      <span id="nav-view-toggle" style="margin-left: auto; display: flex; align-items: center; gap: 0.75rem">
+        <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener" aria-label="GitHub" style="display: flex; align-items: center; color: inherit">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 98 96" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"/>
+          </svg>
+        </a>
+        <button class="btn" id="toggle-view-btn" onclick="toggleView()">
+          List View
+        </button>
+      </span>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-heading">DevOps<br />to MLOps</div>
+      <p class="hero-sub">
+        A structured 90-day curriculum for DevOps engineers making the shift to
+        MLOps. Three phases: Foundation, Pipelines, and Operations. Twelve weeks,
+        one skill at a time.
+      </p>
+      <div class="progress-wrap">
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" id="progress-bar"></div>
+        </div>
+        <div class="progress-stats">
+          <div class="pstat">
+            <span class="pstat-n" id="stat-done">0</span
+            ><span class="pstat-l">Done</span>
+          </div>
+          <div class="pstat">
+            <span class="pstat-n" id="stat-learning">0</span
+            ><span class="pstat-l">Learning</span>
+          </div>
+          <div class="pstat">
+            <span class="pstat-n" id="stat-total">0</span
+            ><span class="pstat-l">Total</span>
+          </div>
+          <div class="pstat">
+            <span class="pstat-n" id="stat-pct">0%</span
+            ><span class="pstat-l">Complete</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+      <div class="toolbar-row1">
+        <input
+          type="search"
+          class="search-input"
+          id="search-input"
+          placeholder="Search topics…"
+          oninput="handleSearch(this.value)"
+        />
+        <button class="btn" onclick="resetAll()">Reset All</button>
+      </div>
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-dot ld-purple"></div>
+          Foundation
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot ld-teal"></div>
+          Pipelines
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot ld-orange"></div>
+          Operations
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot ld-orange"></div>
+          Learning
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot ld-green"></div>
+          Done
+        </div>
+      </div>
+    </div>
+
+    <!-- ROADMAP CANVAS -->
+    <div class="rm-canvas-wrap" id="canvas-wrap">
+      <div class="rm-canvas" id="rm-canvas">
+        <svg class="rm-connectors" id="rm-connectors"></svg>
+        <!-- Columns injected by JS -->
+      </div>
+    </div>
+
+    <!-- DETAIL PANEL -->
+    <div
+      class="detail-overlay"
+      id="detail-overlay"
+      onclick="closePanel()"
+    ></div>
+    <aside class="detail-panel" id="detail-panel">
+      <div class="panel-header">
+        <button class="panel-close" onclick="closePanel()" aria-label="Close">
+          ✕
+        </button>
+        <div class="panel-title-wrap">
+          <div class="panel-title" id="panel-title">—</div>
+          <span class="panel-type-badge" id="panel-badge">—</span>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="panel-section">
+          <div class="panel-section-title">About</div>
+          <p class="panel-desc" id="panel-desc"></p>
+        </div>
+        <div class="panel-section" id="panel-concepts-sec">
+          <div class="panel-section-title">Key Concepts</div>
+          <div class="chip-wrap" id="panel-concepts"></div>
+        </div>
+        <div class="panel-section" id="panel-tools-sec">
+          <div class="panel-section-title">Tools</div>
+          <div class="tools-list" id="panel-tools"></div>
+        </div>
+        <div class="panel-section" id="panel-resources-sec">
+          <div class="panel-section-title">Resources</div>
+          <div class="resources-list" id="panel-resources"></div>
+        </div>
+        <div class="panel-section" id="panel-tip-sec">
+          <div class="panel-section-title">Tip</div>
+          <div class="panel-tip" id="panel-tip"></div>
+        </div>
+      </div>
+      <div class="panel-actions">
+        <button
+          class="btn-action"
+          id="btn-learning"
+          onclick="markStatus('learning')"
+        >
+          Mark Learning
+        </button>
+        <button class="btn-action" id="btn-done" onclick="markStatus('done')">
+          Mark Done
+        </button>
+        <button class="btn-action reset-btn" onclick="markStatus(null)">
+          Reset
+        </button>
+      </div>
+    </aside>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <a href="https://ops4life.com">ops4life.com</a> · DevOps to MLOps Roadmap ·
+      inspired by
+      <a href="https://roadmap.sh" target="_blank" rel="noopener">roadmap.sh</a>
+      · <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener">GitHub</a>
+    </footer>
+
+    <!-- Page-specific data -->
+    <script>
+      const STORAGE_KEY = "devops-to-mlops-progress";
+      // ─── ROADMAP DATA ──────────────────────────────────────────────────────────
+      const ROADMAP = [
+        {
+          id: "foundation",
+          title: "Foundation",
+          num: "01",
+          items: [
+            {
+              id: "python-ml-basics",
+              label: "Week 1 — Python ML Basics",
+              type: "recommended",
+              description:
+                "Build the numeric and data manipulation skills that underpin every ML workflow. NumPy, pandas, and scikit-learn are the foundation everything else sits on.",
+              concepts: [
+                "NumPy arrays and broadcasting",
+                "pandas DataFrames and Series",
+                "scikit-learn pipelines",
+                "matplotlib visualisations",
+                "Train/test splitting",
+                "Jupyter notebooks",
+              ],
+              tools: ["Python 3", "numpy", "pandas", "scikit-learn", "matplotlib", "Jupyter"],
+              resources: [
+                { label: "scikit-learn User Guide", url: "https://scikit-learn.org/stable/user_guide.html" },
+                { label: "pandas Getting Started", url: "https://pandas.pydata.org/docs/getting_started/" },
+              ],
+              tip: "Don't skip pandas — 80% of real MLOps work is data wrangling, not model training.",
+            },
+            {
+              id: "mlflow-tracking",
+              label: "Week 2 — Experiment Tracking",
+              type: "recommended",
+              description:
+                "MLflow tracks parameters, metrics, and model artifacts so you can compare runs, reproduce results, and promote the best model to production.",
+              concepts: [
+                "Run tracking",
+                "Parameters vs metrics",
+                "Artifact store",
+                "Model registry",
+                "Experiment comparison",
+                "Model versioning and staging",
+              ],
+              tools: ["MLflow", "mlflow.sklearn", "MLflow UI", "mlflow.log_model"],
+              resources: [
+                { label: "MLflow Quickstart", url: "https://mlflow.org/docs/latest/getting-started/" },
+                { label: "MLflow Tracking Guide", url: "https://mlflow.org/docs/latest/tracking.html" },
+              ],
+              tip: "Start logging from your first experiment — retrofitting tracking onto existing code is much harder than adding it from the start.",
+            },
+            {
+              id: "dvc-versioning",
+              label: "Week 3 — Data Versioning",
+              type: "recommended",
+              description:
+                "DVC versions datasets and pipeline stages alongside your code, so you can reproduce any past training run and track how data changes affect model performance.",
+              concepts: [
+                "Data versioning",
+                "Pipeline stages (dvc.yaml)",
+                "DAG-based pipelines",
+                "Remote storage (S3/GCS)",
+                "dvc repro",
+                "Experiment comparison",
+              ],
+              tools: ["DVC", "dvc remote", "S3 / GCS", "Git + DVC integration"],
+              resources: [
+                { label: "DVC Get Started", url: "https://dvc.org/doc/start" },
+                { label: "DVC Pipelines", url: "https://dvc.org/doc/user-guide/pipelines" },
+              ],
+              tip: "Treat your training data like code — every experiment should reference a specific, reproducible version of the dataset.",
+            },
+            {
+              id: "docker-for-ml",
+              label: "Week 4 — Docker for ML",
+              type: "recommended",
+              description:
+                "Package your training environment into a container so it runs identically on your laptop, a cloud VM, or a Kubernetes cluster. The foundation for reproducible ML at scale.",
+              concepts: [
+                "Dockerfile layers",
+                "CUDA base images",
+                "Multi-stage builds",
+                "Volume mounts",
+                "Environment variables",
+                "Container registries",
+              ],
+              tools: ["Docker", "NVIDIA Container Toolkit", "Docker Hub", "GitHub Container Registry"],
+              resources: [
+                { label: "Docker Docs", url: "https://docs.docker.com/" },
+                { label: "NVIDIA CUDA Docker Guide", url: "https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/overview.html" },
+              ],
+              tip: "Pin all library versions in your Dockerfile — 'it works on my machine' disappears when the image is reproducible.",
+            },
+          ],
+        },
+        {
+          id: "pipelines",
+          title: "Pipelines",
+          num: "02",
+          items: [
+            {
+              id: "airflow-basics",
+              label: "Week 5 — Airflow Basics",
+              type: "recommended",
+              description:
+                "Airflow orchestrates multi-step data and ML workflows as DAGs. Master DAGs, operators, and scheduling before you build production pipelines.",
+              concepts: [
+                "DAGs",
+                "PythonOperator and BashOperator",
+                "Task dependencies (>>)",
+                "XCom for inter-task data",
+                "Scheduling and cron expressions",
+                "Backfill and catchup",
+              ],
+              tools: ["Apache Airflow", "Airflow UI", "LocalExecutor", "CeleryExecutor"],
+              resources: [
+                { label: "Airflow Concepts", url: "https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/" },
+                { label: "Airflow DAG Tutorial", url: "https://airflow.apache.org/docs/apache-airflow/stable/tutorial/fundamentals.html" },
+              ],
+              tip: "Keep tasks atomic and idempotent — a task that can be safely re-run without side effects makes debugging production failures much easier.",
+            },
+            {
+              id: "feature-engineering",
+              label: "Week 6 — Feature Engineering",
+              type: "recommended",
+              description:
+                "Raw data is never ML-ready. Build reusable feature transforms and add schema validation to catch data issues before they silently degrade your model.",
+              concepts: [
+                "Feature scaling and normalisation",
+                "Encoding categorical variables",
+                "Temporal splits (no data leakage)",
+                "Schema validation",
+                "Data contracts",
+                "Missing value strategies",
+              ],
+              tools: ["pandas", "scikit-learn transformers", "pandera", "Great Expectations"],
+              resources: [
+                { label: "scikit-learn Preprocessing", url: "https://scikit-learn.org/stable/modules/preprocessing.html" },
+                { label: "pandera Docs", url: "https://pandera.readthedocs.io/" },
+              ],
+              tip: "Validate data at pipeline boundaries — catch schema violations the moment bad data enters, not when the model starts returning garbage predictions.",
+            },
+            {
+              id: "kubernetes-ml",
+              label: "Week 7 — Kubernetes for ML",
+              type: "recommended",
+              description:
+                "Kubernetes manages the compute infrastructure that runs training jobs, feature pipelines, and model servers at scale. Learn resource management, GPU scheduling, and ML-specific workload patterns.",
+              concepts: [
+                "Pods and Jobs",
+                "Resource quotas and limits",
+                "GPU node taints and tolerations",
+                "PersistentVolumes for datasets",
+                "Namespaces and RBAC",
+                "ConfigMaps and Secrets",
+              ],
+              tools: ["kubectl", "Helm", "NVIDIA GPU Operator", "Kubernetes Jobs"],
+              resources: [
+                { label: "Kubernetes Documentation", url: "https://kubernetes.io/docs/home/" },
+                { label: "NVIDIA GPU Operator", url: "https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/overview.html" },
+              ],
+              tip: "Use resource limits and requests on every training Job — an unconstrained job that OOM-kills your node will take down other workloads with it.",
+            },
+            {
+              id: "kserve-serving",
+              label: "Week 8 — Model Serving",
+              type: "recommended",
+              description:
+                "KServe provides a Kubernetes-native interface for deploying models from MLflow, sklearn, PyTorch, and other frameworks with autoscaling and canary rollouts built in.",
+              concepts: [
+                "InferenceService",
+                "Serving runtimes",
+                "Autoscaling to zero",
+                "Canary deployments",
+                "Transformer and Explainer components",
+                "gRPC vs REST endpoints",
+              ],
+              tools: ["KServe", "Istio", "Knative", "MLflow model registry integration"],
+              resources: [
+                { label: "KServe Documentation", url: "https://kserve.github.io/website/" },
+                { label: "KServe Model Serving Examples", url: "https://kserve.github.io/website/latest/modelserving/v1beta1/sklearn/v2/" },
+              ],
+              tip: "Test with RawDeployment mode first — no Knative dependency, much simpler local debugging before you add autoscaling complexity.",
+            },
+          ],
+        },
+        {
+          id: "operations",
+          title: "Operations",
+          num: "03",
+          items: [
+            {
+              id: "model-monitoring",
+              label: "Week 9 — Model Monitoring",
+              type: "recommended",
+              description:
+                "Models degrade silently when input distributions shift. Evidently AI generates automated reports comparing training data to production data, surfacing drift before it becomes an incident.",
+              concepts: [
+                "Data drift",
+                "Feature drift and target drift",
+                "PSI vs KS statistical tests",
+                "Evidently reports",
+                "Monitoring dashboards",
+                "Alerting thresholds",
+              ],
+              tools: ["Evidently AI", "Grafana", "Prometheus", "pandas"],
+              resources: [
+                { label: "Evidently AI Docs", url: "https://docs.evidentlyai.com/" },
+                { label: "Evidently Quickstart", url: "https://docs.evidentlyai.com/get-started/tutorial" },
+              ],
+              tip: "Set a drift alert threshold before deployment, not after — deciding what 'normal' looks like is much easier when you can compare to stable training data.",
+            },
+            {
+              id: "cicd-ml",
+              label: "Week 10 — CI/CD for ML",
+              type: "recommended",
+              description:
+                "Automate the full cycle: test code changes, retrain on new data, evaluate model quality, and deploy — all triggered by a git push or data update.",
+              concepts: [
+                "GitHub Actions workflows",
+                "Model evaluation gates",
+                "CML for ML metrics in PRs",
+                "Automated retraining triggers",
+                "Model promotion criteria",
+                "Rollback automation",
+              ],
+              tools: ["GitHub Actions", "CML (Continuous Machine Learning)", "DVC Pipelines", "MLflow model registry"],
+              resources: [
+                { label: "GitHub Actions Docs", url: "https://docs.github.com/en/actions" },
+                { label: "CML by Iterative", url: "https://cml.dev/" },
+              ],
+              tip: "Add a model quality gate to your CI pipeline — reject any model that doesn't beat the current production baseline before it can be promoted.",
+            },
+            {
+              id: "production-hardening",
+              label: "Week 11 — Production Hardening",
+              type: "recommended",
+              description:
+                "A model that works in testing can still fail in production. Practice canary deployments, rollback procedures, and SLO definition to build resilience into your ML system.",
+              concepts: [
+                "Canary deployments",
+                "Blue/green deployments",
+                "Model rollback procedures",
+                "SLOs and SLAs",
+                "Latency budgets",
+                "Incident response runbooks",
+              ],
+              tools: ["KServe canary routing", "Prometheus SLO rules", "PagerDuty", "Grafana alerting"],
+              resources: [
+                { label: "Google SRE Book", url: "https://sre.google/sre-book/table-of-contents/" },
+                { label: "KServe Canary Guide", url: "https://kserve.github.io/website/latest/modelserving/v1beta1/canary/" },
+              ],
+              tip: "Document your rollback procedure before you go to production — when a model misbehaves at 3am, you want the runbook written and tested in advance.",
+            },
+            {
+              id: "capstone",
+              label: "Week 12 — End-to-End Capstone",
+              type: "recommended",
+              description:
+                "Build a complete MLOps system for a real problem: ingest data with Airflow, version it with DVC, train and track with MLflow, serve with KServe, and monitor with Evidently. Everything connected end-to-end.",
+              concepts: [
+                "End-to-end pipeline design",
+                "System integration",
+                "Observability and alerting",
+                "Documentation",
+                "Production readiness checklist",
+                "Retrospective review",
+              ],
+              tools: ["All tools from weeks 1–11"],
+              resources: [
+                { label: "LearnMLOps Guides", url: "https://learnmlops.ops4life.com" },
+                { label: "mlops-get-started Notebooks", url: "https://github.com/ops4life/mlops-get-started" },
+              ],
+              tip: "Pick a small, real problem — predicting something meaningful about your own data is far more motivating than another iris classifier.",
+            },
+          ],
+        },
+      ];
+    </script>
+    <script src="../shared/roadmap.js"></script>
+  </body>
+</html>
