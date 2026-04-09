@@ -1248,5 +1248,21 @@
     </script>
     <!-- Shared engine -->
     <script src="../shared/roadmap.js"></script>
+    <!-- COOKIE CONSENT -->
+    <div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#111;color:#e0e0e0;border-top:2px solid #000;padding:12px 20px;align-items:center;gap:12px;flex-wrap:wrap;font-family:'Space Mono','Courier New',monospace;font-size:11px;line-height:1.5;">
+      <span style="flex:1;min-width:200px;">This site uses cookies and local storage to remember your preferences.</span>
+      <div style="display:flex;gap:8px;flex-shrink:0;">
+        <button id="cookie-accept" style="background:#ff4400;color:#fff;border:none;padding:7px 16px;cursor:pointer;font-family:inherit;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Accept</button>
+        <button id="cookie-decline" style="background:transparent;color:#aaa;border:1px solid #444;padding:7px 14px;cursor:pointer;font-family:inherit;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;">Decline</button>
+      </div>
+    </div>
+    <script>
+    (function(){
+      var b=document.getElementById('cookie-banner');
+      if(!localStorage.getItem('cookie-consent')){b.style.display='flex';}
+      document.getElementById('cookie-accept').onclick=function(){localStorage.setItem('cookie-consent','accepted');b.style.display='none';};
+      document.getElementById('cookie-decline').onclick=function(){localStorage.setItem('cookie-consent','declined');b.style.display='none';};
+    })();
+    </script>
   </body>
 </html>
