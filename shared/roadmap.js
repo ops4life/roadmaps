@@ -355,3 +355,29 @@ function initFeedback() {
 // ─── INIT ──────────────────────────────────────────────────────────────────
 render();
 initResponsive();
+
+// ─── COOKIE CONSENT ────────────────────────────────────────────────────────
+(function initCookieConsent() {
+  if (document.getElementById("cookie-banner")) return;
+  const banner = document.createElement("div");
+  banner.id = "cookie-banner";
+  banner.style.cssText = "display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--bg-card, #111);color:var(--text, #e0e0e0);border-top:2px solid var(--border, #333);padding:12px 20px;align-items:center;gap:12px;flex-wrap:wrap;font-size:0.75rem;line-height:1.5;font-family:inherit;";
+  banner.innerHTML = `
+    <span style="flex:1;min-width:200px;">This site uses cookies and local storage to remember your preferences and reading progress.</span>
+    <div style="display:flex;gap:8px;flex-shrink:0;">
+      <button id="cookie-accept" style="background:var(--accent,#3b82f6);color:#fff;border:none;padding:7px 16px;cursor:pointer;font-family:inherit;font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border-radius:var(--radius,4px);">Accept</button>
+      <button id="cookie-decline" style="background:transparent;color:var(--text-muted,#aaa);border:1px solid var(--border,#444);padding:7px 14px;cursor:pointer;font-family:inherit;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;border-radius:var(--radius,4px);">Decline</button>
+    </div>
+  `;
+  document.body.appendChild(banner);
+  
+  if (!localStorage.getItem('cookie-consent')) { banner.style.display = 'flex'; }
+  document.getElementById('cookie-accept').onclick = function() {
+    localStorage.setItem('cookie-consent', 'accepted');
+    banner.style.display = 'none';
+  };
+  document.getElementById('cookie-decline').onclick = function() {
+    localStorage.setItem('cookie-consent', 'declined');
+    banner.style.display = 'none';
+  };
+})();
