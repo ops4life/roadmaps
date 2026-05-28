@@ -2,9 +2,18 @@
   <!-- Neobrutalist Shadow (Dark Ink) -->
   <rect x="14" y="14" width="76" height="76" rx="8" fill="#1A1714"/>
 
-  <!-- Neobrutalist Main Box (Matches UI Background --bg-2) -->
+  <!-- Neobrutalist Main Box (Beige Background) -->
   <rect x="8" y="8" width="76" height="76" rx="8" fill="#FAF5E3" stroke="#1A1714" stroke-width="6" stroke-linejoin="round"/>
 
-  <!-- Checkmark (Dark Ink) -->
-  <path d="M 26 46 L 42 62 L 66 28" fill="none" stroke="#1A1714" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Roadmap Path Line -->
+  <path d="M 26 66 L 46 46 L 66 26" fill="none" stroke="#1A1714" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Node 1: Start (Teal) -->
+  <circle cx="26" cy="66" r="9" fill="#0d9488" stroke="#1A1714" stroke-width="5"/>
+
+  <!-- Node 2: Middle (Purple) -->
+  <circle cx="46" cy="46" r="9" fill="#6d28d9" stroke="#1A1714" stroke-width="5"/>
+
+  <!-- Node 3: Target (Orange) -->
+  <circle cx="66" cy="26" r="9" fill="#f97316" stroke="#1A1714" stroke-width="5"/>
 </svg>
