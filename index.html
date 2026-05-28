@@ -1,475 +1,1170 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Roadmaps — ops4life</title>
-    <meta name="description" content="Interactive visual SRE, DevOps, DevSecOps, and MLOps roadmaps for engineering professional growth and cloud operation architectures." />
-    <meta name="robots" content="index, follow" />
-    <meta name="keywords" content="DevOps roadmap, MLOps roadmap, DevSecOps roadmap, SRE roadmap, ops4life, cloud engineer learning path, self-hosted, learning roadmaps" />
-    <meta name="author" content="Ops4Life" />
-    <link rel="canonical" href="https://roadmap.ops4life.com/" />
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Roadmaps — ops4life</title>
+<meta name="description" content="Interactive visual SRE, DevOps, DevSecOps, and MLOps roadmaps for engineering professional growth and cloud operation architectures." />
+<meta name="robots" content="index, follow" />
+<meta name="keywords" content="DevOps roadmap, MLOps roadmap, DevSecOps roadmap, SRE roadmap, ops4life, cloud engineer learning path, self-hosted, learning roadmaps" />
+<meta name="author" content="Ops4Life" />
+<link rel="canonical" href="https://roadmap.ops4life.com/" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://roadmap.ops4life.com/" />
+<meta property="og:title" content="Engineering Roadmaps — ops4life" />
+<meta property="og:description" content="Interactive visual SRE, DevOps, DevSecOps, and MLOps roadmaps for engineering professional growth and cloud operation architectures." />
+<meta property="og:image" content="https://ops4life.com/assets/logo.png" />
+<meta property="og:site_name" content="Ops4Life Roadmaps" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content="https://roadmap.ops4life.com/" />
+<meta name="twitter:title" content="Engineering Roadmaps — ops4life" />
+<meta name="twitter:description" content="Interactive visual SRE, DevOps, DevSecOps, and MLOps roadmaps for engineering professional growth and cloud operation architectures." />
+<meta name="twitter:image" content="https://ops4life.com/assets/logo.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Ops4Life Roadmaps","url":"https://roadmap.ops4life.com","description":"Interactive visual SRE, DevOps, DevSecOps, and MLOps roadmaps for engineering professional growth and cloud operation architectures.","author":{"@type":"Organization","name":"Ops4Life","url":"https://ops4life.com"}}</script>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:    #EFE9D6;
+  --bg-2:  #FAF5E3;
+  --bg-3:  #E3DCC4;
+  --ink:   #1A1714;
+  --ink-2: #3A352D;
+  --ink-3: #6E6859;
+  --ink-4: #9C9684;
+  --line:  var(--ink);
+  --c-purple: oklch(0.78 0.09 295);
+  --c-teal:   oklch(0.80 0.08 200);
+  --c-orange: oklch(0.80 0.11 60);
+  --c-pink:   oklch(0.82 0.07 25);
+  --c-yellow: oklch(0.87 0.14 90);
+  --c-lime:   oklch(0.82 0.13 130);
+  --accent:   oklch(0.62 0.19 32);
+  --learning: var(--c-yellow);
+  --done:     var(--c-lime);
+  --done-bg:  oklch(0.93 0.05 130);
+  --border:    2px solid var(--ink);
+  --border-1:  1.5px solid var(--ink);
+  --shadow:    3px 3px 0 var(--ink);
+  --shadow-sm: 2px 2px 0 var(--ink);
+  --shadow-lg: 5px 5px 0 var(--ink);
+  --gap-section: 20px;
+  --gap-node:    7px;
+  --pad-node-y:  11px;
+  --pad-node-x:  14px;
+}
+html.dark{
+  --bg:    #15130F;
+  --bg-2:  #1D1A14;
+  --bg-3:  #25211A;
+  --ink:   #EFE9D6;
+  --ink-2: #C8C2AD;
+  --ink-3: #8E886E;
+  --ink-4: #5E5945;
+  --done-bg: oklch(0.28 0.06 130);
+}
+html.density-compact{ --gap-section:14px; --gap-node:5px; --pad-node-y:9px; --pad-node-x:12px; }
+html.density-spacious{ --gap-section:28px; --gap-node:10px; --pad-node-y:14px; --pad-node-x:18px; }
+@media (max-width: 768px){
+  :root{ --gap-section:14px; --gap-node:6px; --pad-node-y:10px; --pad-node-x:12px; --shadow:2px 2px 0 var(--ink); --shadow-lg:3px 3px 0 var(--ink); }
+}
+@media (max-width: 480px){ html,body{ font-size:13px } }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:"Space Mono",ui-monospace,Menlo,monospace;
+  font-size:14px; line-height:1.5;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+body{min-height:100vh}
+::selection{background:var(--ink);color:var(--bg)}
+.display{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:900;font-stretch:100%;letter-spacing:-0.02em;line-height:0.92;}
+.display-mid{font-family:"Archivo","Helvetica Neue",Arial,sans-serif;font-weight:800;letter-spacing:-0.01em;}
+.eyebrow{font-family:"Space Mono",ui-monospace,monospace;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+.no-bar::-webkit-scrollbar{display:none}
+.no-bar{scrollbar-width:none}
+.brut    {border:var(--border);background:var(--bg-2);box-shadow:var(--shadow);transition:transform .14s ease,box-shadow .14s ease}
+.brut-sm {border:var(--border);background:var(--bg-2);box-shadow:var(--shadow-sm);transition:transform .14s ease,box-shadow .14s ease}
+.brut-hover:hover    {transform:translate(-2px,-2px);box-shadow:var(--shadow-lg)}
+.brut-sm.brut-hover:hover{transform:translate(-1px,-1px);box-shadow:var(--shadow)}
+.brut-press:active   {transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel">
+const { useState, useEffect, useRef, useMemo, useCallback } = React;
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://roadmap.ops4life.com/" />
-    <meta property="og:title" content="Engineering Roadmaps — ops4life" />
-    <meta property="og:description" content="Interactive visual SRE, DevOps, DevSecOps, and MLOps roadmaps for engineering professional growth and cloud operation architectures." />
-    <meta property="og:image" content="https://ops4life.com/assets/logo.png" />
-    <meta property="og:site_name" content="Ops4Life Roadmaps" />
+// ── TWEAKS PANEL STYLE ─────────────────────────────────────────────────
+const __TWEAKS_STYLE = `
+.twk-overlay{position:fixed;inset:0;z-index:2147483645;background:transparent;pointer-events:none}
+.twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
+  max-height:calc(100vh - 32px);display:flex;flex-direction:column;
+  background:rgba(250,249,247,.92);color:#29261b;
+  -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
+  border:2px solid #1A1714;border-radius:0;
+  box-shadow:4px 4px 0 #1A1714;
+  font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
+html.dark .twk-panel{background:rgba(29,26,20,.95);color:#EFE9D6;border-color:#EFE9D6;box-shadow:4px 4px 0 #EFE9D6}
+.twk-hd{display:flex;align-items:center;justify-content:space-between;padding:10px 8px 10px 14px;user-select:none;border-bottom:1.5px solid rgba(0,0,0,.15)}
+.twk-hd b{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
+  width:22px;height:22px;border-radius:0;cursor:pointer;font-size:13px;line-height:1}
+.twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
+html.dark .twk-x{color:rgba(239,233,214,.55)}
+html.dark .twk-x:hover{background:rgba(255,255,255,.08);color:#EFE9D6}
+.twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
+  overflow-y:auto;overflow-x:hidden;min-height:0;
+  scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+.twk-row{display:flex;flex-direction:column;gap:5px}
+.twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+.twk-lbl{display:flex;justify-content:space-between;align-items:baseline;color:rgba(41,38,27,.72)}
+.twk-lbl>span:first-child{font-weight:500}
+.twk-sect{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(41,38,27,.45);padding:10px 0 0}
+.twk-sect:first-child{padding-top:0}
+html.dark .twk-lbl{color:rgba(239,233,214,.72)}
+html.dark .twk-sect{color:rgba(239,233,214,.45)}
+.twk-seg{position:relative;display:flex;padding:2px;border:1.5px solid rgba(0,0,0,.15);background:rgba(0,0,0,.06);user-select:none}
+.twk-seg-thumb{position:absolute;top:2px;bottom:2px;background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
+html.dark .twk-seg{border-color:rgba(255,255,255,.15);background:rgba(255,255,255,.06)}
+html.dark .twk-seg-thumb{background:rgba(255,255,255,.15)}
+.twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;background:transparent;color:inherit;font:inherit;font-weight:500;min-height:22px;border-radius:0;cursor:pointer;padding:4px 6px;line-height:1.2;overflow-wrap:anywhere}
+.twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;background:rgba(0,0,0,.15);transition:background .15s;cursor:pointer;padding:0}
+.twk-toggle[data-on="1"]{background:#34c759}
+.twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+.twk-toggle[data-on="1"] i{transform:translateX(14px)}
+.twk-btn{appearance:none;height:28px;padding:0 12px;border:1.5px solid currentColor;background:transparent;color:inherit;font:inherit;font-weight:700;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.twk-btn:hover{background:var(--ink);color:var(--bg)}
+html.dark .twk-btn:hover{background:var(--bg);color:var(--ink)}
+`;
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://roadmap.ops4life.com/" />
-    <meta name="twitter:title" content="Engineering Roadmaps — ops4life" />
-    <meta name="twitter:description" content="Interactive visual SRE, DevOps, DevSecOps, and MLOps roadmaps for engineering professional growth and cloud operation architectures." />
-    <meta name="twitter:image" content="https://ops4life.com/assets/logo.png" />
+// ── HOOKS ─────────────────────────────────────────────────────────────
+function useStored(key, init) {
+  const [val, setVal] = useState(() => {
+    try { const raw = localStorage.getItem(key); return raw === null ? init : JSON.parse(raw); }
+    catch { return init; }
+  });
+  useEffect(() => { try { localStorage.setItem(key, JSON.stringify(val)); } catch {} }, [key, val]);
+  return [val, setVal];
+}
 
-    <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Ops4Life Roadmaps",
-        "url": "https://roadmap.ops4life.com",
-        "description": "Interactive visual SRE, DevOps, DevSecOps, and MLOps roadmaps for engineering professional growth and cloud operation architectures.",
-        "author": {
-          "@type": "Organization",
-          "name": "Ops4Life",
-          "url": "https://ops4life.com"
-        }
-      }
-    </script>
+function useTweaks(defaults) {
+  const [values, setValues] = useState(() => {
+    try {
+      const raw = localStorage.getItem('ops4life:tweaks');
+      return raw ? { ...defaults, ...JSON.parse(raw) } : defaults;
+    } catch { return defaults; }
+  });
+  const setTweak = useCallback((keyOrEdits, val) => {
+    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null
+      ? keyOrEdits : { [keyOrEdits]: val };
+    setValues(prev => {
+      const next = { ...prev, ...edits };
+      try { localStorage.setItem('ops4life:tweaks', JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }, []);
+  return [values, setTweak];
+}
 
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+// ── DATA ──────────────────────────────────────────────────────────────
+const TRACKS = [
+  {
+    id: "devops", code: "DEVOPS", title: "DevOps",
+    tagline: "From source to production.",
+    blurb: "The path from your first commit to a deploy you trust at 3am — pipelines, containers, infra, observability.",
+    storageKey: "ops4life:devops", accent: "var(--c-teal)",
+    sections: [
+      { id:"foundations", title:"01 · Foundations", color:"var(--c-purple)", items: [
+        { id:"linux",    label:"Linux & shell",        type:"recommended", concepts:["filesystem","permissions","systemd","networking"], tools:["bash","zsh","tmux"] },
+        { id:"git",      label:"Git workflows",        type:"recommended", concepts:["branching","rebase","tags","hooks"], tools:["git","gh"] },
+        { id:"http",     label:"HTTP & APIs",          type:"recommended", concepts:["REST","status codes","headers","TLS"], tools:["curl","httpie"] },
+        { id:"editor",   label:"Pick a code editor",   type:"alt",         concepts:["LSP","extensions"], tools:["vscode","neovim"] },
+      ]},
+      { id:"automation", title:"02 · Automation", color:"var(--c-teal)", items: [
+        { id:"ci",       label:"CI fundamentals",      type:"recommended", concepts:["pipelines","artifacts","cache","matrix"], tools:["GitHub Actions","GitLab CI"] },
+        { id:"cd",       label:"Continuous delivery",  type:"recommended", concepts:["envs","promotion","rollbacks"], tools:["Argo CD","Flux"] },
+        { id:"testing",  label:"Test in pipelines",    type:"recommended", concepts:["unit","integration","e2e","flake"], tools:["jest","pytest","playwright"] },
+        { id:"scripting",label:"Scripting glue",       type:"alt",         concepts:["idempotence","retries"], tools:["bash","python","make"] },
+      ]},
+      { id:"infra", title:"03 · Infra", color:"var(--c-orange)", items: [
+        { id:"docker",   label:"Containers",           type:"recommended", concepts:["images","layers","networking","volumes"], tools:["docker","podman"] },
+        { id:"k8s",      label:"Kubernetes basics",    type:"recommended", concepts:["pods","deployments","services","ingress"], tools:["kubectl","helm"] },
+        { id:"iac",      label:"Infra as Code",        type:"recommended", concepts:["state","modules","plan/apply","drift"], tools:["terraform","pulumi","opentofu"] },
+        { id:"cloud",    label:"Pick a cloud",         type:"alt",         concepts:["IAM","VPC","object storage"], tools:["AWS","GCP","Azure"] },
+      ]},
+      { id:"observe", title:"04 · Operate", color:"var(--c-pink)", items: [
+        { id:"metrics",  label:"Metrics & dashboards", type:"recommended", concepts:["RED","USE","SLOs"], tools:["prometheus","grafana"] },
+        { id:"logs",     label:"Logs & traces",        type:"recommended", concepts:["structured logs","spans","sampling"], tools:["loki","tempo","otel"] },
+        { id:"alerts",   label:"On-call & alerting",   type:"recommended", concepts:["runbooks","paging","postmortems"], tools:["pagerduty","opsgenie"] },
+        { id:"chaos",    label:"Chaos engineering",    type:"alt",         concepts:["game days","blast radius"], tools:["litmus","gremlin"] },
+      ]},
+    ],
+  },
+  {
+    id: "devsecops", code: "DEVSECOPS", title: "DevSecOps",
+    tagline: "Shift security left.",
+    blurb: "Bake guardrails into every pipeline stage — threat modeling, secrets, scanning, policy, supply chain.",
+    storageKey: "ops4life:devsecops", accent: "var(--c-orange)",
+    sections: [
+      { id:"basics", title:"01 · Mental models", color:"var(--c-purple)", items: [
+        { id:"threats", label:"Threat modeling",      type:"recommended", concepts:["STRIDE","trust boundaries"], tools:["pytm","owasp threat dragon"] },
+        { id:"appsec",  label:"AppSec fundamentals",  type:"recommended", concepts:["OWASP Top 10","auth","crypto basics"], tools:[] },
+        { id:"netsec",  label:"Network security",     type:"alt",         concepts:["TLS","mTLS","zero trust"], tools:[] },
+      ]},
+      { id:"pipeline", title:"02 · In the pipeline", color:"var(--c-teal)", items: [
+        { id:"sast",    label:"SAST",                 type:"recommended", concepts:["taint analysis","false positives"], tools:["semgrep","codeql"] },
+        { id:"sca",     label:"Dependency scanning",  type:"recommended", concepts:["CVEs","transitive deps"], tools:["dependabot","snyk","trivy"] },
+        { id:"secrets", label:"Secrets management",   type:"recommended", concepts:["rotation","KMS","short-lived creds"], tools:["vault","sops","aws secrets manager"] },
+        { id:"dast",    label:"DAST & fuzzing",       type:"alt",         concepts:["crawlers","payloads"], tools:["zap","nuclei"] },
+      ]},
+      { id:"runtime", title:"03 · At runtime", color:"var(--c-orange)", items: [
+        { id:"hardening",  label:"Container hardening", type:"recommended", concepts:["distroless","read-only fs","caps"], tools:["docker bench","trivy"] },
+        { id:"policy",     label:"Policy as Code",      type:"recommended", concepts:["admission","guardrails"], tools:["OPA","kyverno"] },
+        { id:"sbom",       label:"Supply chain & SBOM", type:"recommended", concepts:["SLSA","provenance","sigstore"], tools:["syft","cosign"] },
+        { id:"runtimesec", label:"Runtime defense",     type:"alt",         concepts:["eBPF","syscall filtering"], tools:["falco","tetragon"] },
+      ]},
+    ],
+  },
+  {
+    id: "mlops", code: "MLOPS", title: "MLOps",
+    tagline: "From notebook to production.",
+    blurb: "Operate models like services — reproducibility, data versioning, serving, monitoring, continuous training.",
+    storageKey: "ops4life:mlops", accent: "var(--c-purple)",
+    sections: [
+      { id:"foundation", title:"01 · Foundations", color:"var(--c-purple)", items: [
+        { id:"py",    label:"Python for production", type:"recommended", concepts:["typing","packaging","async"], tools:["uv","poetry"] },
+        { id:"envs",  label:"Reproducible envs",     type:"recommended", concepts:["lockfiles","cuda","determinism"], tools:["docker","conda","nix"] },
+        { id:"data",  label:"Data fundamentals",     type:"recommended", concepts:["schemas","quality","lineage"], tools:["pandas","duckdb"] },
+      ]},
+      { id:"experiment", title:"02 · Experimentation", color:"var(--c-teal)", items: [
+        { id:"versioning", label:"Data versioning",      type:"recommended", concepts:["DVC","lakes","snapshots"], tools:["dvc","lakefs"] },
+        { id:"tracking",   label:"Experiment tracking",  type:"recommended", concepts:["runs","artifacts","params"], tools:["mlflow","wandb"] },
+        { id:"features",   label:"Feature stores",       type:"alt",         concepts:["online/offline","skew"], tools:["feast","tecton"] },
+      ]},
+      { id:"production", title:"03 · Production", color:"var(--c-orange)", items: [
+        { id:"serving",  label:"Model serving",            type:"recommended", concepts:["batch vs online","gpu","autoscale"], tools:["bento","triton","sagemaker"] },
+        { id:"monitor",  label:"Monitor drift & quality",  type:"recommended", concepts:["data drift","perf","feedback loops"], tools:["evidently","whylabs"] },
+        { id:"ct",       label:"Continuous training",      type:"recommended", concepts:["pipelines","triggers"], tools:["kubeflow","airflow"] },
+        { id:"llmops",   label:"LLM evals",                type:"alt",         concepts:["golden sets","judges"], tools:["ragas","promptfoo"] },
+      ]},
+    ],
+  },
+];
 
-      :root {
-        --bg: #e9e9e9;
-        --border: #000;
-        --purple: #6d28d9;
-        --teal: #0d9488;
-        --orange: #f97316;
-      }
+// ── ICONS ─────────────────────────────────────────────────────────────
+const Icon = {
+  Check:   (p) => <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M3 8.5l3.2 3.2L13 5"/></svg>,
+  Arrow:   (p) => <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M3 8h10M9 4l4 4-4 4"/></svg>,
+  Search:  (p) => <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><circle cx="7" cy="7" r="4.5"/><path d="M11 11l3 3"/></svg>,
+  Close:   (p) => <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" {...p}><path d="M4 4l8 8M12 4l-8 8"/></svg>,
+  Grid:    (p) => <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" {...p}><rect x="2" y="2" width="5" height="5"/><rect x="9" y="2" width="5" height="5"/><rect x="2" y="9" width="5" height="5"/><rect x="9" y="9" width="5" height="5"/></svg>,
+  List:    (p) => <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" {...p}><path d="M3 4h10M3 8h10M3 12h10"/></svg>,
+  Bulb:    (p) => <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M6 13h4M5 10a4 4 0 116 0c0 1-1 1.5-1 2.5H6c0-1-1-1.5-1-2.5z"/></svg>,
+  Logo:    (p) => <svg viewBox="0 0 28 28" width="20" height="20" fill="none" {...p}><rect x="2" y="2" width="24" height="24" stroke="currentColor" strokeWidth="2"/><path d="M7 14l4 4 10-10" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  Ext:     (p) => <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M6 3H3v10h10v-3M9 3h4v4M8 8l5-5"/></svg>,
+  Chevron: (p) => <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M3 6l5 5 5-5"/></svg>,
+  Back:    (p) => <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M13 8H3M7 4L3 8l4 4"/></svg>,
+  Gear:    (p) => <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><circle cx="8" cy="8" r="2.5"/><path d="M8 1.5v1M8 13.5v1M1.5 8h1M13.5 8h1M3.4 3.4l.7.7M11.9 11.9l.7.7M3.4 12.6l.7-.7M11.9 4.1l.7-.7"/></svg>,
+};
 
-      body {
-        font-family: "Space Mono", monospace;
-        background: var(--bg);
-        color: #000;
-        min-height: 100vh;
-      }
+// ── PRIMITIVES ────────────────────────────────────────────────────────
+function Btn({ children, variant="primary", size="md", onClick, style, disabled, ...rest }) {
+  const sizes = { sm:{h:30,px:11,fs:11.5}, md:{h:38,px:16,fs:12.5}, lg:{h:48,px:22,fs:14} };
+  const s = sizes[size];
+  const variants = {
+    primary:   { bg:"var(--ink)",      color:"var(--bg)" },
+    secondary: { bg:"var(--bg-2)",     color:"var(--ink)" },
+    accent:    { bg:"var(--c-yellow)", color:"var(--ink)" },
+    ghost:     { bg:"transparent",     color:"var(--ink)" },
+  };
+  const v = variants[variant] || variants.primary;
+  return (
+    <button onClick={onClick} disabled={disabled} {...rest}
+      className="brut-sm brut-hover brut-press"
+      style={{
+        appearance:"none", cursor:disabled?"not-allowed":"pointer",
+        background:v.bg, color:v.color,
+        height:s.h, padding:`0 ${s.px}px`,
+        fontSize:s.fs, fontWeight:700, fontFamily:"inherit",
+        textTransform:"uppercase", letterSpacing:".06em",
+        display:"inline-flex", alignItems:"center", gap:8,
+        opacity:disabled?.5:1,
+        ...style,
+      }}
+    >{children}</button>
+  );
+}
 
-      /* NAV */
-      .nav {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 0.75rem 1.25rem;
-        border-bottom: 2px solid var(--border);
-        background: var(--bg);
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
-      .nav-back {
-        font-size: 0.75rem;
-        color: #000;
-        text-decoration: none;
-        border: 1px solid #000;
-        padding: 0.25rem 0.6rem;
-        transition: background 0.15s;
-      }
-      .nav-back:hover {
-        background: #000;
-        color: var(--bg);
-      }
-      .nav-title {
-        font-size: 0.8rem;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-      }
+function Tag({ children, color="var(--bg-3)", style }) {
+  return (
+    <span style={{
+      display:"inline-flex", alignItems:"center", gap:6,
+      padding:"3px 7px", border:"1.5px solid var(--ink)",
+      background:color, color:"var(--ink)",
+      fontSize:10, fontWeight:700, textTransform:"uppercase", letterSpacing:".10em",
+      ...style,
+    }}>{children}</span>
+  );
+}
 
-      /* HERO */
-      .hero {
-        border-bottom: 2px solid var(--border);
-        padding: 2rem 1.25rem 1.5rem;
-      }
-      .hero-heading {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: clamp(3rem, 8vw, 6rem);
-        line-height: 0.9;
-        letter-spacing: 0.02em;
-        margin-bottom: 1rem;
-      }
-      .hero-sub {
-        font-size: 0.75rem;
-        color: #444;
-        max-width: 520px;
-      }
-
-      /* GRID */
-      .roadmap-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.5rem;
-        padding: 2rem 1.25rem;
-      }
-
-      .roadmap-card {
-        text-decoration: none;
-        color: #000;
-        display: flex;
-        flex-direction: column;
-        border: 2px solid var(--border);
-        padding: 1.5rem;
-        background: #fff;
-        transition:
-          transform 0.12s,
-          box-shadow 0.12s;
-        position: relative;
-      }
-      .roadmap-card:hover {
-        transform: translate(-2px, -2px);
-        box-shadow: 4px 4px 0 #000;
-        z-index: 1;
-      }
-
-      .card-icon {
-        width: 40px;
-        height: 40px;
-        margin-bottom: 1rem;
-      }
-
-      .card-accent {
-        width: 32px;
-        height: 3px;
-        margin-bottom: 0.75rem;
-      }
-
-      .card-title {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 2rem;
-        line-height: 1;
-        letter-spacing: 0.03em;
-        margin-bottom: 0.5rem;
-      }
-
-      .card-desc {
-        font-size: 0.68rem;
-        color: #444;
-        line-height: 1.6;
-        flex: 1;
-        margin-bottom: 1rem;
-      }
-
-      .card-meta {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 0.65rem;
-        color: #666;
-        border-top: 1px solid #ddd;
-        padding-top: 0.75rem;
-      }
-
-      .card-cta {
-        font-size: 0.7rem;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-      }
-
-      /* FOOTER */
-      .footer {
-        border-top: 2px solid #000;
-        padding: 1rem 1.25rem;
-        font-size: 0.65rem;
-        color: #555;
-        text-align: center;
-      }
-      .footer a {
-        color: #000;
-      }
-
-      /* NEWSLETTER */
-      .newsletter {
-        border-top: 2px solid var(--border);
-        padding: 2rem 1.25rem;
-      }
-      .nl-heading {
-        font-family: "Bebas Neue", sans-serif;
-        font-size: 1.6rem;
-        letter-spacing: 0.03em;
-        margin-bottom: 0.35rem;
-      }
-      .nl-sub {
-        font-size: 0.7rem;
-        color: #444;
-        margin-bottom: 1.25rem;
-      }
-      .nl-form {
-        display: flex;
-        gap: 0.5rem;
-        max-width: 520px;
-      }
-      .nl-input {
-        flex: 1;
-        font-family: "Space Mono", monospace;
-        font-size: 0.75rem;
-        padding: 0.5rem 0.75rem;
-        border: 2px solid var(--border);
-        background: #fff;
-        outline: none;
-        min-width: 0;
-      }
-      .nl-input:focus {
-        background: #f5f5f5;
-      }
-      .nl-btn {
-        font-family: "Space Mono", monospace;
-        font-size: 0.75rem;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-        padding: 0.5rem 1rem;
-        border: 2px solid var(--border);
-        background: var(--bg);
-        cursor: pointer;
-        white-space: nowrap;
-        transition: background 0.12s, color 0.12s;
-      }
-      .nl-btn:hover:not(:disabled) {
-        background: #000;
-        color: var(--bg);
-      }
-      .nl-btn:disabled {
-        opacity: 0.5;
-        cursor: default;
-      }
-      .nl-feedback {
-        margin-top: 0.75rem;
-        font-size: 0.7rem;
-        min-height: 1rem;
-      }
-      .nl-feedback.ok { color: #16a34a; }
-      .nl-feedback.err { color: #dc2626; }
-
-      @media (max-width: 640px) {
-        .roadmap-grid {
-          grid-template-columns: 1fr;
-        }
-        .nl-form {
-          flex-direction: column;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- NAV -->
-    <nav class="nav">
-      <a href="https://ops4life.com" class="nav-back">← ops4life.com</a>
-      <span class="nav-title">Roadmaps</span>
-      <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener" aria-label="GitHub" style="margin-left: auto; display: flex; align-items: center; color: inherit">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 98 96" aria-hidden="true">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"/>
-        </svg>
-      </a>
-    </nav>
-
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-heading">ops4life /<br />Roadmaps</div>
-      <p class="hero-sub">
-        Interactive learning paths for DevOps, DevSecOps, and MLOps. Track your
-        progress through each curriculum as you build real skills.
-      </p>
-    </section>
-
-    <!-- ROADMAP CARDS -->
-    <div class="roadmap-grid">
-
-      <!-- DevOps -->
-      <a class="roadmap-card" href="/devops/">
-        <svg class="card-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-          <rect x="2" y="2" width="16" height="16" stroke="#6d28d9" stroke-width="2" fill="none"/>
-          <rect x="22" y="2" width="16" height="16" stroke="#6d28d9" stroke-width="2" fill="none"/>
-          <rect x="22" y="22" width="16" height="16" stroke="#6d28d9" stroke-width="2" fill="none"/>
-          <rect x="2" y="22" width="16" height="16" stroke="#6d28d9" stroke-width="2" fill="none"/>
-        </svg>
-        <div class="card-accent" style="background:#6d28d9"></div>
-        <div class="card-title">DevOps</div>
-        <div class="card-desc">
-          From Linux fundamentals to Kubernetes, CI/CD, and observability.
-          A complete curriculum for the modern DevOps engineer.
+// ── TWEAKS PANEL ──────────────────────────────────────────────────────
+function TweaksPanel({ open, onClose, children }) {
+  if (!open) return null;
+  return (
+    <>
+      <style>{__TWEAKS_STYLE}</style>
+      <div className="twk-panel">
+        <div className="twk-hd">
+          <b>Settings</b>
+          <button className="twk-x" onClick={onClose}>✕</button>
         </div>
-        <div class="card-meta">
-          <span>17 sections · 60+ topics</span>
-          <span class="card-cta" style="color:#6d28d9">→ Open Roadmap</span>
-        </div>
-      </a>
-
-      <!-- DevSecOps -->
-      <a class="roadmap-card" href="/devsecops/">
-        <svg class="card-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-          <path d="M20 4 L34 10 L34 22 C34 30 27 36 20 38 C13 36 6 30 6 22 L6 10 Z" stroke="#0d9488" stroke-width="2" fill="none"/>
-          <path d="M14 20 L18 24 L26 16" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <div class="card-accent" style="background:#0d9488"></div>
-        <div class="card-title">DevSecOps</div>
-        <div class="card-desc">
-          Security baked into every stage of the pipeline. Threat modeling,
-          container security, CI/CD hardening, and compliance frameworks.
-        </div>
-        <div class="card-meta">
-          <span>17 sections · 70+ topics</span>
-          <span class="card-cta" style="color:#0d9488">→ Open Roadmap</span>
-        </div>
-      </a>
-
-      <!-- MLOps -->
-      <a class="roadmap-card" href="/mlops/">
-        <svg class="card-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-          <circle cx="20" cy="20" r="6" stroke="#f97316" stroke-width="2" fill="none"/>
-          <circle cx="8" cy="8" r="3" stroke="#f97316" stroke-width="2" fill="none"/>
-          <circle cx="32" cy="8" r="3" stroke="#f97316" stroke-width="2" fill="none"/>
-          <circle cx="8" cy="32" r="3" stroke="#f97316" stroke-width="2" fill="none"/>
-          <circle cx="32" cy="32" r="3" stroke="#f97316" stroke-width="2" fill="none"/>
-          <line x1="14" y1="14" x2="11" y2="11" stroke="#f97316" stroke-width="1.5"/>
-          <line x1="26" y1="14" x2="29" y2="11" stroke="#f97316" stroke-width="1.5"/>
-          <line x1="14" y1="26" x2="11" y2="29" stroke="#f97316" stroke-width="1.5"/>
-          <line x1="26" y1="26" x2="29" y2="29" stroke="#f97316" stroke-width="1.5"/>
-        </svg>
-        <div class="card-accent" style="background:#f97316"></div>
-        <div class="card-title">MLOps</div>
-        <div class="card-desc">
-          Production ML from experimentation to deployment. Pipelines, model
-          serving, drift monitoring, and cloud ML platforms.
-        </div>
-        <div class="card-meta">
-          <span>13 sections · 55+ topics</span>
-          <span class="card-cta" style="color:#f97316">→ Open Roadmap</span>
-        </div>
-      </a>
-
-      <!-- DevOps to MLOps -->
-      <a class="roadmap-card" href="/devops-to-mlops/">
-        <svg class="card-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-          <rect x="2" y="14" width="12" height="12" stroke="#16a34a" stroke-width="2" fill="none"/>
-          <rect x="26" y="14" width="12" height="12" stroke="#16a34a" stroke-width="2" fill="none"/>
-          <line x1="14" y1="20" x2="26" y2="20" stroke="#16a34a" stroke-width="2"/>
-          <polyline points="22,16 26,20 22,24" stroke="#16a34a" stroke-width="2" fill="none" stroke-linejoin="round"/>
-        </svg>
-        <div class="card-accent" style="background:#16a34a"></div>
-        <div class="card-title">DevOps to MLOps</div>
-        <div class="card-desc">
-          A structured 90-day curriculum for DevOps engineers making the shift
-          to MLOps. Foundation, Pipelines, and Operations — one week at a time.
-        </div>
-        <div class="card-meta">
-          <span>3 phases · 12 weeks</span>
-          <span class="card-cta" style="color:#16a34a">→ Open Roadmap</span>
-        </div>
-      </a>
-
-    </div>
-
-    <!-- NEWSLETTER -->
-    <section class="newsletter">
-      <div class="nl-heading">Stay in the loop</div>
-      <p class="nl-sub">Get notified when new roadmaps and updates drop.</p>
-      <div class="nl-form">
-        <input class="nl-input" type="email" id="nl-email" placeholder="your@email.com" autocomplete="email" />
-        <button class="nl-btn" id="nl-btn">Subscribe</button>
+        <div className="twk-body">{children}</div>
       </div>
-      <div class="nl-feedback" id="nl-feedback"></div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-      <a href="https://ops4life.com">ops4life.com</a> · Roadmaps ·
-      inspired by
-      <a href="https://roadmap.sh" target="_blank" rel="noopener">roadmap.sh</a>
-      · <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener">GitHub</a>
-    </footer>
-  <script>
-    const LIST_UUID = "00a8f2c1-3ad4-422d-9ac4-fc70b1f26fc8";
-
-    document.getElementById("nl-btn").addEventListener("click", async () => {
-      const input = document.getElementById("nl-email");
-      const btn = document.getElementById("nl-btn");
-      const feedback = document.getElementById("nl-feedback");
-      const email = input.value.trim();
-
-      feedback.textContent = "";
-      feedback.className = "nl-feedback";
-
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        feedback.textContent = "Enter a valid email address.";
-        feedback.className = "nl-feedback err";
-        return;
-      }
-
-      btn.disabled = true;
-      btn.textContent = "...";
-
-      try {
-        const res = await fetch("/api/subscribe", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, list_uuids: [LIST_UUID] }),
-        });
-
-        const data = await res.json().catch(() => ({}));
-        if (res.ok) {
-          feedback.textContent = "Check your inbox to confirm your subscription.";
-          feedback.className = "nl-feedback ok";
-          input.value = "";
-        } else if (res.status === 409) {
-          feedback.textContent = data?.error || "You're already subscribed.";
-          feedback.className = "nl-feedback err";
-        } else {
-          feedback.textContent = "Something went wrong. Try again later.";
-          feedback.className = "nl-feedback err";
-        }
-      } catch {
-        feedback.textContent = "Could not connect. Try again later.";
-        feedback.className = "nl-feedback err";
-      } finally {
-        btn.disabled = false;
-        btn.textContent = "Subscribe";
-      }
-    });
-
-    document.getElementById("nl-email").addEventListener("keydown", (e) => {
-      if (e.key === "Enter") document.getElementById("nl-btn").click();
-    });
-  </script>
-  <!-- COOKIE CONSENT -->
-  <div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#111;color:#e0e0e0;border-top:2px solid #000;padding:12px 20px;align-items:center;gap:12px;flex-wrap:wrap;font-family:'Space Mono','Courier New',monospace;font-size:11px;line-height:1.5;">
-    <span style="flex:1;min-width:200px;">This site uses cookies and local storage to remember your preferences.</span>
-    <div style="display:flex;gap:8px;flex-shrink:0;">
-      <button id="cookie-accept" style="background:#ff4400;color:#fff;border:none;padding:7px 16px;cursor:pointer;font-family:inherit;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Accept</button>
-      <button id="cookie-decline" style="background:transparent;color:#aaa;border:1px solid #444;padding:7px 14px;cursor:pointer;font-family:inherit;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;">Decline</button>
+    </>
+  );
+}
+function TweakSection({ label }) {
+  return <div className="twk-sect">{label}</div>;
+}
+function TweakRadio({ label, value, options, onChange }) {
+  const opts = options.map(o => typeof o === 'object' ? o : { value: o, label: o });
+  const idx = Math.max(0, opts.findIndex(o => o.value === value));
+  const n = opts.length;
+  return (
+    <div className="twk-row">
+      <div className="twk-lbl"><span>{label}</span></div>
+      <div className="twk-seg">
+        <div className="twk-seg-thumb" style={{ left:`calc(2px + ${idx} * (100% - 4px) / ${n})`, width:`calc((100% - 4px) / ${n})` }} />
+        {opts.map(o => (
+          <button key={o.value} type="button" onClick={() => onChange(o.value)}>
+            {o.label}
+          </button>
+        ))}
+      </div>
     </div>
+  );
+}
+function TweakToggle({ label, value, onChange }) {
+  return (
+    <div className="twk-row twk-row-h">
+      <div className="twk-lbl"><span>{label}</span></div>
+      <button type="button" className="twk-toggle" data-on={value ? '1' : '0'}
+        onClick={() => onChange(!value)}><i /></button>
+    </div>
+  );
+}
+function TweakButton({ label, onClick }) {
+  return (
+    <button type="button" className="twk-btn" onClick={onClick}>{label}</button>
+  );
+}
+
+// ── TRACK SWITCHER ────────────────────────────────────────────────────
+function TrackSwitcher({ track, onTrackChange, onShowPicker }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, [open]);
+
+  return (
+    <div ref={ref} style={{position:"relative"}}>
+      <button onClick={() => setOpen(o => !o)} className="brut-sm brut-hover brut-press" style={{
+        appearance:"none", cursor:"pointer", fontFamily:"inherit",
+        display:"inline-flex", alignItems:"center", gap:9,
+        height:36, padding:"0 11px",
+        background:"var(--bg-2)", color:"var(--ink)", borderWidth:"1.5px",
+        fontSize:12, fontWeight:700, letterSpacing:".05em", textTransform:"uppercase",
+      }}>
+        <span style={{ width:10, height:10, background:track.accent, border:"1.5px solid var(--ink)" }} />
+        <span>{track.title}</span>
+        <Icon.Chevron style={{transform: open ? "rotate(180deg)" : "none", transition:"transform .12s ease"}} />
+      </button>
+
+      {open && (
+        <div className="brut" style={{
+          position:"absolute", top:"calc(100% + 8px)", left:0, zIndex:40,
+          minWidth:240, background:"var(--bg-2)", padding:6,
+          display:"flex", flexDirection:"column", gap:2,
+        }}>
+          {TRACKS.map(t => {
+            const active = t.id === track.id;
+            return (
+              <button key={t.id}
+                onClick={() => { onTrackChange(t.id); setOpen(false); }}
+                style={{
+                  appearance:"none", cursor:"pointer", fontFamily:"inherit",
+                  display:"flex", alignItems:"center", gap:11,
+                  padding:"9px 10px", border:"none",
+                  background: active ? "var(--ink)" : "transparent",
+                  color: active ? "var(--bg)" : "var(--ink)",
+                  textAlign:"left",
+                }}
+                onMouseEnter={e => { if (!active) e.currentTarget.style.background="var(--bg-3)"; }}
+                onMouseLeave={e => { if (!active) e.currentTarget.style.background="transparent"; }}>
+                <span style={{ width:12, height:12, background:t.accent, border:"1.5px solid " + (active ? "var(--bg)" : "var(--ink)"), flex:"none" }} />
+                <span style={{display:"flex", flexDirection:"column", gap:2, minWidth:0, flex:1}}>
+                  <span style={{ fontSize:12, fontWeight:700, letterSpacing:".05em", textTransform:"uppercase" }}>{t.title}</span>
+                  <span style={{ fontSize:10.5, fontWeight:400, letterSpacing:".02em", color: active ? "var(--bg-3)" : "var(--ink-3)", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{t.tagline}</span>
+                </span>
+              </button>
+            );
+          })}
+          <div style={{height:1.5, background:"var(--ink)", margin:"6px 4px"}} />
+          <button
+            onClick={() => { onShowPicker(); setOpen(false); }}
+            style={{
+              appearance:"none", cursor:"pointer", fontFamily:"inherit",
+              display:"flex", alignItems:"center", gap:8,
+              padding:"8px 10px", border:"none", background:"transparent",
+              color:"var(--ink-2)", textAlign:"left",
+              fontSize:11.5, fontWeight:700, letterSpacing:".06em", textTransform:"uppercase",
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background="var(--bg-3)"; e.currentTarget.style.color="var(--ink)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background="transparent"; e.currentTarget.style.color="var(--ink-2)"; }}>
+            <Icon.Back />
+            <span>All tracks</span>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── HEADER ────────────────────────────────────────────────────────────
+function Header({ track, onTrackChange, onShowPicker, query, setQuery, view, setView, percent, onSettings }) {
+  return (
+    <header style={{ position:"sticky", top:0, zIndex:30, background:"var(--bg)", borderBottom:"2px solid var(--ink)" }}>
+      <div className="header-inner" style={{
+        maxWidth:1320, margin:"0 auto", padding:"11px 22px",
+        display:"flex", alignItems:"center", gap:12, flexWrap:"wrap",
+      }}>
+        <a href="#" onClick={(e) => { e.preventDefault(); onShowPicker(); }} style={{display:"flex", alignItems:"center", gap:8}}>
+          <Icon.Logo />
+          <span className="display-mid" style={{fontSize:18, lineHeight:1, letterSpacing:"-.01em"}}>OPS4LIFE</span>
+          <span style={{
+            fontSize:9.5, fontWeight:700, padding:"2.5px 6px",
+            border:"1.5px solid var(--ink)", background:"var(--c-yellow)",
+            textTransform:"uppercase", letterSpacing:".10em",
+          }}>roadmap</span>
+        </a>
+
+        {track && <TrackSwitcher track={track} onTrackChange={onTrackChange} onShowPicker={onShowPicker} />}
+
+        <div style={{flex:1, minWidth:8}} />
+
+        {track && (
+          <div className="header-controls" style={{display:"flex", alignItems:"center", gap:10}}>
+            <label className="brut-sm header-search" style={{
+              display:"flex", alignItems:"center", gap:7,
+              height:36, padding:"0 10px",
+              background:"var(--bg-2)", borderWidth:"1.5px",
+            }}>
+              <Icon.Search />
+              <input value={query} onChange={e => setQuery(e.target.value)}
+                placeholder="Search…"
+                style={{
+                  appearance:"none", border:"none", outline:"none", background:"transparent",
+                  fontFamily:"inherit", fontSize:12, color:"var(--ink)", width:130,
+                }} />
+            </label>
+
+            <div className="brut-sm header-view" style={{
+              display:"flex", padding:0, background:"var(--bg-2)", borderWidth:"1.5px",
+            }}>
+              {[["grid", <Icon.Grid />], ["list", <Icon.List />]].map(([k, ic]) => (
+                <button key={k} onClick={() => setView(k)} style={{
+                  appearance:"none", cursor:"pointer", fontFamily:"inherit",
+                  width:34, height:34, display:"grid", placeItems:"center",
+                  border:"none", borderLeft: k==="list" ? "1.5px solid var(--ink)" : "none",
+                  background: view===k ? "var(--ink)" : "transparent",
+                  color: view===k ? "var(--bg)" : "var(--ink)",
+                }}>{ic}</button>
+              ))}
+            </div>
+
+            <div className="header-progress" style={{
+              display:"flex", alignItems:"center", gap:9,
+              padding:"6px 10px", border:"1.5px solid var(--ink)",
+              background:"var(--c-lime)", color:"var(--ink)",
+              fontSize:11, fontWeight:700, letterSpacing:".05em",
+            }}>
+              <span>{percent}%</span>
+              <div style={{width:46, height:6, background:"var(--bg-2)", border:"1.5px solid var(--ink)"}}>
+                <div style={{width:`${percent}%`, height:"100%", background:"var(--ink)"}} />
+              </div>
+            </div>
+          </div>
+        )}
+
+        <button onClick={onSettings} className="brut-sm brut-hover brut-press" style={{
+          appearance:"none", cursor:"pointer",
+          width:34, height:34, display:"grid", placeItems:"center",
+          background:"var(--bg-2)", borderWidth:"1.5px",
+        }} title="Settings">
+          <Icon.Gear />
+        </button>
+      </div>
+      <style>{`
+        @media (max-width: 768px){
+          .header-inner{ padding: 10px 16px !important; gap:8px !important }
+          .header-search input{ width: 90px !important }
+        }
+        @media (max-width: 560px){
+          .header-controls{ width:100%; justify-content: space-between }
+          .header-search{ flex:1 }
+          .header-search input{ width:100% !important }
+          .header-progress{ display:none !important }
+        }
+      `}</style>
+    </header>
+  );
+}
+
+// ── HERO ──────────────────────────────────────────────────────────────
+function Hero({ track, percent, doneCount, totalCount }) {
+  return (
+    <section className="hero-section" style={{ maxWidth:1320, margin:"0 auto", padding:"36px 22px 22px" }}>
+      <div className="hero-grid" style={{display:"grid", gridTemplateColumns:"minmax(0,1fr) 280px", gap:32, alignItems:"end"}}>
+        <div style={{minWidth:0}}>
+          <div style={{display:"flex", alignItems:"center", gap:7, marginBottom:14, flexWrap:"wrap"}}>
+            <Tag color={track.accent}>TRACK · {track.code}</Tag>
+            <Tag>{totalCount} NODES</Tag>
+            <Tag color="var(--c-lime)">{doneCount} DONE</Tag>
+          </div>
+          <h1 className="display hero-title" style={{ margin:"0 0 12px", fontSize:"clamp(56px, 9vw, 132px)", color:"var(--ink)" }}>
+            {track.title}<span style={{color:"var(--accent)"}}>.</span>
+          </h1>
+          <div className="display-mid" style={{ fontSize:"clamp(17px, 2vw, 24px)", color:"var(--ink-2)", margin:"0 0 12px", maxWidth:640, letterSpacing:"-.005em", lineHeight:1.15 }}>{track.tagline}</div>
+          <p style={{ margin:0, fontSize:13, lineHeight:1.6, color:"var(--ink-3)", maxWidth:580 }}>{track.blurb}</p>
+        </div>
+
+        <div className="brut hero-progress-card" style={{ padding:"16px 18px 14px", background:"var(--c-yellow)" }}>
+          <div className="eyebrow" style={{marginBottom:4, fontSize:10}}>Your progress</div>
+          <div style={{fontSize:10, color:"var(--ink-2)", marginBottom:12, letterSpacing:".04em"}}>saved locally — no signup</div>
+          <div style={{display:"flex", alignItems:"baseline", gap:4}}>
+            <div className="display" style={{fontSize:64, lineHeight:.85}}>{percent}</div>
+            <div className="display-mid" style={{fontSize:22, lineHeight:.85, color:"var(--ink-2)"}}>%</div>
+          </div>
+          <div style={{ marginTop:12, height:8, background:"var(--bg-2)", border:"1.5px solid var(--ink)" }}>
+            <div style={{width:`${percent}%`, height:"100%", background:"var(--ink)", transition:"width .25s ease"}} />
+          </div>
+          <div style={{ marginTop:8, fontSize:10.5, fontWeight:700, display:"flex", justifyContent:"space-between", textTransform:"uppercase", letterSpacing:".06em" }}>
+            <span>{doneCount} of {totalCount}</span>
+            <span style={{color:"var(--ink-2)"}}>done</span>
+          </div>
+        </div>
+      </div>
+      <style>{`
+        @media (max-width: 860px){ .hero-grid{ grid-template-columns: 1fr !important; gap: 22px !important } .hero-progress-card{ max-width: 320px } }
+        @media (max-width: 560px){ .hero-section{ padding: 24px 16px 16px !important } }
+      `}</style>
+    </section>
+  );
+}
+
+// ── TRACK PICKER ──────────────────────────────────────────────────────
+function TrackPicker({ onChoose, progressByTrack }) {
+  return (
+    <section className="picker" style={{ maxWidth:1240, margin:"0 auto", padding:"56px 22px 80px" }}>
+      <div style={{textAlign:"center", marginBottom:36}}>
+        <div style={{display:"inline-flex", alignItems:"center", gap:8, marginBottom:18}}>
+          <Tag color="var(--c-yellow)">CHOOSE A TRACK</Tag>
+        </div>
+        <h1 className="display picker-title" style={{ margin:"0 0 14px", fontSize:"clamp(56px, 9vw, 132px)", color:"var(--ink)" }}>
+          Roadmaps<span style={{color:"var(--accent)"}}>.</span>
+        </h1>
+        <p className="display-mid" style={{ margin:"0 auto", maxWidth:620, fontSize:"clamp(15px, 1.8vw, 20px)", lineHeight:1.35, color:"var(--ink-2)", letterSpacing:"-.005em" }}>
+          Pick the path you want to walk. Progress saves to your browser — no signup, no telemetry.
+        </p>
+      </div>
+
+      <div className="picker-grid" style={{ display:"grid", gridTemplateColumns:"repeat(3, minmax(0,1fr))", gap:20 }}>
+        {TRACKS.map(t => {
+          const total = t.sections.reduce((a, s) => a + s.items.length, 0);
+          const p = progressByTrack?.[t.id] || { learning:{}, done:{} };
+          const done = Object.values(p.done || {}).filter(Boolean).length;
+          const pct = total ? Math.round((done / total) * 100) : 0;
+          return (
+            <button key={t.id} onClick={() => onChoose(t.id)}
+              className="brut brut-hover brut-press picker-card"
+              style={{
+                appearance:"none", cursor:"pointer", fontFamily:"inherit",
+                textAlign:"left", padding:0,
+                background:"var(--bg-2)", color:"var(--ink)",
+                display:"flex", flexDirection:"column", overflow:"hidden",
+              }}>
+              <div style={{ background:t.accent, padding:"18px 20px 14px", borderBottom:"2px solid var(--ink)", display:"flex", flexDirection:"column", gap:6 }}>
+                <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:8 }}>
+                  <span style={{ fontSize:10, fontWeight:700, letterSpacing:".10em", textTransform:"uppercase", color:"var(--ink-2)" }}>track · {t.code}</span>
+                  <span style={{ fontSize:10, fontWeight:700, letterSpacing:".10em", textTransform:"uppercase", color:"var(--ink-2)" }}>{total} nodes</span>
+                </div>
+                <div className="display" style={{ fontSize:"clamp(40px, 5vw, 56px)", lineHeight:.9, color:"var(--ink)", letterSpacing:"-.02em" }}>
+                  {t.title}<span style={{color:"var(--ink)"}}>.</span>
+                </div>
+              </div>
+              <div style={{padding:"16px 20px 18px", display:"flex", flexDirection:"column", gap:14, flex:1}}>
+                <div className="display-mid" style={{ fontSize:18, lineHeight:1.2, color:"var(--ink)", letterSpacing:"-.005em" }}>{t.tagline}</div>
+                <p style={{ margin:0, fontSize:12.5, lineHeight:1.55, color:"var(--ink-3)", flex:1 }}>{t.blurb}</p>
+
+                <div style={{display:"flex", alignItems:"center", gap:10, marginTop:4}}>
+                  <div style={{ flex:1, height:8, background:"var(--bg-3)", border:"1.5px solid var(--ink)" }}>
+                    <div style={{width:`${pct}%`, height:"100%", background:"var(--ink)"}} />
+                  </div>
+                  <span style={{ fontSize:11, fontWeight:700, letterSpacing:".05em", color:"var(--ink-2)" }}>{pct}%</span>
+                </div>
+
+                <div style={{display:"flex", flexWrap:"wrap", gap:5}}>
+                  {t.sections.map(s => {
+                    const [num] = s.title.split(" · ");
+                    return (
+                      <span key={s.id} style={{ fontSize:9.5, fontWeight:700, padding:"3px 6px", border:"1.5px solid var(--ink)", background:s.color, textTransform:"uppercase", letterSpacing:".08em" }}>
+                        {num} {s.title.split(" · ")[1]}
+                      </span>
+                    );
+                  })}
+                </div>
+
+                <div style={{ marginTop:6, display:"flex", alignItems:"center", justifyContent:"space-between", fontSize:11, fontWeight:700, letterSpacing:".08em", textTransform:"uppercase", color:"var(--ink)" }}>
+                  <span>Open track</span>
+                  <Icon.Arrow />
+                </div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+      <style>{`
+        @media (max-width: 900px){ .picker-grid{ grid-template-columns: 1fr 1fr !important } }
+        @media (max-width: 620px){ .picker{ padding: 32px 16px 60px !important } .picker-grid{ grid-template-columns: 1fr !important } }
+      `}</style>
+    </section>
+  );
+}
+
+// ── BOARD COMPONENTS ──────────────────────────────────────────────────
+function statusOf(progress, id) {
+  if (progress.done?.[id]) return "done";
+  if (progress.learning?.[id]) return "learning";
+  return "todo";
+}
+
+const NodeCard = React.forwardRef(function NodeCard({ item, status, color, faded, onOpen }, ref) {
+  const isAlt = item.type === "alt";
+  const bg = status === "done" ? "var(--done-bg)" : "var(--bg-2)";
+  return (
+    <button ref={ref} onClick={() => onOpen(item)}
+      data-node-id={item.id}
+      className="brut-sm brut-hover brut-press"
+      style={{
+        appearance:"none", cursor:"pointer", textAlign:"left",
+        display:"flex", alignItems:"center", gap:11,
+        width:"100%", padding:"var(--pad-node-y) var(--pad-node-x)",
+        background:bg, color:"var(--ink)", fontFamily:"inherit",
+        borderStyle: isAlt ? "dashed" : "solid",
+        borderLeft: `7px solid ${color}`,
+        opacity: faded ? .16 : 1,
+        transition:"opacity .2s ease, transform .14s ease, box-shadow .14s ease",
+      }}>
+      <span style={{
+        width:18, height:18, border:"2px solid var(--ink)",
+        background: status==="done" ? "var(--done)" : status==="learning" ? "var(--learning)" : "var(--bg)",
+        display:"grid", placeItems:"center", flex:"none",
+      }}>
+        {status==="done" && <Icon.Check />}
+        {status==="learning" && <span style={{width:6, height:6, background:"var(--ink)"}} />}
+      </span>
+      <span style={{ flex:1, minWidth:0, fontSize:12.5, fontWeight:700, letterSpacing:".01em", color:"var(--ink)" }}>{item.label}</span>
+      {isAlt && (
+        <span style={{ fontSize:9.5, fontWeight:700, padding:"2px 6px", border:"1.5px solid var(--ink)", background:"var(--bg)", textTransform:"uppercase", letterSpacing:".10em", color:"var(--ink-2)" }}>ALT</span>
+      )}
+    </button>
+  );
+});
+
+function SectionColumn({ section, progress, query, onOpen, headerRef }) {
+  const [num, ...rest] = section.title.split(" · ");
+  const label = rest.join(" · ");
+  return (
+    <div style={{display:"flex", flexDirection:"column", gap:"var(--gap-node)", minWidth:260}}>
+      <div ref={headerRef} className="brut" style={{ padding:"14px 16px 12px", background:section.color, color:"var(--ink)", display:"flex", flexDirection:"column", gap:4 }}>
+        <div style={{display:"flex", alignItems:"baseline", justifyContent:"space-between", gap:8}}>
+          <span className="display-mid" style={{fontSize:13, letterSpacing:".02em", color:"var(--ink-2)"}}>{num}</span>
+          <span style={{fontSize:10, fontWeight:700, color:"var(--ink-2)", letterSpacing:".10em", textTransform:"uppercase"}}>{section.items.length} nodes</span>
+        </div>
+        <div className="display-mid" style={{fontSize:19, lineHeight:1.05, color:"var(--ink)"}}>{label}</div>
+      </div>
+      <div style={{display:"flex", flexDirection:"column", gap:"var(--gap-node)"}}>
+        {section.items.map(item => {
+          const faded = query && !item.label.toLowerCase().includes(query.toLowerCase())
+                              && !(item.tools||[]).join(" ").toLowerCase().includes(query.toLowerCase())
+                              && !(item.concepts||[]).join(" ").toLowerCase().includes(query.toLowerCase());
+          return (
+            <NodeCard key={item.id} item={item}
+              status={statusOf(progress, item.id)}
+              color={section.color}
+              faded={faded}
+              onOpen={onOpen} />
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function Board({ track, progress, query, onOpen }) {
+  const wrapRef = useRef(null);
+  const headerRefs = useRef({});
+  const [paths, setPaths] = useState([]);
+
+  const draw = useCallback(() => {
+    if (!wrapRef.current) return;
+    const wrap = wrapRef.current.getBoundingClientRect();
+    const sections = track.sections;
+    const newPaths = [];
+    for (let i = 0; i < sections.length - 1; i++) {
+      const a = headerRefs.current[sections[i].id];
+      const b = headerRefs.current[sections[i+1].id];
+      if (!a || !b) continue;
+      const ar = a.getBoundingClientRect();
+      const br = b.getBoundingClientRect();
+      const x1 = ar.right - wrap.left;
+      const y1 = ar.top + ar.height/2 - wrap.top;
+      const x2 = br.left - wrap.left;
+      const y2 = br.top + br.height/2 - wrap.top;
+      const dx = (x2 - x1) * 0.5;
+      newPaths.push({ d:`M${x1},${y1} C${x1+dx},${y1} ${x2-dx},${y2} ${x2},${y2}`, color: sections[i+1].color });
+    }
+    setPaths(newPaths);
+  }, [track]);
+
+  useEffect(() => {
+    draw();
+    const ro = new ResizeObserver(draw);
+    if (wrapRef.current) ro.observe(wrapRef.current);
+    window.addEventListener("resize", draw);
+    return () => { ro.disconnect(); window.removeEventListener("resize", draw); };
+  }, [draw]);
+
+  useEffect(() => { const id = setTimeout(draw, 50); return () => clearTimeout(id); }, [track.id, draw]);
+
+  return (
+    <div ref={wrapRef} style={{position:"relative"}}>
+      <svg style={{ position:"absolute", inset:0, width:"100%", height:"100%", pointerEvents:"none", overflow:"visible" }}>
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="var(--ink)" />
+          </marker>
+        </defs>
+        {paths.map((p, i) => (
+          <path key={i} d={p.d} fill="none" stroke="var(--ink)" strokeWidth="2" markerEnd="url(#arrow)" strokeLinecap="round" />
+        ))}
+      </svg>
+      <div style={{ display:"grid", gridTemplateColumns:`repeat(${track.sections.length}, minmax(250px, 1fr))`, gap:"var(--gap-section)", alignItems:"start" }}>
+        {track.sections.map(s => (
+          <SectionColumn key={s.id}
+            section={s} progress={progress} query={query} onOpen={onOpen}
+            headerRef={el => { headerRefs.current[s.id] = el; }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ListView({ track, progress, query, onOpen }) {
+  return (
+    <div style={{display:"flex", flexDirection:"column", gap:28}}>
+      {track.sections.map(s => {
+        const [num, ...rest] = s.title.split(" · ");
+        const label = rest.join(" · ");
+        return (
+          <div key={s.id}>
+            <div className="brut-sm" style={{ padding:"10px 14px", background:s.color, marginBottom:12, display:"inline-flex", alignItems:"baseline", gap:12 }}>
+              <span className="display-mid" style={{fontSize:13, color:"var(--ink-2)"}}>{num}</span>
+              <span className="display-mid" style={{fontSize:20, color:"var(--ink)"}}>{label}</span>
+              <span style={{fontSize:10, fontWeight:700, color:"var(--ink-2)", letterSpacing:".10em", textTransform:"uppercase", marginLeft:6}}>{s.items.length} nodes</span>
+            </div>
+            <div style={{display:"flex", flexDirection:"column", gap:"var(--gap-node)"}}>
+              {s.items.map(item => {
+                const faded = query && !item.label.toLowerCase().includes(query.toLowerCase())
+                                  && !(item.tools||[]).join(" ").toLowerCase().includes(query.toLowerCase());
+                return <NodeCard key={item.id} item={item}
+                  status={statusOf(progress, item.id)} color={s.color}
+                  faded={faded} onOpen={onOpen} />;
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ── DETAIL SECTION HELPER ─────────────────────────────────────────────
+function Section({ label, children }) {
+  return (
+    <div style={{marginBottom:22}}>
+      <div style={{ fontSize:11, fontWeight:700, textTransform:"uppercase", letterSpacing:".08em", marginBottom:10, color:"var(--ink-3)" }}>{label}</div>
+      {children}
+    </div>
+  );
+}
+
+// ── DRAWER ────────────────────────────────────────────────────────────
+function Drawer({ open, item, section, status, onClose, onMark }) {
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    if (open) document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
+  if (!open || !item) return null;
+  return (
+    <>
+      <div onClick={onClose} style={{ position:"fixed", inset:0, zIndex:50, background:"rgba(0,0,0,.45)", animation:"fade .15s ease" }} />
+      <aside style={{
+        position:"fixed", right:0, top:0, height:"100%", width:"min(440px, 100vw)",
+        background:"var(--bg-2)", borderLeft:"2px solid var(--ink)",
+        boxShadow:"-6px 0 0 var(--ink)", zIndex:51,
+        display:"flex", flexDirection:"column",
+        animation:"slide .2s ease",
+      }} className="drawer-aside">
+        <div style={{ padding:"16px 20px", borderBottom:"2px solid var(--ink)", background:section?.color || "var(--bg-3)", display:"flex", alignItems:"center", gap:10 }}>
+          <Tag>{section?.title || "NODE"}</Tag>
+          <Tag color={item.type==="alt" ? "var(--bg-2)" : "var(--c-yellow)"}>{item.type==="alt" ? "ALTERNATIVE" : "RECOMMENDED"}</Tag>
+          <span style={{flex:1}} />
+          <button onClick={onClose} className="brut-sm brut-hover brut-press" style={{ appearance:"none", cursor:"pointer", width:32, height:32, display:"grid", placeItems:"center", background:"var(--bg-2)" }}>
+            <Icon.Close />
+          </button>
+        </div>
+
+        <div style={{padding:"22px 22px 28px", overflowY:"auto", flex:1}}>
+          <h3 className="display" style={{margin:"0 0 14px", fontSize:42, lineHeight:.92, letterSpacing:"-.02em"}}>
+            {item.label}<span style={{color:"var(--accent)"}}>.</span>
+          </h3>
+          <p style={{margin:"0 0 22px", fontSize:14, color:"var(--ink-2)", lineHeight:1.55}}>
+            A foundational node in the {section?.title.split("·")[1]?.trim() || ""} section.
+            Hands-on with these concepts will give you the muscle memory the rest of the track depends on.
+          </p>
+
+          {item.concepts?.length > 0 && (
+            <Section label="CORE CONCEPTS">
+              <div style={{display:"flex", flexWrap:"wrap", gap:6}}>
+                {item.concepts.map(c => <Tag key={c} color="var(--bg-3)">{c}</Tag>)}
+              </div>
+            </Section>
+          )}
+
+          {item.tools?.length > 0 && (
+            <Section label="TOOLS">
+              <div style={{display:"flex", flexWrap:"wrap", gap:6}}>
+                {item.tools.map(c => <Tag key={c} color="var(--c-pink)">{c}</Tag>)}
+              </div>
+            </Section>
+          )}
+
+          <Section label="RESOURCES">
+            <div style={{display:"flex", flexDirection:"column", gap:8}}>
+              {[
+                { kind:"docs",    label:"Official documentation" },
+                { kind:"article", label:"A grounded long-form intro" },
+                { kind:"video",   label:"60-min walkthrough on YouTube" },
+              ].map((r, i) => (
+                <a key={i} href="#" onClick={e => e.preventDefault()}
+                  className="brut-sm brut-hover brut-press"
+                  style={{ display:"flex", alignItems:"center", gap:10, padding:"10px 12px", background:"var(--bg-2)", fontSize:13 }}>
+                  <Tag style={{minWidth:54, justifyContent:"center"}}>{r.kind.toUpperCase()}</Tag>
+                  <span style={{flex:1}}>{r.label}</span>
+                  <Icon.Ext />
+                </a>
+              ))}
+            </div>
+          </Section>
+
+          <div className="brut-sm" style={{ padding:"14px 16px", background:"var(--c-yellow)", display:"flex", alignItems:"flex-start", gap:10 }}>
+            <Icon.Bulb />
+            <div style={{fontSize:13, lineHeight:1.5}}>
+              <strong style={{textTransform:"uppercase", letterSpacing:".06em", fontSize:11}}>Tip · </strong>
+              Don't try to learn this in isolation. Pick a node from the previous section and build something tiny that touches both.
+            </div>
+          </div>
+        </div>
+
+        <div style={{ padding:"14px 18px", borderTop:"2px solid var(--ink)", background:"var(--bg-2)", display:"flex", gap:10 }}>
+          <Btn variant={status==="learning" ? "accent" : "secondary"} size="md"
+            onClick={() => onMark(item.id, "learning")}
+            style={{flex:1, justifyContent:"center"}}>
+            {status==="learning" ? "Learning ✓" : "Mark as learning"}
+          </Btn>
+          <Btn variant={status==="done" ? "primary" : "secondary"} size="md"
+            onClick={() => onMark(item.id, "done")}
+            style={{ flex:1, justifyContent:"center", background: status==="done" ? "var(--done)" : undefined, color: status==="done" ? "var(--ink)" : undefined }}>
+            {status==="done" ? "Done ✓" : "Mark as done"}
+          </Btn>
+        </div>
+      </aside>
+      <style>{`
+        @keyframes fade { from{opacity:0} to{opacity:1} }
+        @keyframes slide { from{transform:translateX(20px); opacity:0} to{transform:translateX(0); opacity:1} }
+        @media (max-width: 640px){
+          .drawer-aside{ width:100% !important; top:auto !important; bottom:0 !important; height:70vh !important; border-left:none !important; border-top:2px solid var(--ink) !important; box-shadow:0 -6px 0 var(--ink) !important; animation: slideUp .2s ease !important; }
+        }
+        @keyframes slideUp { from{transform:translateY(20px); opacity:0} to{transform:translateY(0); opacity:1} }
+      `}</style>
+    </>
+  );
+}
+
+// ── NEWSLETTER ────────────────────────────────────────────────────────
+const LIST_UUID = "00a8f2c1-3ad4-422d-9ac4-fc70b1f26fc8";
+
+function Newsletter() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const subscribe = async () => {
+    const v = email.trim();
+    if (!v || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) {
+      setStatus({ ok:false, msg:"Enter a valid email address." });
+      return;
+    }
+    setLoading(true);
+    setStatus(null);
+    try {
+      const res = await fetch("/api/subscribe", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({ email:v, list_uuids:[LIST_UUID] }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        setStatus({ ok:true, msg:"Check your inbox to confirm." });
+        setEmail("");
+      } else if (res.status === 409) {
+        setStatus({ ok:false, msg: data?.error || "Already subscribed." });
+      } else {
+        setStatus({ ok:false, msg:"Something went wrong. Try again." });
+      }
+    } catch {
+      setStatus({ ok:false, msg:"Could not connect. Try again." });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div style={{borderTop:"2px solid var(--ink)", padding:"28px 22px", background:"var(--bg-2)"}}>
+      <div style={{maxWidth:560}}>
+        <div className="display-mid" style={{fontSize:22, marginBottom:6}}>Stay in the loop</div>
+        <p style={{fontSize:12, color:"var(--ink-3)", marginBottom:16}}>Get notified when new roadmaps and updates drop.</p>
+        <div className="nl-row" style={{display:"flex", gap:8}}>
+          <input
+            type="email" value={email}
+            onChange={e => setEmail(e.target.value)}
+            onKeyDown={e => { if (e.key === "Enter") subscribe(); }}
+            placeholder="your@email.com"
+            className="brut-sm"
+            style={{
+              flex:1, minWidth:0,
+              fontFamily:"inherit", fontSize:12, color:"var(--ink)",
+              background:"var(--bg)", padding:"0 12px", height:38,
+              border:"1.5px solid var(--ink)", outline:"none",
+            }} />
+          <Btn onClick={subscribe} disabled={loading} size="md">
+            {loading ? "..." : "Subscribe"}
+          </Btn>
+        </div>
+        {status && (
+          <div style={{ marginTop:10, fontSize:12, color: status.ok ? "oklch(0.55 0.16 145)" : "oklch(0.55 0.20 25)" }}>
+            {status.msg}
+          </div>
+        )}
+      </div>
+      <style>{`@media (max-width: 480px){ .nl-row{ flex-direction: column } }`}</style>
+    </div>
+  );
+}
+
+// ── FOOTER ────────────────────────────────────────────────────────────
+function Footer() {
+  return (
+    <footer style={{borderTop:"2px solid var(--ink)", background:"var(--bg-2)"}}>
+      <Newsletter />
+      <div className="footer-inner" style={{
+        maxWidth:1320, margin:"0 auto", padding:"18px 22px",
+        borderTop:"1.5px solid var(--ink)",
+        display:"flex", alignItems:"center", justifyContent:"space-between", gap:18, flexWrap:"wrap",
+      }}>
+        <div style={{display:"flex", alignItems:"center", gap:9}}>
+          <Icon.Logo />
+          <span className="display-mid" style={{fontSize:16, letterSpacing:"-.01em"}}>OPS4LIFE</span>
+          <span style={{fontSize:11, color:"var(--ink-3)"}}>· progress lives in your browser</span>
+        </div>
+        <div style={{display:"flex", gap:14, fontSize:10.5, fontWeight:700, textTransform:"uppercase", letterSpacing:".08em", color:"var(--ink-3)"}}>
+          <a href="https://ops4life.com">home</a>
+          <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener">github</a>
+        </div>
+      </div>
+      <style>{`@media (max-width: 480px){ .footer-inner{ padding: 14px 16px !important } }`}</style>
+    </footer>
+  );
+}
+
+// ── APP ───────────────────────────────────────────────────────────────
+const TWEAK_DEFAULTS = { theme:"light", view:"grid", density:"normal", showHero:true };
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [trackId, setTrackId] = useStored("ops4life:active-track", null);
+  const [view, setView] = useState(t.view);
+  const [query, setQuery] = useState("");
+  const [openItem, setOpenItem] = useState(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  useEffect(() => { document.documentElement.classList.toggle("dark", t.theme==="dark"); }, [t.theme]);
+  useEffect(() => { setView(t.view); }, [t.view]);
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.remove("density-compact", "density-spacious");
+    if (t.density === "compact") root.classList.add("density-compact");
+    if (t.density === "spacious") root.classList.add("density-spacious");
+  }, [t.density]);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    const apply = () => { if (mq.matches) setView("list"); };
+    apply();
+    mq.addEventListener?.("change", apply);
+    return () => mq.removeEventListener?.("change", apply);
+  }, []);
+
+  const p0 = useStored(TRACKS[0].storageKey, { learning:{}, done:{} });
+  const p1 = useStored(TRACKS[1].storageKey, { learning:{}, done:{} });
+  const p2 = useStored(TRACKS[2].storageKey, { learning:{}, done:{} });
+  const progressByTrack = {
+    [TRACKS[0].id]: p0[0], [TRACKS[1].id]: p1[0], [TRACKS[2].id]: p2[0],
+  };
+  const setProgressByTrack = {
+    [TRACKS[0].id]: p0[1], [TRACKS[1].id]: p1[1], [TRACKS[2].id]: p2[1],
+  };
+
+  const track = useMemo(() => trackId ? TRACKS.find(tr => tr.id === trackId) : null, [trackId]);
+  const progress = track ? progressByTrack[track.id] : { learning:{}, done:{} };
+  const setProgress = track ? setProgressByTrack[track.id] : (() => {});
+
+  const totalCount = track ? track.sections.reduce((a, s) => a + s.items.length, 0) : 0;
+  const doneCount = Object.values(progress.done || {}).filter(Boolean).length;
+  const percent = totalCount ? Math.round((doneCount / totalCount) * 100) : 0;
+
+  const onMark = (id, kind) => {
+    setProgress(p => {
+      const next = { learning:{...(p.learning||{})}, done:{...(p.done||{})} };
+      if (kind === "done") {
+        next.done[id] = !next.done[id];
+        if (next.done[id]) next.learning[id] = false;
+      } else if (kind === "learning") {
+        next.learning[id] = !next.learning[id];
+        if (next.learning[id]) next.done[id] = false;
+      }
+      return next;
+    });
+  };
+
+  const sectionOf = (item) => track?.sections.find(s => s.items.some(i => i.id === item.id));
+  const showPicker = () => { setTrackId(null); setOpenItem(null); setQuery(""); window.scrollTo({top:0}); };
+  const choose = (id) => { setTrackId(id); window.scrollTo({top:0}); };
+
+  return (
+    <div style={{minHeight:"100vh"}}>
+      <Header track={track} onTrackChange={choose} onShowPicker={showPicker}
+        query={query} setQuery={setQuery}
+        view={view} setView={setView}
+        percent={percent}
+        onSettings={() => setSettingsOpen(s => !s)} />
+
+      {!track && <TrackPicker onChoose={choose} progressByTrack={progressByTrack} />}
+
+      {track && t.showHero && (
+        <Hero track={track} percent={percent} doneCount={doneCount} totalCount={totalCount} />
+      )}
+
+      {track && (
+        <main className="board-main" style={{
+          maxWidth:1320, margin:"0 auto",
+          padding:"16px 22px 60px",
+          overflowX: view==="grid" ? "auto" : "visible",
+        }}>
+          {view === "grid"
+            ? <Board track={track} progress={progress} query={query} onOpen={setOpenItem} />
+            : <ListView track={track} progress={progress} query={query} onOpen={setOpenItem} />}
+        </main>
+      )}
+
+      <Footer />
+
+      <Drawer
+        open={!!openItem}
+        item={openItem}
+        section={openItem ? sectionOf(openItem) : null}
+        status={openItem ? statusOf(progress, openItem.id) : "todo"}
+        onClose={() => setOpenItem(null)}
+        onMark={onMark} />
+
+      <TweaksPanel open={settingsOpen} onClose={() => setSettingsOpen(false)}>
+        <TweakSection label="Appearance" />
+        <TweakRadio label="Mode" value={t.theme} options={["light","dark"]}
+          onChange={v => setTweak("theme", v)} />
+        <TweakRadio label="Density" value={t.density} options={["compact","normal","spacious"]}
+          onChange={v => setTweak("density", v)} />
+        <TweakSection label="Layout" />
+        <TweakRadio label="Default view" value={t.view} options={["grid","list"]}
+          onChange={v => setTweak("view", v)} />
+        <TweakToggle label="Show hero" value={t.showHero}
+          onChange={v => setTweak("showHero", v)} />
+        <TweakSection label="Progress" />
+        <TweakButton label={track ? "Reset this track" : "Reset all tracks"}
+          onClick={() => {
+            if (track) setProgress({ learning:{}, done:{} });
+            else { p0[1]({learning:{},done:{}}); p1[1]({learning:{},done:{}}); p2[1]({learning:{},done:{}}); }
+          }} />
+        <TweakButton label="Back to all tracks" onClick={showPicker} />
+      </TweaksPanel>
+
+      <style>{`
+        @media (max-width: 560px){ .board-main{ padding: 14px 14px 56px !important } }
+      `}</style>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+<!-- COOKIE CONSENT -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:var(--bg-2,#FAF5E3);color:var(--ink,#1A1714);border-top:2px solid var(--ink,#1A1714);padding:12px 20px;align-items:center;gap:12px;flex-wrap:wrap;font-family:'Space Mono','Courier New',monospace;font-size:11px;line-height:1.5;">
+  <span style="flex:1;min-width:200px;">This site uses local storage to remember your progress and preferences.</span>
+  <div style="display:flex;gap:8px;flex-shrink:0;">
+    <button id="cookie-accept" style="background:var(--ink,#1A1714);color:var(--bg,#EFE9D6);border:none;padding:7px 16px;cursor:pointer;font-family:inherit;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Accept</button>
+    <button id="cookie-decline" style="background:transparent;color:var(--ink-3,#6E6859);border:1px solid var(--ink-3,#6E6859);padding:7px 14px;cursor:pointer;font-family:inherit;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;">Decline</button>
   </div>
-  <script>
-  (function(){
-    var b=document.getElementById('cookie-banner');
-    if(!localStorage.getItem('cookie-consent')){b.style.display='flex';}
-    document.getElementById('cookie-accept').onclick=function(){localStorage.setItem('cookie-consent','accepted');b.style.display='none';};
-    document.getElementById('cookie-decline').onclick=function(){localStorage.setItem('cookie-consent','declined');b.style.display='none';};
-  })();
-  </script>
-  </body>
+</div>
+<script>
+(function(){
+  var b=document.getElementById('cookie-banner');
+  if(!localStorage.getItem('cookie-consent')){b.style.display='flex';}
+  document.getElementById('cookie-accept').onclick=function(){localStorage.setItem('cookie-consent','accepted');b.style.display='none';};
+  document.getElementById('cookie-decline').onclick=function(){localStorage.setItem('cookie-consent','declined');b.style.display='none';};
+})();
+</script>
+</body>
 </html>
