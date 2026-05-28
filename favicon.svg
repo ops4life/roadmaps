@@ -1,29 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <!--
-    Isometric box — matches 3d-view.png
-    Apex:      (50,  4)
-    Left:      ( 4, 27)
-    Right:     (96, 27)
-    Mid:       (50, 50)
-    Bot-left:  ( 4, 73)
-    Bot-right: (96, 73)
-    Bottom:    (50, 96)
-  -->
+  <!-- Neobrutalist Shadow (Dark Ink) -->
+  <rect x="14" y="14" width="76" height="76" rx="8" fill="#1A1714"/>
 
-  <!-- Top face (white) -->
-  <polygon points="50,4 96,27 50,50 4,27"
-    fill="white" stroke="#3565c5" stroke-width="3.5" stroke-linejoin="round"/>
+  <!-- Neobrutalist Main Box (Matches UI Background --bg-2) -->
+  <rect x="8" y="8" width="76" height="76" rx="8" fill="#FAF5E3" stroke="#1A1714" stroke-width="6" stroke-linejoin="round"/>
 
-  <!-- Left face (cyan) -->
-  <polygon points="4,27 50,50 50,96 4,73"
-    fill="#00cfff" stroke="#3565c5" stroke-width="3.5" stroke-linejoin="round"/>
-
-  <!-- Right face (cyan) -->
-  <polygon points="96,27 50,50 50,96 96,73"
-    fill="#00cfff" stroke="#3565c5" stroke-width="3.5" stroke-linejoin="round"/>
-
-  <!-- Lid detail — bent line on top face suggesting an open box -->
-  <polyline points="44,14 22,28 36,38"
-    fill="none" stroke="#3565c5" stroke-width="2.8"
-    stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Checkmark (Dark Ink) -->
+  <path d="M 26 46 L 42 62 L 66 28" fill="none" stroke="#1A1714" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
