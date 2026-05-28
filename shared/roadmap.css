@@ -509,6 +509,13 @@ a.chip:hover {
   border-style: dashed;
 }
 
+/* Hide list/grid toggle on desktop — list view is mobile-only */
+@media (min-width: 769px) {
+  #toggle-view-btn {
+    display: none !important;
+  }
+}
+
 /* LIST VIEW (mobile accordion) */
 .rm-canvas.list-view {
   flex-direction: column;
