@@ -119,28 +119,69 @@ const TRACKS = [
     storageKey: "ops4life:devops", accent: "var(--c-teal)",
     sections: [
       { id:"foundations", title:"01 · Foundations", color:"var(--c-purple)", items: [
-        { id:"linux",    label:"Linux & shell",        type:"recommended", concepts:["filesystem","permissions","systemd","networking"], tools:["bash","zsh","tmux"] },
-        { id:"git",      label:"Git workflows",        type:"recommended", concepts:["branching","rebase","tags","hooks"], tools:["git","gh"] },
-        { id:"http",     label:"HTTP & APIs",          type:"recommended", concepts:["REST","status codes","headers","TLS"], tools:["curl","httpie"] },
-        { id:"editor",   label:"Pick a code editor",   type:"alt",         concepts:["LSP","extensions"], tools:["vscode","neovim"] },
+        { id:"linux",    label:"Linux & shell",        type:"recommended", concepts:["filesystem","permissions","systemd","networking"], tools:["bash","zsh","tmux"],
+          description:"Linux is the foundation of almost every server, container, and cloud instance. Deep Linux knowledge separates good DevOps engineers from great ones.",
+          resources:[{kind:"read",label:"The Linux Command Line (free book)",url:"https://linuxcommand.org/tlcl.php"},{kind:"read",label:"Linux Journey",url:"https://linuxjourney.com/"}],
+          tip:"Practice on a real VM. Theoretical knowledge is useless without muscle memory from breaking and fixing real systems." },
+        { id:"git",      label:"Git workflows",        type:"recommended", concepts:["branching","rebase","tags","hooks"], tools:["git","gh"],
+          description:"Git is non-negotiable. Master branching strategies, rebasing, and the internals of how Git stores objects — it makes debugging merge conflicts trivial.",
+          resources:[{kind:"read",label:"Pro Git (free book)",url:"https://git-scm.com/book"},{kind:"interactive",label:"Learn Git Branching",url:"https://learngitbranching.js.org/"}],
+          tip:"`git reflog` is your safety net. It records every HEAD movement, so you can recover from almost any mistake if you act quickly." },
+        { id:"http",     label:"HTTP & APIs",          type:"recommended", concepts:["REST","status codes","headers","TLS"], tools:["curl","httpie"],
+          description:"HTTP is the lingua franca of distributed systems. Understanding request/response semantics, status codes, and headers is essential for debugging microservices.",
+          resources:[{kind:"read",label:"MDN HTTP docs",url:"https://developer.mozilla.org/en-US/docs/Web/HTTP"},{kind:"read",label:"HTTP/2 explained",url:"https://http2-explained.haxx.se/"}],
+          tip:"`curl -v` shows the full TLS handshake and HTTP headers. It's the most useful debugging tool you'll reach for every day." },
+        { id:"editor",   label:"Pick a code editor",   type:"alt",         concepts:["LSP","extensions"], tools:["vscode","neovim"],
+          description:"Your editor is where you spend most of your day. Invest time in mastering it — shortcuts, LSP integration, and plugins compound into hours saved per week." },
       ]},
       { id:"automation", title:"02 · Automation", color:"var(--c-teal)", items: [
-        { id:"ci",       label:"CI fundamentals",      type:"recommended", concepts:["pipelines","artifacts","cache","matrix"], tools:["GitHub Actions","GitLab CI"] },
-        { id:"cd",       label:"Continuous delivery",  type:"recommended", concepts:["envs","promotion","rollbacks"], tools:["Argo CD","Flux"] },
-        { id:"testing",  label:"Test in pipelines",    type:"recommended", concepts:["unit","integration","e2e","flake"], tools:["jest","pytest","playwright"] },
-        { id:"scripting",label:"Scripting glue",       type:"alt",         concepts:["idempotence","retries"], tools:["bash","python","make"] },
+        { id:"ci",       label:"CI fundamentals",      type:"recommended", concepts:["pipelines","artifacts","cache","matrix"], tools:["GitHub Actions","GitLab CI"],
+          description:"Continuous integration catches bugs before they reach production. A good CI pipeline runs fast, fails loudly, and gives developers confidence to ship.",
+          resources:[{kind:"docs",label:"GitHub Actions docs",url:"https://docs.github.com/en/actions"},{kind:"docs",label:"GitLab CI docs",url:"https://docs.gitlab.com/ee/ci/"}],
+          tip:"Invest in pipeline caching early. A 10-minute pipeline that could be 2 minutes destroys developer flow and trust in CI." },
+        { id:"cd",       label:"Continuous delivery",  type:"recommended", concepts:["envs","promotion","rollbacks"], tools:["Argo CD","Flux"],
+          description:"Continuous delivery makes releasing software a non-event. GitOps tools like Argo CD let you declare desired state in Git and let controllers reconcile reality.",
+          resources:[{kind:"docs",label:"Argo CD docs",url:"https://argo-cd.readthedocs.io/"},{kind:"read",label:"GitOps principles",url:"https://opengitops.dev/"}],
+          tip:"Make rollbacks boring. If rolling back is a manual, scary procedure, your CD pipeline isn't done yet." },
+        { id:"testing",  label:"Test in pipelines",    type:"recommended", concepts:["unit","integration","e2e","flake"], tools:["jest","pytest","playwright"],
+          description:"Tests in CI are only valuable if they're fast and trustworthy. Flaky tests are worse than no tests — they erode trust and get ignored.",
+          tip:"Quarantine flaky tests immediately. A flaky test that's ignored teaches everyone to ignore all test failures." },
+        { id:"scripting",label:"Scripting glue",       type:"alt",         concepts:["idempotence","retries"], tools:["bash","python","make"],
+          description:"Translate repetitive manual tasks into scripts. Good DevOps engineers automate everything that happens more than twice.",
+          tip:"Write idempotent scripts — running them twice should produce the same result as running them once. This is the difference between a script and a reliable tool." },
       ]},
       { id:"infra", title:"03 · Infra", color:"var(--c-orange)", items: [
-        { id:"docker",   label:"Containers",           type:"recommended", concepts:["images","layers","networking","volumes"], tools:["docker","podman"] },
-        { id:"k8s",      label:"Kubernetes basics",    type:"recommended", concepts:["pods","deployments","services","ingress"], tools:["kubectl","helm"] },
-        { id:"iac",      label:"Infra as Code",        type:"recommended", concepts:["state","modules","plan/apply","drift"], tools:["terraform","pulumi","opentofu"] },
-        { id:"cloud",    label:"Pick a cloud",         type:"alt",         concepts:["IAM","VPC","object storage"], tools:["AWS","GCP","Azure"] },
+        { id:"docker",   label:"Containers",           type:"recommended", concepts:["images","layers","networking","volumes"], tools:["docker","podman"],
+          description:"Containers are the unit of deployment for modern software. Understanding image layers, networking, and volumes lets you build efficient, reproducible environments.",
+          resources:[{kind:"docs",label:"Docker docs",url:"https://docs.docker.com/"},{kind:"read",label:"Docker deep dive",url:"https://www.manning.com/books/docker-deep-dive"}],
+          tip:"Keep images small. Multi-stage builds and distroless base images drastically cut attack surface and pull times." },
+        { id:"k8s",      label:"Kubernetes basics",    type:"recommended", concepts:["pods","deployments","services","ingress"], tools:["kubectl","helm"],
+          description:"Kubernetes is the operating system of the cloud. Learn the primitives deeply — Pods, Deployments, Services, ConfigMaps — before reaching for higher-level abstractions.",
+          resources:[{kind:"docs",label:"Kubernetes docs",url:"https://kubernetes.io/docs/"},{kind:"interactive",label:"Killer.sh (exam prep)",url:"https://killer.sh/"}],
+          tip:"Learn kubectl deeply before reaching for k9s or a GUI. The imperative commands and jsonpath queries will save you in production." },
+        { id:"iac",      label:"Infra as Code",        type:"recommended", concepts:["state","modules","plan/apply","drift"], tools:["terraform","pulumi","opentofu"],
+          description:"Infrastructure as Code makes your infrastructure reproducible, reviewable, and versioned. Terraform's plan/apply cycle is the gold standard for safe infrastructure changes.",
+          resources:[{kind:"docs",label:"Terraform docs",url:"https://developer.hashicorp.com/terraform/docs"},{kind:"read",label:"OpenTofu (OSS fork)",url:"https://opentofu.org/docs/"}],
+          tip:"Never run `terraform apply` without reviewing `terraform plan`. Treat IaC PRs with the same scrutiny as application code." },
+        { id:"cloud",    label:"Pick a cloud",         type:"alt",         concepts:["IAM","VPC","object storage"], tools:["AWS","GCP","Azure"],
+          description:"Pick one cloud and go deep before going broad. IAM, VPCs, and object storage are universal concepts — master them on one provider and they transfer.",
+          tip:"Learn IAM before anything else. Misconfigured permissions cause more incidents than anything else, and understanding least-privilege prevents most of them." },
       ]},
       { id:"observe", title:"04 · Operate", color:"var(--c-pink)", items: [
-        { id:"metrics",  label:"Metrics & dashboards", type:"recommended", concepts:["RED","USE","SLOs"], tools:["prometheus","grafana"] },
-        { id:"logs",     label:"Logs & traces",        type:"recommended", concepts:["structured logs","spans","sampling"], tools:["loki","tempo","otel"] },
-        { id:"alerts",   label:"On-call & alerting",   type:"recommended", concepts:["runbooks","paging","postmortems"], tools:["pagerduty","opsgenie"] },
-        { id:"chaos",    label:"Chaos engineering",    type:"alt",         concepts:["game days","blast radius"], tools:["litmus","gremlin"] },
+        { id:"metrics",  label:"Metrics & dashboards", type:"recommended", concepts:["RED","USE","SLOs"], tools:["prometheus","grafana"],
+          description:"Metrics are how you measure the health of a system. The RED method (Rate, Errors, Duration) gives you the three signals you need for every service.",
+          resources:[{kind:"docs",label:"Prometheus docs",url:"https://prometheus.io/docs/"},{kind:"docs",label:"Grafana docs",url:"https://grafana.com/docs/"}],
+          tip:"Learn PromQL properly — especially `rate()`, `irate()`, and `histogram_quantile()`. These three functions cover 80% of real-world alerting use cases." },
+        { id:"logs",     label:"Logs & traces",        type:"recommended", concepts:["structured logs","spans","sampling"], tools:["loki","tempo","otel"],
+          description:"Structured logs and distributed traces let you understand what your system is doing when it's not behaving. Use OpenTelemetry to instrument once and export anywhere.",
+          resources:[{kind:"docs",label:"OpenTelemetry docs",url:"https://opentelemetry.io/docs/"},{kind:"docs",label:"Grafana Loki docs",url:"https://grafana.com/docs/loki/"}],
+          tip:"Always log in JSON. Human-readable logs are great at 3am, but structured logs are queryable, filterable, and parseable by every log aggregation tool." },
+        { id:"alerts",   label:"On-call & alerting",   type:"recommended", concepts:["runbooks","paging","postmortems"], tools:["pagerduty","opsgenie"],
+          description:"Alerting is only valuable if alerts are actionable. Alert on symptoms, not causes — page on SLO burn rate, not on CPU spikes that nobody cares about at 3am.",
+          tip:"Write a runbook for every alert before you ship it. If you can't describe what to do when the alert fires, the alert isn't ready." },
+        { id:"chaos",    label:"Chaos engineering",    type:"alt",         concepts:["game days","blast radius"], tools:["litmus","gremlin"],
+          description:"Chaos engineering proves your resilience claims by injecting failures deliberately. Start with game days before automating chaos experiments.",
+          tip:"Start small. Chaos on a staging environment with a clear hypothesis and defined blast radius before any production experiments." },
       ]},
     ],
   },
@@ -151,21 +192,53 @@ const TRACKS = [
     storageKey: "ops4life:devsecops", accent: "var(--c-orange)",
     sections: [
       { id:"basics", title:"01 · Mental models", color:"var(--c-purple)", items: [
-        { id:"threats", label:"Threat modeling",      type:"recommended", concepts:["STRIDE","trust boundaries"], tools:["pytm","owasp threat dragon"] },
-        { id:"appsec",  label:"AppSec fundamentals",  type:"recommended", concepts:["OWASP Top 10","auth","crypto basics"], tools:[] },
-        { id:"netsec",  label:"Network security",     type:"alt",         concepts:["TLS","mTLS","zero trust"], tools:[] },
+        { id:"threats", label:"Threat modeling",      type:"recommended", concepts:["STRIDE","trust boundaries"], tools:["pytm","owasp threat dragon"],
+          description:"Threat modeling forces you to think like an attacker before writing code. STRIDE helps you systematically identify spoofing, tampering, repudiation, information disclosure, denial of service, and elevation of privilege.",
+          resources:[{kind:"read",label:"OWASP Threat Modeling",url:"https://owasp.org/www-community/Threat_Modeling"},{kind:"tool",label:"OWASP Threat Dragon",url:"https://threatdragon.github.io/"}],
+          tip:"Do threat modeling as a team exercise, not a solo security review. Developers know the system best — security engineers ask the uncomfortable questions." },
+        { id:"appsec",  label:"AppSec fundamentals",  type:"recommended", concepts:["OWASP Top 10","auth","crypto basics"], tools:[],
+          description:"The OWASP Top 10 represents the most critical web application security risks. Understanding injection, broken auth, and cryptographic failures gives you a mental model for reviewing any codebase.",
+          resources:[{kind:"read",label:"OWASP Top 10",url:"https://owasp.org/www-project-top-ten/"},{kind:"interactive",label:"PortSwigger Web Security Academy",url:"https://portswigger.net/web-security"}],
+          tip:"PortSwigger Web Security Academy is free and the best hands-on AppSec learning resource available. Do the labs, not just the theory." },
+        { id:"netsec",  label:"Network security",     type:"alt",         concepts:["TLS","mTLS","zero trust"], tools:[],
+          description:"Zero trust means never trust, always verify — even inside your perimeter. mTLS between services is the foundation of zero-trust networking.",
+          tip:"Use Mozilla's SSL Config Generator for TLS configuration. It gives you battle-tested cipher suites for nginx, HAProxy, and other servers." },
       ]},
       { id:"pipeline", title:"02 · In the pipeline", color:"var(--c-teal)", items: [
-        { id:"sast",    label:"SAST",                 type:"recommended", concepts:["taint analysis","false positives"], tools:["semgrep","codeql"] },
-        { id:"sca",     label:"Dependency scanning",  type:"recommended", concepts:["CVEs","transitive deps"], tools:["dependabot","snyk","trivy"] },
-        { id:"secrets", label:"Secrets management",   type:"recommended", concepts:["rotation","KMS","short-lived creds"], tools:["vault","sops","aws secrets manager"] },
-        { id:"dast",    label:"DAST & fuzzing",       type:"alt",         concepts:["crawlers","payloads"], tools:["zap","nuclei"] },
+        { id:"sast",    label:"SAST",                 type:"recommended", concepts:["taint analysis","false positives"], tools:["semgrep","codeql"],
+          description:"Static analysis finds security bugs before code runs. Semgrep's rule-based approach lets you write custom patterns for your codebase's specific vulnerabilities.",
+          resources:[{kind:"docs",label:"Semgrep docs",url:"https://semgrep.dev/docs/"},{kind:"docs",label:"CodeQL docs",url:"https://codeql.github.com/docs/"}],
+          tip:"Tune false positive rates before declaring victory. A SAST tool that cries wolf on every PR will be ignored and disabled within weeks." },
+        { id:"sca",     label:"Dependency scanning",  type:"recommended", concepts:["CVEs","transitive deps"], tools:["dependabot","snyk","trivy"],
+          description:"Most application code is open-source dependencies. Supply chain attacks target these transitive dependencies — scanning and updating them is non-negotiable.",
+          resources:[{kind:"docs",label:"Dependabot docs",url:"https://docs.github.com/en/code-security/dependabot"},{kind:"docs",label:"Trivy docs",url:"https://aquasecurity.github.io/trivy/"}],
+          tip:"Enable Dependabot security updates on all repos — it automatically opens PRs for vulnerable dependencies. Review and merge them before they pile up." },
+        { id:"secrets", label:"Secrets management",   type:"recommended", concepts:["rotation","KMS","short-lived creds"], tools:["vault","sops","aws secrets manager"],
+          description:"Secrets in environment variables, config files, or git history are a breach waiting to happen. Use dynamic, short-lived credentials that rotate automatically.",
+          resources:[{kind:"docs",label:"HashiCorp Vault docs",url:"https://developer.hashicorp.com/vault/docs"},{kind:"docs",label:"SOPS (Mozilla)",url:"https://github.com/getsops/sops"}],
+          tip:"Use Vault's dynamic secrets for databases — credentials generated per-connection with short TTLs mean a leaked secret expires before it can be exploited." },
+        { id:"dast",    label:"DAST & fuzzing",       type:"alt",         concepts:["crawlers","payloads"], tools:["zap","nuclei"],
+          description:"Dynamic analysis tests running applications by probing them with attack payloads. DAST catches what SAST misses — runtime configuration issues, business logic flaws.",
+          resources:[{kind:"docs",label:"OWASP ZAP docs",url:"https://www.zaproxy.org/docs/"},{kind:"docs",label:"Nuclei templates",url:"https://nuclei.projectdiscovery.io/"}],
+          tip:"Run ZAP in baseline mode first — it catches low-hanging fruit without active scanning. Active scanning should only run against non-production environments." },
       ]},
       { id:"runtime", title:"03 · At runtime", color:"var(--c-orange)", items: [
-        { id:"hardening",  label:"Container hardening", type:"recommended", concepts:["distroless","read-only fs","caps"], tools:["docker bench","trivy"] },
-        { id:"policy",     label:"Policy as Code",      type:"recommended", concepts:["admission","guardrails"], tools:["OPA","kyverno"] },
-        { id:"sbom",       label:"Supply chain & SBOM", type:"recommended", concepts:["SLSA","provenance","sigstore"], tools:["syft","cosign"] },
-        { id:"runtimesec", label:"Runtime defense",     type:"alt",         concepts:["eBPF","syscall filtering"], tools:["falco","tetragon"] },
+        { id:"hardening",  label:"Container hardening", type:"recommended", concepts:["distroless","read-only fs","caps"], tools:["docker bench","trivy"],
+          description:"Default container configurations are not secure. Distroless images, read-only filesystems, and dropped capabilities reduce attack surface dramatically.",
+          resources:[{kind:"read",label:"Docker Bench for Security",url:"https://github.com/docker/docker-bench-security"},{kind:"docs",label:"Trivy container scanning",url:"https://aquasecurity.github.io/trivy/"}],
+          tip:"Scan images at build time in CI, not just in production. Blocking vulnerable images before they're pushed is far cheaper than incident response." },
+        { id:"policy",     label:"Policy as Code",      type:"recommended", concepts:["admission","guardrails"], tools:["OPA","kyverno"],
+          description:"Policy as Code enforces security guardrails automatically. Kubernetes admission controllers reject non-compliant workloads before they're scheduled.",
+          resources:[{kind:"docs",label:"OPA docs",url:"https://www.openpolicyagent.org/docs/"},{kind:"docs",label:"Kyverno docs",url:"https://kyverno.io/docs/"}],
+          tip:"Start with audit mode before enforcement. Understanding what would be blocked before blocking it prevents surprise outages from overly strict policies." },
+        { id:"sbom",       label:"Supply chain & SBOM", type:"recommended", concepts:["SLSA","provenance","sigstore"], tools:["syft","cosign"],
+          description:"Software Bill of Materials lets you inventory every component in your software. Combined with Sigstore's keyless signing, you can cryptographically prove build provenance.",
+          resources:[{kind:"docs",label:"Syft (SBOM generator)",url:"https://github.com/anchore/syft"},{kind:"docs",label:"Sigstore/Cosign",url:"https://docs.sigstore.dev/"}],
+          tip:"Generate SBOMs at build time and attach them to release artifacts. They're useless in a security incident if you have to generate them after the fact." },
+        { id:"runtimesec", label:"Runtime defense",     type:"alt",         concepts:["eBPF","syscall filtering"], tools:["falco","tetragon"],
+          description:"Runtime security detects attacks in progress by monitoring syscalls and network activity. eBPF-based tools like Tetragon do this with near-zero overhead.",
+          resources:[{kind:"docs",label:"Falco docs",url:"https://falco.org/docs/"},{kind:"docs",label:"Tetragon docs",url:"https://tetragon.io/docs/"}],
+          tip:"Write custom Falco rules for your specific threat model, not just the default ruleset. The defaults are noisy — tune them to what actually matters in your environment." },
       ]},
     ],
   },
@@ -176,20 +249,50 @@ const TRACKS = [
     storageKey: "ops4life:mlops", accent: "var(--c-purple)",
     sections: [
       { id:"foundation", title:"01 · Foundations", color:"var(--c-purple)", items: [
-        { id:"py",    label:"Python for production", type:"recommended", concepts:["typing","packaging","async"], tools:["uv","poetry"] },
-        { id:"envs",  label:"Reproducible envs",     type:"recommended", concepts:["lockfiles","cuda","determinism"], tools:["docker","conda","nix"] },
-        { id:"data",  label:"Data fundamentals",     type:"recommended", concepts:["schemas","quality","lineage"], tools:["pandas","duckdb"] },
+        { id:"py",    label:"Python for production", type:"recommended", concepts:["typing","packaging","async"], tools:["uv","poetry"],
+          description:"Production Python is different from notebook Python. Type hints, proper packaging, and dependency management prevent the class of bugs that plague ML systems in production.",
+          resources:[{kind:"docs",label:"uv (fast Python package manager)",url:"https://docs.astral.sh/uv/"},{kind:"read",label:"Python Packaging User Guide",url:"https://packaging.python.org/"}],
+          tip:"Learn NumPy broadcasting well — most ML performance issues trace back to inefficient array operations that broadcasting would have eliminated." },
+        { id:"envs",  label:"Reproducible envs",     type:"recommended", concepts:["lockfiles","cuda","determinism"], tools:["docker","conda","nix"],
+          description:"Non-reproducible environments are ML's original sin. A model that trains differently on two machines is untestable. Lock everything: Python version, packages, CUDA version.",
+          resources:[{kind:"docs",label:"Docker docs",url:"https://docs.docker.com/"},{kind:"docs",label:"NVIDIA Container Toolkit",url:"https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/"}],
+          tip:"Use multi-stage Docker builds for ML images — a build stage with compilers, a runtime stage without them. Cuts image size by 60-70% and speeds up pulls." },
+        { id:"data",  label:"Data fundamentals",     type:"recommended", concepts:["schemas","quality","lineage"], tools:["pandas","duckdb"],
+          description:"Data quality determines model quality. Schema validation, missing value handling, and data lineage tracking are non-negotiable before any ML pipeline can be trusted.",
+          resources:[{kind:"docs",label:"Great Expectations docs",url:"https://docs.greatexpectations.io/"},{kind:"docs",label:"DuckDB docs",url:"https://duckdb.org/docs/"}],
+          tip:"DuckDB is excellent for local development — it queries Parquet files directly without a server. Use it to explore data before committing to a warehouse." },
       ]},
       { id:"experiment", title:"02 · Experimentation", color:"var(--c-teal)", items: [
-        { id:"versioning", label:"Data versioning",      type:"recommended", concepts:["DVC","lakes","snapshots"], tools:["dvc","lakefs"] },
-        { id:"tracking",   label:"Experiment tracking",  type:"recommended", concepts:["runs","artifacts","params"], tools:["mlflow","wandb"] },
-        { id:"features",   label:"Feature stores",       type:"alt",         concepts:["online/offline","skew"], tools:["feast","tecton"] },
+        { id:"versioning", label:"Data versioning",      type:"recommended", concepts:["DVC","lakes","snapshots"], tools:["dvc","lakefs"],
+          description:"Data versioning makes experiments reproducible. DVC integrates with Git to track data and model versions alongside code — giving you a complete snapshot of every experiment.",
+          resources:[{kind:"docs",label:"DVC docs",url:"https://dvc.org/doc"},{kind:"docs",label:"LakeFS docs",url:"https://docs.lakefs.io/"}],
+          tip:"DVC integrates with git — `dvc push` + `git push` together give you reproducible experiments. Tag git commits corresponding to training runs." },
+        { id:"tracking",   label:"Experiment tracking",  type:"recommended", concepts:["runs","artifacts","params"], tools:["mlflow","wandb"],
+          description:"Experiment tracking turns model development from art into engineering. Log every hyperparameter, metric, and artifact — you'll thank yourself when you need to reproduce a result.",
+          resources:[{kind:"docs",label:"MLflow docs",url:"https://mlflow.org/docs/latest/"},{kind:"docs",label:"Weights & Biases docs",url:"https://docs.wandb.ai/"}],
+          tip:"Log everything from the start, even when it feels like overhead. The experiment you didn't track will always be the one you need to reproduce." },
+        { id:"features",   label:"Feature stores",       type:"alt",         concepts:["online/offline","skew"], tools:["feast","tecton"],
+          description:"Feature stores solve training/serving skew — the silent killer of ML models. They ensure features computed at training time match features served at inference time.",
+          resources:[{kind:"docs",label:"Feast docs",url:"https://docs.feast.dev/"}],
+          tip:"Training/serving skew is often invisible until production — features computed differently at training vs inference cause model degradation that looks like data drift." },
       ]},
       { id:"production", title:"03 · Production", color:"var(--c-orange)", items: [
-        { id:"serving",  label:"Model serving",            type:"recommended", concepts:["batch vs online","gpu","autoscale"], tools:["bento","triton","sagemaker"] },
-        { id:"monitor",  label:"Monitor drift & quality",  type:"recommended", concepts:["data drift","perf","feedback loops"], tools:["evidently","whylabs"] },
-        { id:"ct",       label:"Continuous training",      type:"recommended", concepts:["pipelines","triggers"], tools:["kubeflow","airflow"] },
-        { id:"llmops",   label:"LLM evals",                type:"alt",         concepts:["golden sets","judges"], tools:["ragas","promptfoo"] },
+        { id:"serving",  label:"Model serving",            type:"recommended", concepts:["batch vs online","gpu","autoscale"], tools:["bento","triton","sagemaker"],
+          description:"Model serving converts ML artifacts into reliable APIs. The choice between batch and online serving depends on latency requirements and infrastructure cost.",
+          resources:[{kind:"docs",label:"BentoML docs",url:"https://docs.bentoml.com/"},{kind:"docs",label:"Triton Inference Server",url:"https://docs.nvidia.com/deeplearning/triton-inference-server/"}],
+          tip:"Profile your model's latency and memory footprint before choosing a serving framework. A framework optimized for computer vision may be wrong for NLP." },
+        { id:"monitor",  label:"Monitor drift & quality",  type:"recommended", concepts:["data drift","perf","feedback loops"], tools:["evidently","whylabs"],
+          description:"Models degrade silently. Data drift — when production data drifts from training data — causes model performance to decay in ways that don't show up in infrastructure metrics.",
+          resources:[{kind:"docs",label:"Evidently AI docs",url:"https://docs.evidentlyai.com/"}],
+          tip:"Set up data drift monitoring before you need it. By the time you notice model degradation in business metrics, you've already served bad predictions to real users." },
+        { id:"ct",       label:"Continuous training",      type:"recommended", concepts:["pipelines","triggers"], tools:["kubeflow","airflow"],
+          description:"Continuous training keeps models current as data evolves. Automated retraining pipelines triggered by data drift or scheduled intervals replace manual model updates.",
+          resources:[{kind:"docs",label:"Kubeflow Pipelines docs",url:"https://www.kubeflow.org/docs/components/pipelines/"},{kind:"docs",label:"Apache Airflow docs",url:"https://airflow.apache.org/docs/"}],
+          tip:"Design pipelines to be idempotent — running them twice should produce the same result. This makes debugging failed runs much easier." },
+        { id:"llmops",   label:"LLM evals",                type:"alt",         concepts:["golden sets","judges"], tools:["ragas","promptfoo"],
+          description:"LLM evaluation requires different methods than traditional ML. Golden test sets and LLM-as-judge approaches let you measure quality without hand-labeling every output.",
+          resources:[{kind:"docs",label:"RAGAS docs",url:"https://docs.ragas.io/"},{kind:"docs",label:"promptfoo docs",url:"https://www.promptfoo.dev/docs/"}],
+          tip:"Build your golden test set from real production queries, not synthetic examples. Real edge cases are always weirder than anything you'd generate." },
       ]},
     ],
   },
@@ -200,23 +303,62 @@ const TRACKS = [
     storageKey: "ops4life:devops-to-mlops", accent: "var(--c-lime)",
     sections: [
       { id:"phase1", title:"01 · Foundation", color:"var(--c-purple)", items: [
-        { id:"ml-basics",    label:"ML fundamentals",        type:"recommended", concepts:["supervised/unsupervised","eval metrics","bias/variance"], tools:["sklearn","numpy"] },
-        { id:"py-ds",        label:"Python for data",        type:"recommended", concepts:["pandas","vectorization","EDA"], tools:["pandas","polars","jupyter"] },
-        { id:"data-infra",   label:"Data infra basics",      type:"recommended", concepts:["object storage","data lakes","formats"], tools:["minio","parquet","duckdb"] },
-        { id:"docker-ml",    label:"Containers for ML",      type:"recommended", concepts:["reproducibility","GPU containers","base images"], tools:["docker","nvidia-container-toolkit"] },
+        { id:"ml-basics",    label:"ML fundamentals",        type:"recommended", concepts:["supervised/unsupervised","eval metrics","bias/variance"], tools:["sklearn","numpy"],
+          description:"ML fundamentals give you the vocabulary to talk about models intelligently. As a DevOps engineer, you don't need to build models — you need to understand what they need to run reliably.",
+          resources:[{kind:"interactive",label:"Fast.ai Practical Deep Learning",url:"https://course.fast.ai/"},{kind:"docs",label:"scikit-learn user guide",url:"https://scikit-learn.org/stable/user_guide.html"}],
+          tip:"Focus on model evaluation metrics first — precision, recall, AUC. These are what ML engineers care about, and understanding them makes you a better infrastructure partner." },
+        { id:"py-ds",        label:"Python for data",        type:"recommended", concepts:["pandas","vectorization","EDA"], tools:["pandas","polars","jupyter"],
+          description:"Data manipulation in Python is the lingua franca of ML. Pandas DataFrames, vectorized operations, and exploratory data analysis are skills every MLOps engineer needs.",
+          resources:[{kind:"docs",label:"Pandas docs",url:"https://pandas.pydata.org/docs/"},{kind:"docs",label:"Polars docs",url:"https://docs.pola.rs/"}],
+          tip:"A Makefile is often the best way to document and run your ML pipeline steps. `make train`, `make eval`, `make serve` beats any task runner for simple pipelines." },
+        { id:"data-infra",   label:"Data infra basics",      type:"recommended", concepts:["object storage","data lakes","formats"], tools:["minio","parquet","duckdb"],
+          description:"ML data lives in object storage. Understanding S3-compatible APIs, columnar formats like Parquet, and query engines like DuckDB is essential for any MLOps role.",
+          resources:[{kind:"docs",label:"MinIO docs",url:"https://min.io/docs/"},{kind:"docs",label:"DuckDB docs",url:"https://duckdb.org/docs/"}],
+          tip:"Use Parquet for ML training data — it's columnar, compressed, and readable by pandas/Spark/DuckDB. Avoid CSV for anything more than a few hundred MB." },
+        { id:"docker-ml",    label:"Containers for ML",      type:"recommended", concepts:["reproducibility","GPU containers","base images"], tools:["docker","nvidia-container-toolkit"],
+          description:"GPU containers are the unit of ML deployment. NVIDIA Container Toolkit lets Docker access host GPUs — mastering this is table stakes for serving any deep learning model.",
+          resources:[{kind:"docs",label:"NVIDIA Container Toolkit",url:"https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/"},{kind:"read",label:"Docker multi-stage builds",url:"https://docs.docker.com/build/building/multi-stage/"}],
+          tip:"Pin CUDA versions in your Dockerfile. A CUDA version mismatch between the container and host driver is one of the most frustrating debugging experiences in ML." },
       ]},
       { id:"phase2", title:"02 · Pipelines", color:"var(--c-teal)", items: [
-        { id:"feature-eng",  label:"Feature engineering",    type:"recommended", concepts:["transforms","leakage","pipelines"], tools:["sklearn","feast"] },
-        { id:"experiment",   label:"Experiment tracking",    type:"recommended", concepts:["runs","params","artifacts","registry"], tools:["mlflow","wandb"] },
-        { id:"data-version", label:"Data versioning",        type:"recommended", concepts:["snapshots","lineage","DVC"], tools:["dvc","lakefs"] },
-        { id:"train-pipe",   label:"Training pipelines",     type:"recommended", concepts:["DAGs","scheduling","retries"], tools:["airflow","prefect","kubeflow"] },
-        { id:"ci-ml",        label:"CI for ML",              type:"alt",         concepts:["model tests","data validation","drift gates"], tools:["github actions","great expectations"] },
+        { id:"feature-eng",  label:"Feature engineering",    type:"recommended", concepts:["transforms","leakage","pipelines"], tools:["sklearn","feast"],
+          description:"Feature engineering transforms raw data into model inputs. Pipelines that codify these transforms prevent data leakage — the most common source of overly optimistic model metrics.",
+          resources:[{kind:"docs",label:"sklearn Pipeline docs",url:"https://scikit-learn.org/stable/modules/pipeline.html"}],
+          tip:"Training/serving skew from features computed differently at training vs inference is the leading cause of model degradation. Use the same pipeline code in both places." },
+        { id:"experiment",   label:"Experiment tracking",    type:"recommended", concepts:["runs","params","artifacts","registry"], tools:["mlflow","wandb"],
+          description:"Experiment tracking is the lab notebook of ML engineering. Every training run should log hyperparameters, metrics, and artifacts so you can reproduce any result.",
+          resources:[{kind:"docs",label:"MLflow docs",url:"https://mlflow.org/docs/latest/"},{kind:"docs",label:"W&B docs",url:"https://docs.wandb.ai/"}],
+          tip:"Tag git commits that correspond to model training runs — you can always recover the exact code state that produced a model artifact even months later." },
+        { id:"data-version", label:"Data versioning",        type:"recommended", concepts:["snapshots","lineage","DVC"], tools:["dvc","lakefs"],
+          description:"Data versioning is Git for datasets. Without it, you can't reproduce training runs, audit model decisions, or roll back to a known-good dataset after a data quality incident.",
+          resources:[{kind:"docs",label:"DVC docs",url:"https://dvc.org/doc"},{kind:"docs",label:"LakeFS docs",url:"https://docs.lakefs.io/"}],
+          tip:"DVC integrates with git — commit your `.dvc` files alongside your code. `dvc repro` reruns only the pipeline stages affected by a change." },
+        { id:"train-pipe",   label:"Training pipelines",     type:"recommended", concepts:["DAGs","scheduling","retries"], tools:["airflow","prefect","kubeflow"],
+          description:"Training pipelines turn ad-hoc notebook experiments into automated, reproducible workflows. DAGs model the dependencies between pipeline steps explicitly.",
+          resources:[{kind:"docs",label:"Apache Airflow docs",url:"https://airflow.apache.org/docs/"},{kind:"docs",label:"Kubeflow Pipelines",url:"https://www.kubeflow.org/docs/components/pipelines/"}],
+          tip:"Design pipelines to be idempotent — running them twice should produce the same result as running them once. This makes debugging failed runs much simpler." },
+        { id:"ci-ml",        label:"CI for ML",              type:"alt",         concepts:["model tests","data validation","drift gates"], tools:["github actions","great expectations"],
+          description:"CI for ML validates that model changes don't regress performance. Drift gates block deployment when a new model performs worse than the current production version.",
+          resources:[{kind:"docs",label:"Great Expectations docs",url:"https://docs.greatexpectations.io/"}],
+          tip:"Run at minimum a smoke test that checks the model loads and produces output of the right shape. Full regression suites are expensive — even basic sanity checks catch 80% of issues." },
       ]},
       { id:"phase3", title:"03 · Operations", color:"var(--c-orange)", items: [
-        { id:"serving",      label:"Model serving",          type:"recommended", concepts:["REST","batch","online","A/B"], tools:["bento","triton","ray serve"] },
-        { id:"monitor-ml",   label:"Monitor models",         type:"recommended", concepts:["data drift","concept drift","feedback loops"], tools:["evidently","whylabs"] },
-        { id:"ct",           label:"Continuous training",    type:"recommended", concepts:["triggers","retraining","canary"], tools:["kubeflow","sagemaker pipelines"] },
-        { id:"cost-gpu",     label:"GPU cost management",    type:"alt",         concepts:["spot instances","autoscaling","right-sizing"], tools:["aws","gcp vertex","runpod"] },
+        { id:"serving",      label:"Model serving",          type:"recommended", concepts:["REST","batch","online","A/B"], tools:["bento","triton","ray serve"],
+          description:"Model serving turns a trained artifact into a reliable API. Your DevOps skills in load balancing, autoscaling, and rollouts directly apply — models are just services with heavier compute requirements.",
+          resources:[{kind:"docs",label:"BentoML docs",url:"https://docs.bentoml.com/"},{kind:"docs",label:"Ray Serve docs",url:"https://docs.ray.io/en/latest/serve/"}],
+          tip:"A/B test model updates with canary deployments the same way you'd canary a service update. Your existing deployment infrastructure works for ML too." },
+        { id:"monitor-ml",   label:"Monitor models",         type:"recommended", concepts:["data drift","concept drift","feedback loops"], tools:["evidently","whylabs"],
+          description:"Model monitoring catches degradation before it impacts business metrics. Data drift and concept drift are distinct problems — data drift is about input distribution shifts, concept drift is about the relationship between inputs and outputs changing.",
+          resources:[{kind:"docs",label:"Evidently AI docs",url:"https://docs.evidentlyai.com/"}],
+          tip:"Set up feedback loops from production predictions back to your training pipeline. Ground truth labels from production are invaluable for both monitoring and retraining." },
+        { id:"ct",           label:"Continuous training",    type:"recommended", concepts:["triggers","retraining","canary"], tools:["kubeflow","sagemaker pipelines"],
+          description:"Continuous training keeps models current as the world changes. Trigger-based retraining (on data drift, schedule, or performance degradation) replaces manual, ad-hoc model updates.",
+          resources:[{kind:"docs",label:"Kubeflow Pipelines",url:"https://www.kubeflow.org/docs/components/pipelines/"},{kind:"docs",label:"SageMaker Pipelines",url:"https://docs.aws.amazon.com/sagemaker/latest/dg/pipelines.html"}],
+          tip:"Use canary deployments for new model versions — route 5% of traffic to the new model, monitor metrics, promote or rollback. Your DevOps instincts are exactly right here." },
+        { id:"cost-gpu",     label:"GPU cost management",    type:"alt",         concepts:["spot instances","autoscaling","right-sizing"], tools:["aws","gcp vertex","runpod"],
+          description:"GPU costs can dominate ML infrastructure budgets. Spot instances for batch training, right-sized inference instances, and efficient model serving reduce costs by 60-80%.",
+          resources:[{kind:"read",label:"GPU Cloud Comparison (Tim Dettmers)",url:"https://timdettmers.com/2023/01/30/which-gpu-for-deep-learning/"}],
+          tip:"Profile GPU utilization first. Low GPU utilization (under 50%) often means your data pipeline is the bottleneck, not compute — fix the pipeline before paying for bigger GPUs." },
       ]},
     ],
   },
@@ -757,14 +899,17 @@ function Drawer({ open, item, section, status, onClose, onMark }) {
             {item.label}<span style={{color:"var(--accent)"}}>.</span>
           </h3>
           <p style={{margin:"0 0 22px", fontSize:14, color:"var(--ink-2)", lineHeight:1.55}}>
-            A foundational node in the {section?.title.split("·")[1]?.trim() || ""} section.
-            Hands-on with these concepts will give you the muscle memory the rest of the track depends on.
+            {item.description || `A foundational node in the ${section?.title.split("·")[1]?.trim() || ""} section. Hands-on with these concepts will give you the muscle memory the rest of the track depends on.`}
           </p>
 
           {item.concepts?.length > 0 && (
             <Section label="CORE CONCEPTS">
               <div style={{display:"flex", flexWrap:"wrap", gap:6}}>
-                {item.concepts.map(c => <Tag key={c} color="var(--bg-3)">{c}</Tag>)}
+                {item.concepts.map(c => (
+                  <a key={c} href={`https://www.google.com/search?q=${encodeURIComponent(item.label + ' ' + c)}&udm=50`} target="_blank" rel="noopener noreferrer" style={{textDecoration:"none", color:"inherit"}}>
+                    <Tag color="var(--bg-3)" style={{cursor:"pointer"}} className="brut-hover">{c}</Tag>
+                  </a>
+                ))}
               </div>
             </Section>
           )}
@@ -772,36 +917,40 @@ function Drawer({ open, item, section, status, onClose, onMark }) {
           {item.tools?.length > 0 && (
             <Section label="TOOLS">
               <div style={{display:"flex", flexWrap:"wrap", gap:6}}>
-                {item.tools.map(c => <Tag key={c} color="var(--c-pink)">{c}</Tag>)}
+                {item.tools.map(c => (
+                  <a key={c} href={`https://www.google.com/search?q=${encodeURIComponent(c)}&udm=50`} target="_blank" rel="noopener noreferrer" style={{textDecoration:"none", color:"inherit"}}>
+                    <Tag color="var(--c-pink)" style={{cursor:"pointer"}} className="brut-hover">{c}</Tag>
+                  </a>
+                ))}
               </div>
             </Section>
           )}
 
-          <Section label="RESOURCES">
-            <div style={{display:"flex", flexDirection:"column", gap:8}}>
-              {[
-                { kind:"docs",    label:"Official documentation" },
-                { kind:"article", label:"A grounded long-form intro" },
-                { kind:"video",   label:"60-min walkthrough on YouTube" },
-              ].map((r, i) => (
-                <a key={i} href="#" onClick={e => e.preventDefault()}
-                  className="brut-sm brut-hover brut-press"
-                  style={{ display:"flex", alignItems:"center", gap:10, padding:"10px 12px", background:"var(--bg-2)", fontSize:13 }}>
-                  <Tag style={{minWidth:54, justifyContent:"center"}}>{r.kind.toUpperCase()}</Tag>
-                  <span style={{flex:1}}>{r.label}</span>
-                  <Icon.Ext />
-                </a>
-              ))}
-            </div>
-          </Section>
+          {item.resources?.length > 0 && (
+            <Section label="RESOURCES">
+              <div style={{display:"flex", flexDirection:"column", gap:8}}>
+                {item.resources.map((r, i) => (
+                  <a key={i} href={r.url} target="_blank" rel="noopener noreferrer"
+                    className="brut-sm brut-hover brut-press"
+                    style={{ display:"flex", alignItems:"center", gap:10, padding:"10px 12px", background:"var(--bg-2)", fontSize:13, textDecoration:"none", color:"inherit" }}>
+                    <Tag style={{minWidth:54, justifyContent:"center"}}>{(r.kind || "LINK").toUpperCase()}</Tag>
+                    <span style={{flex:1}}>{r.label}</span>
+                    <Icon.Ext />
+                  </a>
+                ))}
+              </div>
+            </Section>
+          )}
 
-          <div className="brut-sm" style={{ padding:"14px 16px", background:"var(--c-yellow)", display:"flex", alignItems:"flex-start", gap:10 }}>
-            <Icon.Bulb />
-            <div style={{fontSize:13, lineHeight:1.5}}>
-              <strong style={{textTransform:"uppercase", letterSpacing:".06em", fontSize:11}}>Tip · </strong>
-              Don't try to learn this in isolation. Pick a node from the previous section and build something tiny that touches both.
+          {item.tip && (
+            <div className="brut-sm" style={{ padding:"14px 16px", background:"var(--c-yellow)", display:"flex", alignItems:"flex-start", gap:10 }}>
+              <Icon.Bulb />
+              <div style={{fontSize:13, lineHeight:1.5}}>
+                <strong style={{textTransform:"uppercase", letterSpacing:".06em", fontSize:11}}>Tip · </strong>
+                {item.tip}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div style={{ padding:"14px 18px", borderTop:"2px solid var(--ink)", background:"var(--bg-2)", display:"flex", gap:10 }}>
@@ -897,6 +1046,64 @@ function Newsletter() {
       </div>
       <style>{`@media (max-width: 480px){ .nl-row{ flex-direction: column } }`}</style>
     </div>
+  );
+}
+
+// ── FEEDBACK ──────────────────────────────────────────────────────────
+function Feedback() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <button onClick={() => setOpen(true)} style={{
+        position:"fixed", bottom:"1.25rem", right:"1.25rem", zIndex:900,
+        background:"var(--bg-2)", border:"2px solid var(--ink)",
+        fontFamily:"'Space Mono','Courier New',monospace", fontSize:"0.7rem",
+        fontWeight:700, textTransform:"uppercase", letterSpacing:"0.06em",
+        padding:"0.45rem 0.85rem", cursor:"pointer",
+        transition:"transform .12s, box-shadow .12s",
+      }} className="brut-hover">Feedback</button>
+
+      {open && (
+        <>
+          <div onClick={() => setOpen(false)} style={{position:"fixed", inset:0, background:"rgba(0,0,0,.45)", zIndex:1000}} />
+          <div style={{
+            position:"fixed", inset:0, zIndex:1001, display:"flex",
+            alignItems:"center", justifyContent:"center",
+          }}>
+            <div style={{
+              background:"var(--bg-2)", border:"2px solid var(--ink)",
+              width:"min(480px, 92vw)", padding:"1.5rem",
+              fontFamily:"'Space Mono','Courier New',monospace",
+            }}>
+              <div style={{display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:"0.35rem"}}>
+                <span style={{fontSize:"1.1rem", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.06em"}}>Send Feedback</span>
+                <button onClick={() => setOpen(false)} style={{background:"none", border:"none", fontSize:"1.2rem", cursor:"pointer", padding:0, lineHeight:1}}>✕</button>
+              </div>
+              <p style={{fontSize:"0.68rem", color:"var(--ink-3)", marginBottom:"1rem"}}>Pick a type — GitHub will open in a new tab.</p>
+              <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"0.65rem"}}>
+                {[
+                  { icon:"🐛", label:"Bug Report", sub:"Something is broken or wrong", url:"https://github.com/ops4life/spark/issues/new?template=bug.yml&labels=roadmap,bug" },
+                  { icon:"💡", label:"Idea",        sub:"Suggest a new capability",    url:"https://github.com/ops4life/spark/issues/new?template=idea.yml&labels=roadmap,idea" },
+                  { icon:"💬", label:"Discussions", sub:"Thoughts or suggestions",     url:"https://github.com/ops4life/spark/discussions" },
+                  { icon:"❓", label:"Question",    sub:"Something else entirely",     url:"https://github.com/ops4life/spark/issues/new?template=question.yml&labels=roadmap,question" },
+                ].map(({ icon, label, sub, url }) => (
+                  <a key={label} href={url} target="_blank" rel="noopener noreferrer" style={{
+                    display:"flex", flexDirection:"column", gap:4,
+                    padding:"0.85rem", background:"var(--bg-3)",
+                    border:"2px solid var(--ink)", textDecoration:"none", color:"inherit",
+                    transition:"transform .12s, box-shadow .12s",
+                  }} className="brut-hover">
+                    <span style={{fontSize:"1.4rem"}}>{icon}</span>
+                    <span style={{fontWeight:700, fontSize:"0.75rem", textTransform:"uppercase", letterSpacing:"0.05em"}}>{label}</span>
+                    <span style={{fontSize:"0.65rem", color:"var(--ink-3)"}}>{sub}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+    </>
   );
 }
 
@@ -1011,6 +1218,8 @@ function App() {
         status={openItem ? statusOf(progress, openItem.id) : "todo"}
         onClose={() => setOpenItem(null)}
         onMark={onMark} />
+
+      <Feedback />
 
       <style>{`
         @media (max-width: 560px){ .board-main{ padding: 14px 14px 56px !important } }
