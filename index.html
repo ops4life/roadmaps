@@ -100,50 +100,6 @@ button{font:inherit;color:inherit}
 <script type="text/babel">
 const { useState, useEffect, useRef, useMemo, useCallback } = React;
 
-// ── TWEAKS PANEL STYLE ─────────────────────────────────────────────────
-const __TWEAKS_STYLE = `
-.twk-overlay{position:fixed;inset:0;z-index:2147483645;background:transparent;pointer-events:none}
-.twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
-  max-height:calc(100vh - 32px);display:flex;flex-direction:column;
-  background:rgba(250,249,247,.92);color:#29261b;
-  -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
-  border:2px solid #1A1714;border-radius:0;
-  box-shadow:4px 4px 0 #1A1714;
-  font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
-html.dark .twk-panel{background:rgba(29,26,20,.95);color:#EFE9D6;border-color:#EFE9D6;box-shadow:4px 4px 0 #EFE9D6}
-.twk-hd{display:flex;align-items:center;justify-content:space-between;padding:10px 8px 10px 14px;user-select:none;border-bottom:1.5px solid rgba(0,0,0,.15)}
-.twk-hd b{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
-.twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
-  width:22px;height:22px;border-radius:0;cursor:pointer;font-size:13px;line-height:1}
-.twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
-html.dark .twk-x{color:rgba(239,233,214,.55)}
-html.dark .twk-x:hover{background:rgba(255,255,255,.08);color:#EFE9D6}
-.twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
-  overflow-y:auto;overflow-x:hidden;min-height:0;
-  scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
-.twk-row{display:flex;flex-direction:column;gap:5px}
-.twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
-.twk-lbl{display:flex;justify-content:space-between;align-items:baseline;color:rgba(41,38,27,.72)}
-.twk-lbl>span:first-child{font-weight:500}
-.twk-sect{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  color:rgba(41,38,27,.45);padding:10px 0 0}
-.twk-sect:first-child{padding-top:0}
-html.dark .twk-lbl{color:rgba(239,233,214,.72)}
-html.dark .twk-sect{color:rgba(239,233,214,.45)}
-.twk-seg{position:relative;display:flex;padding:2px;border:1.5px solid rgba(0,0,0,.15);background:rgba(0,0,0,.06);user-select:none}
-.twk-seg-thumb{position:absolute;top:2px;bottom:2px;background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
-html.dark .twk-seg{border-color:rgba(255,255,255,.15);background:rgba(255,255,255,.06)}
-html.dark .twk-seg-thumb{background:rgba(255,255,255,.15)}
-.twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;background:transparent;color:inherit;font:inherit;font-weight:500;min-height:22px;border-radius:0;cursor:pointer;padding:4px 6px;line-height:1.2;overflow-wrap:anywhere}
-.twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;background:rgba(0,0,0,.15);transition:background .15s;cursor:pointer;padding:0}
-.twk-toggle[data-on="1"]{background:#34c759}
-.twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
-.twk-toggle[data-on="1"] i{transform:translateX(14px)}
-.twk-btn{appearance:none;height:28px;padding:0 12px;border:1.5px solid currentColor;background:transparent;color:inherit;font:inherit;font-weight:700;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
-.twk-btn:hover{background:var(--ink);color:var(--bg)}
-html.dark .twk-btn:hover{background:var(--bg);color:var(--ink)}
-`;
-
 // ── HOOKS ─────────────────────────────────────────────────────────────
 function useStored(key, init) {
   const [val, setVal] = useState(() => {
@@ -152,25 +108,6 @@ function useStored(key, init) {
   });
   useEffect(() => { try { localStorage.setItem(key, JSON.stringify(val)); } catch {} }, [key, val]);
   return [val, setVal];
-}
-
-function useTweaks(defaults) {
-  const [values, setValues] = useState(() => {
-    try {
-      const raw = localStorage.getItem('ops4life:tweaks');
-      return raw ? { ...defaults, ...JSON.parse(raw) } : defaults;
-    } catch { return defaults; }
-  });
-  const setTweak = useCallback((keyOrEdits, val) => {
-    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null
-      ? keyOrEdits : { [keyOrEdits]: val };
-    setValues(prev => {
-      const next = { ...prev, ...edits };
-      try { localStorage.setItem('ops4life:tweaks', JSON.stringify(next)); } catch {}
-      return next;
-    });
-  }, []);
-  return [values, setTweak];
 }
 
 // ── DATA ──────────────────────────────────────────────────────────────
@@ -256,6 +193,33 @@ const TRACKS = [
       ]},
     ],
   },
+  {
+    id: "devops-to-mlops", code: "DEVOPS→MLOPS", title: "DevOps to MLOps",
+    tagline: "90 days from pipelines to models.",
+    blurb: "A structured 90-day curriculum for DevOps engineers making the shift to MLOps. Foundation, pipelines, and operations — one week at a time.",
+    storageKey: "ops4life:devops-to-mlops", accent: "var(--c-lime)",
+    sections: [
+      { id:"phase1", title:"01 · Foundation", color:"var(--c-purple)", items: [
+        { id:"ml-basics",    label:"ML fundamentals",        type:"recommended", concepts:["supervised/unsupervised","eval metrics","bias/variance"], tools:["sklearn","numpy"] },
+        { id:"py-ds",        label:"Python for data",        type:"recommended", concepts:["pandas","vectorization","EDA"], tools:["pandas","polars","jupyter"] },
+        { id:"data-infra",   label:"Data infra basics",      type:"recommended", concepts:["object storage","data lakes","formats"], tools:["minio","parquet","duckdb"] },
+        { id:"docker-ml",    label:"Containers for ML",      type:"recommended", concepts:["reproducibility","GPU containers","base images"], tools:["docker","nvidia-container-toolkit"] },
+      ]},
+      { id:"phase2", title:"02 · Pipelines", color:"var(--c-teal)", items: [
+        { id:"feature-eng",  label:"Feature engineering",    type:"recommended", concepts:["transforms","leakage","pipelines"], tools:["sklearn","feast"] },
+        { id:"experiment",   label:"Experiment tracking",    type:"recommended", concepts:["runs","params","artifacts","registry"], tools:["mlflow","wandb"] },
+        { id:"data-version", label:"Data versioning",        type:"recommended", concepts:["snapshots","lineage","DVC"], tools:["dvc","lakefs"] },
+        { id:"train-pipe",   label:"Training pipelines",     type:"recommended", concepts:["DAGs","scheduling","retries"], tools:["airflow","prefect","kubeflow"] },
+        { id:"ci-ml",        label:"CI for ML",              type:"alt",         concepts:["model tests","data validation","drift gates"], tools:["github actions","great expectations"] },
+      ]},
+      { id:"phase3", title:"03 · Operations", color:"var(--c-orange)", items: [
+        { id:"serving",      label:"Model serving",          type:"recommended", concepts:["REST","batch","online","A/B"], tools:["bento","triton","ray serve"] },
+        { id:"monitor-ml",   label:"Monitor models",         type:"recommended", concepts:["data drift","concept drift","feedback loops"], tools:["evidently","whylabs"] },
+        { id:"ct",           label:"Continuous training",    type:"recommended", concepts:["triggers","retraining","canary"], tools:["kubeflow","sagemaker pipelines"] },
+        { id:"cost-gpu",     label:"GPU cost management",    type:"alt",         concepts:["spot instances","autoscaling","right-sizing"], tools:["aws","gcp vertex","runpod"] },
+      ]},
+    ],
+  },
 ];
 
 // ── ICONS ─────────────────────────────────────────────────────────────
@@ -271,7 +235,6 @@ const Icon = {
   Ext:     (p) => <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M6 3H3v10h10v-3M9 3h4v4M8 8l5-5"/></svg>,
   Chevron: (p) => <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M3 6l5 5 5-5"/></svg>,
   Back:    (p) => <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M13 8H3M7 4L3 8l4 4"/></svg>,
-  Gear:    (p) => <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><circle cx="8" cy="8" r="2.5"/><path d="M8 1.5v1M8 13.5v1M1.5 8h1M13.5 8h1M3.4 3.4l.7.7M11.9 11.9l.7.7M3.4 12.6l.7-.7M11.9 4.1l.7-.7"/></svg>,
 };
 
 // ── PRIMITIVES ────────────────────────────────────────────────────────
@@ -311,58 +274,6 @@ function Tag({ children, color="var(--bg-3)", style }) {
       fontSize:10, fontWeight:700, textTransform:"uppercase", letterSpacing:".10em",
       ...style,
     }}>{children}</span>
-  );
-}
-
-// ── TWEAKS PANEL ──────────────────────────────────────────────────────
-function TweaksPanel({ open, onClose, children }) {
-  if (!open) return null;
-  return (
-    <>
-      <style>{__TWEAKS_STYLE}</style>
-      <div className="twk-panel">
-        <div className="twk-hd">
-          <b>Settings</b>
-          <button className="twk-x" onClick={onClose}>✕</button>
-        </div>
-        <div className="twk-body">{children}</div>
-      </div>
-    </>
-  );
-}
-function TweakSection({ label }) {
-  return <div className="twk-sect">{label}</div>;
-}
-function TweakRadio({ label, value, options, onChange }) {
-  const opts = options.map(o => typeof o === 'object' ? o : { value: o, label: o });
-  const idx = Math.max(0, opts.findIndex(o => o.value === value));
-  const n = opts.length;
-  return (
-    <div className="twk-row">
-      <div className="twk-lbl"><span>{label}</span></div>
-      <div className="twk-seg">
-        <div className="twk-seg-thumb" style={{ left:`calc(2px + ${idx} * (100% - 4px) / ${n})`, width:`calc((100% - 4px) / ${n})` }} />
-        {opts.map(o => (
-          <button key={o.value} type="button" onClick={() => onChange(o.value)}>
-            {o.label}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-function TweakToggle({ label, value, onChange }) {
-  return (
-    <div className="twk-row twk-row-h">
-      <div className="twk-lbl"><span>{label}</span></div>
-      <button type="button" className="twk-toggle" data-on={value ? '1' : '0'}
-        onClick={() => onChange(!value)}><i /></button>
-    </div>
-  );
-}
-function TweakButton({ label, onClick }) {
-  return (
-    <button type="button" className="twk-btn" onClick={onClick}>{label}</button>
   );
 }
 
@@ -442,7 +353,7 @@ function TrackSwitcher({ track, onTrackChange, onShowPicker }) {
 }
 
 // ── HEADER ────────────────────────────────────────────────────────────
-function Header({ track, onTrackChange, onShowPicker, query, setQuery, view, setView, percent, onSettings }) {
+function Header({ track, onTrackChange, onShowPicker, query, setQuery, view, setView, percent }) {
   return (
     <header style={{ position:"sticky", top:0, zIndex:30, background:"var(--bg)", borderBottom:"2px solid var(--ink)" }}>
       <div className="header-inner" style={{
@@ -507,13 +418,6 @@ function Header({ track, onTrackChange, onShowPicker, query, setQuery, view, set
           </div>
         )}
 
-        <button onClick={onSettings} className="brut-sm brut-hover brut-press" style={{
-          appearance:"none", cursor:"pointer",
-          width:34, height:34, display:"grid", placeItems:"center",
-          background:"var(--bg-2)", borderWidth:"1.5px",
-        }} title="Settings">
-          <Icon.Gear />
-        </button>
       </div>
       <style>{`
         @media (max-width: 768px){
@@ -1022,24 +926,11 @@ function Footer() {
 }
 
 // ── APP ───────────────────────────────────────────────────────────────
-const TWEAK_DEFAULTS = { theme:"light", view:"grid", density:"normal", showHero:true };
-
 function App() {
-  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const [trackId, setTrackId] = useStored("ops4life:active-track", null);
-  const [view, setView] = useState(t.view);
+  const [view, setView] = useState("grid");
   const [query, setQuery] = useState("");
   const [openItem, setOpenItem] = useState(null);
-  const [settingsOpen, setSettingsOpen] = useState(false);
-
-  useEffect(() => { document.documentElement.classList.toggle("dark", t.theme==="dark"); }, [t.theme]);
-  useEffect(() => { setView(t.view); }, [t.view]);
-  useEffect(() => {
-    const root = document.documentElement;
-    root.classList.remove("density-compact", "density-spacious");
-    if (t.density === "compact") root.classList.add("density-compact");
-    if (t.density === "spacious") root.classList.add("density-spacious");
-  }, [t.density]);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 768px)");
@@ -1052,11 +943,12 @@ function App() {
   const p0 = useStored(TRACKS[0].storageKey, { learning:{}, done:{} });
   const p1 = useStored(TRACKS[1].storageKey, { learning:{}, done:{} });
   const p2 = useStored(TRACKS[2].storageKey, { learning:{}, done:{} });
+  const p3 = useStored(TRACKS[3].storageKey, { learning:{}, done:{} });
   const progressByTrack = {
-    [TRACKS[0].id]: p0[0], [TRACKS[1].id]: p1[0], [TRACKS[2].id]: p2[0],
+    [TRACKS[0].id]: p0[0], [TRACKS[1].id]: p1[0], [TRACKS[2].id]: p2[0], [TRACKS[3].id]: p3[0],
   };
   const setProgressByTrack = {
-    [TRACKS[0].id]: p0[1], [TRACKS[1].id]: p1[1], [TRACKS[2].id]: p2[1],
+    [TRACKS[0].id]: p0[1], [TRACKS[1].id]: p1[1], [TRACKS[2].id]: p2[1], [TRACKS[3].id]: p3[1],
   };
 
   const track = useMemo(() => trackId ? TRACKS.find(tr => tr.id === trackId) : null, [trackId]);
@@ -1090,12 +982,11 @@ function App() {
       <Header track={track} onTrackChange={choose} onShowPicker={showPicker}
         query={query} setQuery={setQuery}
         view={view} setView={setView}
-        percent={percent}
-        onSettings={() => setSettingsOpen(s => !s)} />
+        percent={percent} />
 
       {!track && <TrackPicker onChoose={choose} progressByTrack={progressByTrack} />}
 
-      {track && t.showHero && (
+      {track && (
         <Hero track={track} percent={percent} doneCount={doneCount} totalCount={totalCount} />
       )}
 
@@ -1120,26 +1011,6 @@ function App() {
         status={openItem ? statusOf(progress, openItem.id) : "todo"}
         onClose={() => setOpenItem(null)}
         onMark={onMark} />
-
-      <TweaksPanel open={settingsOpen} onClose={() => setSettingsOpen(false)}>
-        <TweakSection label="Appearance" />
-        <TweakRadio label="Mode" value={t.theme} options={["light","dark"]}
-          onChange={v => setTweak("theme", v)} />
-        <TweakRadio label="Density" value={t.density} options={["compact","normal","spacious"]}
-          onChange={v => setTweak("density", v)} />
-        <TweakSection label="Layout" />
-        <TweakRadio label="Default view" value={t.view} options={["grid","list"]}
-          onChange={v => setTweak("view", v)} />
-        <TweakToggle label="Show hero" value={t.showHero}
-          onChange={v => setTweak("showHero", v)} />
-        <TweakSection label="Progress" />
-        <TweakButton label={track ? "Reset this track" : "Reset all tracks"}
-          onClick={() => {
-            if (track) setProgress({ learning:{}, done:{} });
-            else { p0[1]({learning:{},done:{}}); p1[1]({learning:{},done:{}}); p2[1]({learning:{},done:{}}); }
-          }} />
-        <TweakButton label="Back to all tracks" onClick={showPicker} />
-      </TweaksPanel>
 
       <style>{`
         @media (max-width: 560px){ .board-main{ padding: 14px 14px 56px !important } }
