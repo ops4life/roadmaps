@@ -1,0 +1,10 @@
+repos:
+  - repo: local
+    hooks:
+      - id: bump-parent-submodule-ref
+        name: Bump roadmap/html ref in vps-apps
+        entry: bash -c "git -C /opt/vps-apps submodule update --remote 'roadmap/html' && git -C /opt/vps-apps add 'roadmap/html'"
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [post-commit]
