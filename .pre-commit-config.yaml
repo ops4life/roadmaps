@@ -3,7 +3,7 @@ repos:
     hooks:
       - id: bump-parent-submodule-ref
         name: Bump roadmap/html ref in vps-apps
-        entry: bash -c "git -C /opt/vps-apps add 'roadmap/html'"
+        entry: bash -c "env -u GIT_DIR -u GIT_WORK_TREE -u GIT_INDEX_FILE git -C /opt/vps-apps add 'roadmap/html'"
         language: system
         pass_filenames: false
         always_run: true
