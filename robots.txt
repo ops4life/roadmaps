@@ -1,0 +1,5 @@
+# robots.txt for roadmap.ops4life.com
+User-agent: *
+Allow: /
+
+Sitemap: https://roadmap.ops4life.com/sitemap.xml
