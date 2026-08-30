@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Domain 5: Monitor and Maintain &mdash; ops4life Roadmaps</title>
+  <link rel="canonical" href="https://roadmap.ops4life.com/guides/az-104/monitoring/">
+  <meta name="description" content="AZ-104 Domain 5 (10-15%): monitor and maintain Azure resources — Azure Monitor metrics and logs, KQL queries, alerts and action groups, Application Insights, Recovery Services vault, Backup vault, backup policies, and Azure Site Recovery.">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/tokens.css">
+  <link rel="stylesheet" href="/shared/guide.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="https://ops4life.com" class="nav-back">&larr; ops4life.com</a>
+  <a href="/" class="nav-back">&larr; Roadmaps</a>
+  <img src="/favicon.png" alt="" style="width: 28px; height: 28px; display: block" />
+  <span class="nav-title">Azure Certification</span>
+  <span style="margin-left: auto; display: flex; align-items: center; gap: 0.75rem">
+    <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener" aria-label="GitHub" style="display: flex; align-items: center; color: inherit">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 98 96" aria-hidden="true">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"/>
+      </svg>
+    </a>
+  </span>
+</nav>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="/">Roadmaps</a>
+    <span class="breadcrumb-sep">&#x203A;</span>
+    <span>Azure Certification</span>
+    <span class="breadcrumb-sep">&#x203A;</span>
+    <span class="breadcrumb-current">Domain 5: Monitoring</span>
+  </div>
+</div>
+
+<div class="guide-layout">
+  <aside class="guide-sidebar">
+    <div class="sidebar-widget">
+      <h4>On This Page</h4>
+      <ul class="toc-list">
+        <li><a href="#monitor-resources">1. Monitor Resources Using Azure Monitor</a></li>
+        <li><a href="#configure-interpret-metrics">1.1 Configure and Interpret Metrics</a></li>
+        <li><a href="#configure-logs">1.2 Configure Logs</a></li>
+        <li><a href="#query-analyze-logs">1.3 Query and Analyze Logs</a></li>
+        <li><a href="#setup-alerts-actions">1.4 Set Up Alerts and Actions</a></li>
+        <li><a href="#configure-application-insights">1.5 Configure Application Insights</a></li>
+        <li><a href="#configure-monitoring-vms">1.6 Configure Monitoring for VMs</a></li>
+        <li><a href="#configure-monitoring-storage">1.7 Configure Monitoring for Storage Accounts</a></li>
+        <li><a href="#configure-monitoring-networks">1.8 Configure Monitoring for Networks</a></li>
+        <li><a href="#implement-backup-recovery">2. Implement Backup and Recovery</a></li>
+        <li><a href="#create-recovery-services-vault">2.1 Create Recovery Services Vault</a></li>
+        <li><a href="#create-azure-backup-vault">2.2 Create Azure Backup Vault</a></li>
+        <li><a href="#create-configure-backup-policy">2.3 Create and Configure Backup Policy</a></li>
+        <li><a href="#configure-vm-backups">2.4 Configure VM Backups</a></li>
+        <li><a href="#configure-files-blob-backups">2.5 Configure Azure Files and Blob Backups</a></li>
+        <li><a href="#perform-restore-operations">2.6 Perform Restore Operations</a></li>
+        <li><a href="#configure-site-recovery">2.7 Configure Azure Site Recovery</a></li>
+        <li><a href="#monitor-backup-site-recovery">2.8 Monitor Backup and Site Recovery</a></li>
+        <li><a href="#key-exam-tips">Key Exam Tips</a></li>
+        <li><a href="#practice-scenarios">Practice Scenarios</a></li>
+        <li><a href="#additional-resources">Additional Resources</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-widget">
+      <h4>Guide Info</h4>
+      <p style="font-size:0.8rem;color:var(--color-text-muted);line-height:1.9;">
+        &#x1F4DA; Exam weight: 10-15%<br>
+        &#x23F1; ~30 min read
+      </p>
+    </div>
+  </aside>
+
+  <article class="guide-content" id="guide-content">
+    <div class="guide-card-top" style="margin-bottom:0.5rem"><span class="guide-card-chapter">Domain 5</span></div>
+    <h1>Monitor and Maintain Azure Resources</h1>
+    <div class="guide-meta">
+      <span class="meta-badge badge-cert">10-15% of exam</span>
+      <span class="meta-badge badge-time">&#x23F1; ~30 min read</span>
+    </div>
+
+    <p>This domain covers Azure Monitor, backup and recovery services, and maintaining resource health and availability.</p>
+
+    <div class="callout note">
+      <span class="callout-icon">&#x1F4A1;</span>
+      <div class="callout-body">
+        <strong>Note: Vault soft delete now extends beyond 14 days</strong>
+        <p>Source material lists Recovery Services vault soft delete as a flat <strong>14-day retention</strong>. That 14-day period is still the current default (verified against Microsoft Learn) and costs nothing extra, but Azure Backup now lets you extend the soft-delete retention period up to <strong>180 days</strong> (additional days billed at regular backup rates), and offers a "Secure by default" mode that enables soft delete on vaults, containers, and items automatically. This is additive, not a correction &mdash; the 14-day default in <a href="#create-recovery-services-vault">2.1 Create Recovery Services Vault</a> remains accurate.</p>
+      </div>
+    </div>
+
+    <h2 id="monitor-resources">1. Monitor Resources Using Azure Monitor</h2>
+
+    <h3 id="configure-interpret-metrics">1.1 Configure and Interpret Metrics</h3>
+
+    <h4>Azure Monitor Metrics</h4>
+    <ul>
+      <li>Time-series data collected automatically</li>
+      <li>Near real-time (1-minute granularity)</li>
+      <li>Retained for 93 days</li>
+      <li>Dimensional metrics (filter by instance, disk, etc.)</li>
+    </ul>
+
+    <p><strong>Common Metrics</strong>:</p>
+    <ul>
+      <li>VM: CPU percentage, disk IOPS, network bytes</li>
+      <li>Storage: Transactions, ingress, egress</li>
+      <li>App Service: HTTP requests, response time</li>
+      <li>SQL Database: DTU percentage, deadlocks</li>
+    </ul>
+
+    <pre><code># List available metrics for a resource
+az monitor metrics list-definitions \
+  --resource /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.Compute/virtualMachines/myVM
+
+# Get metric values
+az monitor metrics list \
+  --resource /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.Compute/virtualMachines/myVM \
+  --metric "Percentage CPU" \
+  --start-time 2025-11-26T00:00:00Z \
+  --end-time 2025-11-26T23:59:59Z \
+  --interval PT1M</code></pre>
+
+    <h4>Metrics Explorer (Portal)</h4>
+    <ul>
+      <li>Visualize metrics with charts</li>
+      <li>Multiple resources on same chart</li>
+      <li>Split by dimension (e.g., per disk)</li>
+      <li>Pin charts to dashboards</li>
+      <li>Share charts</li>
+    </ul>
+
+    <h3 id="configure-logs">1.2 Configure Logs</h3>
+
+    <h4>Azure Monitor Logs</h4>
+    <ul>
+      <li>Log data stored in Log Analytics workspace</li>
+      <li>Query with Kusto Query Language (KQL)</li>
+      <li>Data retention: 30-730 days (configurable)</li>
+      <li>Collect from VMs, containers, applications, Azure resources</li>
+    </ul>
+
+    <pre><code># Create Log Analytics workspace
+az monitor log-analytics workspace create \
+  --resource-group myResourceGroup \
+  --workspace-name myWorkspace \
+  --location eastus
+
+# Enable VM insights (install agents)
+az vm extension set \
+  --resource-group myResourceGroup \
+  --vm-name myVM \
+  --name AzureMonitorLinuxAgent \
+  --publisher Microsoft.Azure.Monitor \
+  --enable-auto-upgrade true
+
+# Configure data collection for Windows VM
+az vm extension set \
+  --resource-group myResourceGroup \
+  --vm-name myWindowsVM \
+  --name AzureMonitorWindowsAgent \
+  --publisher Microsoft.Azure.Monitor</code></pre>
+
+    <h4>Common Log Tables</h4>
+    <ul>
+      <li><strong>Event</strong>: Windows event logs</li>
+      <li><strong>Syslog</strong>: Linux syslog</li>
+      <li><strong>Perf</strong>: Performance counters</li>
+      <li><strong>Heartbeat</strong>: VM availability</li>
+      <li><strong>AzureActivity</strong>: Azure activity log</li>
+      <li><strong>AzureMetrics</strong>: Platform metrics</li>
+      <li><strong>ContainerLog</strong>: Container logs</li>
+    </ul>
+
+    <h3 id="query-analyze-logs">1.3 Query and Analyze Logs</h3>
+
+    <h4>Kusto Query Language (KQL) Examples</h4>
+
+    <pre><code>// Get all events from last 24 hours
+Event
+| where TimeGenerated > ago(24h)
+| summarize count() by EventLevelName
+
+// CPU usage by computer
+Perf
+| where ObjectName == "Processor" and CounterName == "% Processor Time"
+| where TimeGenerated > ago(1h)
+| summarize avg(CounterValue) by Computer
+| render timechart
+
+// VM heartbeats (availability)
+Heartbeat
+| where TimeGenerated > ago(24h)
+| summarize count() by Computer
+| where count_ &lt; 1440  // Less than expected heartbeats
+
+// Failed sign-ins
+SigninLogs
+| where TimeGenerated > ago(7d)
+| where ResultType != "0"
+| summarize FailedSignins=count() by UserPrincipalName
+| order by FailedSignins desc
+
+// Storage account transactions
+StorageBlobLogs
+| where TimeGenerated > ago(1h)
+| where StatusCode >= 400
+| summarize count() by StatusCode, OperationName
+
+// Application exceptions
+AppExceptions
+| where TimeGenerated > ago(24h)
+| summarize count() by ProblemId
+| order by count_ desc</code></pre>
+
+    <h4>KQL Operators</h4>
+    <ul>
+      <li><strong>where</strong>: Filter rows</li>
+      <li><strong>summarize</strong>: Aggregate data</li>
+      <li><strong>project</strong>: Select columns</li>
+      <li><strong>extend</strong>: Add calculated columns</li>
+      <li><strong>join</strong>: Combine tables</li>
+      <li><strong>render</strong>: Visualize results (timechart, piechart, barchart)</li>
+    </ul>
+
+    <h3 id="setup-alerts-actions">1.4 Set Up Alerts and Actions</h3>
+
+    <h4>Alert Types</h4>
+    <ol>
+      <li><strong>Metric Alerts</strong>: Based on metric values (CPU &gt; 80%)</li>
+      <li><strong>Log Alerts</strong>: Based on log query results</li>
+      <li><strong>Activity Log Alerts</strong>: Based on Azure activity (VM deleted)</li>
+      <li><strong>Smart Detection Alerts</strong>: Application Insights anomalies</li>
+    </ol>
+
+    <pre><code># Create action group (email notification)
+az monitor action-group create \
+  --resource-group myResourceGroup \
+  --name myActionGroup \
+  --short-name myAG \
+  --email-receiver name=AdminEmail address=admin@contoso.com
+
+# Create metric alert (CPU > 80%)
+az monitor metrics alert create \
+  --resource-group myResourceGroup \
+  --name HighCPUAlert \
+  --scopes /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.Compute/virtualMachines/myVM \
+  --condition "avg Percentage CPU > 80" \
+  --window-size 5m \
+  --evaluation-frequency 1m \
+  --action myActionGroup \
+  --description "Alert when CPU exceeds 80%"
+
+# Create log query alert
+az monitor scheduled-query create \
+  --resource-group myResourceGroup \
+  --name FailedSignInAlert \
+  --scopes /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.OperationalInsights/workspaces/myWorkspace \
+  --condition "count > 5" \
+  --condition-query "SigninLogs | where ResultType != '0' | summarize count()" \
+  --evaluation-frequency 5m \
+  --window-size 15m \
+  --action myActionGroup
+
+# Create activity log alert (VM deletion)
+az monitor activity-log alert create \
+  --resource-group myResourceGroup \
+  --name VMDeletionAlert \
+  --scopes /subscriptions/&lt;sub-id&gt; \
+  --condition category=Administrative and operationName=Microsoft.Compute/virtualMachines/delete \
+  --action myActionGroup</code></pre>
+
+    <h4>Action Groups</h4>
+    <ul>
+      <li><strong>Email</strong>: Send email notification</li>
+      <li><strong>SMS</strong>: Send text message</li>
+      <li><strong>Push</strong>: Azure mobile app notification</li>
+      <li><strong>Voice</strong>: Phone call</li>
+      <li><strong>Webhook</strong>: HTTP POST to URL</li>
+      <li><strong>Logic App</strong>: Trigger Logic App workflow</li>
+      <li><strong>Automation Runbook</strong>: Run automation script</li>
+      <li><strong>Azure Function</strong>: Execute function</li>
+      <li><strong>ITSM</strong>: Create ITSM ticket</li>
+    </ul>
+
+    <h3 id="configure-application-insights">1.5 Configure Application Insights</h3>
+
+    <h4>Application Insights Features</h4>
+    <ul>
+      <li>Application performance monitoring (APM)</li>
+      <li>Request rates, response times, failure rates</li>
+      <li>Dependency tracking (SQL, HTTP calls)</li>
+      <li>Exception tracking</li>
+      <li>Custom events and metrics</li>
+      <li>Live metrics stream</li>
+    </ul>
+
+    <pre><code># Create Application Insights
+az monitor app-insights component create \
+  --resource-group myResourceGroup \
+  --app myAppInsights \
+  --location eastus \
+  --workspace /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.OperationalInsights/workspaces/myWorkspace
+
+# Get instrumentation key
+az monitor app-insights component show \
+  --resource-group myResourceGroup \
+  --app myAppInsights \
+  --query instrumentationKey
+
+# Configure App Service to use Application Insights
+az webapp config appsettings set \
+  --resource-group myResourceGroup \
+  --name myWebApp \
+  --settings APPINSIGHTS_INSTRUMENTATIONKEY=&lt;instrumentation-key&gt;</code></pre>
+
+    <h4>Application Insights Telemetry</h4>
+    <ul>
+      <li><strong>Requests</strong>: HTTP requests</li>
+      <li><strong>Dependencies</strong>: External calls (SQL, Redis, HTTP)</li>
+      <li><strong>Exceptions</strong>: Unhandled exceptions</li>
+      <li><strong>Page Views</strong>: Client-side page loads</li>
+      <li><strong>Custom Events</strong>: Your custom telemetry</li>
+      <li><strong>Traces</strong>: Diagnostic logs</li>
+    </ul>
+
+    <h3 id="configure-monitoring-vms">1.6 Configure Monitoring for VMs</h3>
+
+    <h4>VM Insights</h4>
+    <ul>
+      <li>Performance monitoring</li>
+      <li>Process and dependency mapping</li>
+      <li>Standardized monitoring</li>
+      <li>Automatic agent installation</li>
+    </ul>
+
+    <pre><code># Enable VM Insights
+az vm extension set \
+  --resource-group myResourceGroup \
+  --vm-name myVM \
+  --name AzureMonitorLinuxAgent \
+  --publisher Microsoft.Azure.Monitor
+
+# Create data collection rule
+az monitor data-collection rule create \
+  --resource-group myResourceGroup \
+  --name myDCR \
+  --location eastus \
+  --rule-file dcr.json
+
+# Associate DCR with VM
+az monitor data-collection rule association create \
+  --name myDCR-association \
+  --rule-id /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.Insights/dataCollectionRules/myDCR \
+  --resource /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.Compute/virtualMachines/myVM</code></pre>
+
+    <h4>Guest OS Diagnostics</h4>
+    <ul>
+      <li>Windows: Performance counters, event logs, IIS logs</li>
+      <li>Linux: Syslog, performance counters</li>
+    </ul>
+
+    <h3 id="configure-monitoring-storage">1.7 Configure Monitoring for Storage Accounts</h3>
+
+    <h4>Storage Insights</h4>
+    <ul>
+      <li>Capacity trends</li>
+      <li>Transaction analysis</li>
+      <li>Availability monitoring</li>
+      <li>Latency metrics</li>
+    </ul>
+
+    <pre><code># Enable Storage Analytics logging
+az storage logging update \
+  --account-name mystorageaccount \
+  --services b \
+  --log rwd \
+  --retention 7
+
+# Enable metrics
+az storage metrics update \
+  --account-name mystorageaccount \
+  --services b \
+  --hour true \
+  --minute true \
+  --retention 7
+
+# Create diagnostic setting (send logs to Log Analytics)
+az monitor diagnostic-settings create \
+  --resource /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.Storage/storageAccounts/mystorageaccount \
+  --name myDiagnostics \
+  --workspace /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.OperationalInsights/workspaces/myWorkspace \
+  --logs '[{"category": "StorageRead", "enabled": true}, {"category": "StorageWrite", "enabled": true}, {"category": "StorageDelete", "enabled": true}]' \
+  --metrics '[{"category": "Transaction", "enabled": true}]'</code></pre>
+
+    <h3 id="configure-monitoring-networks">1.8 Configure Monitoring for Networks</h3>
+
+    <h4>Network Watcher</h4>
+    <ul>
+      <li>Connection monitor</li>
+      <li>Packet capture</li>
+      <li>IP flow verify</li>
+      <li>NSG flow logs</li>
+      <li>Traffic analytics</li>
+    </ul>
+
+    <pre><code># Enable NSG flow logs
+az network watcher flow-log create \
+  --location eastus \
+  --name myFlowLog \
+  --nsg /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.Network/networkSecurityGroups/myNSG \
+  --storage-account /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.Storage/storageAccounts/flowlogsstorage \
+  --workspace /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.OperationalInsights/workspaces/myWorkspace \
+  --enabled true \
+  --format JSON \
+  --log-version 2 \
+  --retention 7 \
+  --traffic-analytics true
+
+# Create connection monitor
+az network watcher connection-monitor create \
+  --resource-group myResourceGroup \
+  --name myConnectionMonitor \
+  --location eastus \
+  --endpoints \
+    source-vm='{"name":"source","resourceId":"/subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.Compute/virtualMachines/sourceVM"}' \
+    destination-vm='{"name":"destination","resourceId":"/subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.Compute/virtualMachines/destVM"}'</code></pre>
+
+    <h4>Traffic Analytics</h4>
+    <ul>
+      <li>Network traffic patterns</li>
+      <li>Top talkers</li>
+      <li>Geo-location mapping</li>
+      <li>Security threat detection</li>
+      <li>Requires NSG flow logs</li>
+    </ul>
+
+    <h2 id="implement-backup-recovery">2. Implement Backup and Recovery</h2>
+
+    <h3 id="create-recovery-services-vault">2.1 Create Recovery Services Vault</h3>
+
+    <h4>Recovery Services Vault</h4>
+    <ul>
+      <li>Store backup data</li>
+      <li>Store Site Recovery configuration</li>
+      <li>Geo-redundant storage (GRS) by default</li>
+      <li>Supports soft delete (14-day retention)</li>
+    </ul>
+
+    <pre><code># Create Recovery Services vault
+az backup vault create \
+  --resource-group myResourceGroup \
+  --name myRecoveryServicesVault \
+  --location eastus
+
+# Configure vault backup properties
+az backup vault backup-properties set \
+  --resource-group myResourceGroup \
+  --name myRecoveryServicesVault \
+  --soft-delete-feature-state Enable
+
+# Change storage redundancy (must be done before any backups)
+az backup vault backup-properties set \
+  --resource-group myResourceGroup \
+  --name myRecoveryServicesVault \
+  --backup-storage-redundancy GeoRedundant</code></pre>
+
+    <h4>Storage Redundancy Options</h4>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Option</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Locally Redundant Storage (LRS)</strong></td><td>3 copies in same datacenter</td></tr>
+          <tr><td><strong>Geo-Redundant Storage (GRS)</strong></td><td>6 copies across two regions</td></tr>
+          <tr><td><strong>Zone-Redundant Storage (ZRS)</strong></td><td>3 copies across availability zones</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="create-azure-backup-vault">2.2 Create Azure Backup Vault</h3>
+
+    <h4>Backup Vault vs. Recovery Services Vault</h4>
+    <ul>
+      <li><strong>Recovery Services Vault</strong>: VMs, SQL, SAP HANA, Azure Files</li>
+      <li><strong>Backup Vault</strong>: Newer workloads (PostgreSQL, Blobs, Disks)</li>
+    </ul>
+
+    <pre><code># Create Backup vault
+az dataprotection backup-vault create \
+  --resource-group myResourceGroup \
+  --vault-name myBackupVault \
+  --location eastus \
+  --storage-settings datastore-type=VaultStore type=GeoRedundant</code></pre>
+
+    <h3 id="create-configure-backup-policy">2.3 Create and Configure Backup Policy</h3>
+
+    <h4>Backup Policies</h4>
+    <ul>
+      <li>Define backup schedule</li>
+      <li>Define retention rules</li>
+      <li>Different policies for different workloads</li>
+    </ul>
+
+    <pre><code># Create VM backup policy
+az backup policy create \
+  --resource-group myResourceGroup \
+  --vault-name myRecoveryServicesVault \
+  --name DailyBackupPolicy \
+  --backup-management-type AzureIaasVM \
+  --policy '{
+    "schedulePolicy": {
+      "schedulePolicyType": "SimpleSchedulePolicy",
+      "scheduleRunFrequency": "Daily",
+      "scheduleRunTimes": ["2025-11-26T02:00:00Z"]
+    },
+    "retentionPolicy": {
+      "retentionPolicyType": "LongTermRetentionPolicy",
+      "dailySchedule": {
+        "retentionTimes": ["2025-11-26T02:00:00Z"],
+        "retentionDuration": {
+          "count": 30,
+          "durationType": "Days"
+        }
+      },
+      "weeklySchedule": {
+        "daysOfTheWeek": ["Sunday"],
+        "retentionTimes": ["2025-11-26T02:00:00Z"],
+        "retentionDuration": {
+          "count": 12,
+          "durationType": "Weeks"
+        }
+      },
+      "monthlySchedule": {
+        "retentionScheduleFormatType": "Weekly",
+        "retentionScheduleWeekly": {
+          "daysOfTheWeek": ["Sunday"],
+          "weeksOfTheMonth": ["First"]
+        },
+        "retentionTimes": ["2025-11-26T02:00:00Z"],
+        "retentionDuration": {
+          "count": 12,
+          "durationType": "Months"
+        }
+      }
+    }
+  }'
+
+# List backup policies
+az backup policy list \
+  --resource-group myResourceGroup \
+  --vault-name myRecoveryServicesVault</code></pre>
+
+    <h3 id="configure-vm-backups">2.4 Configure VM Backups</h3>
+
+    <pre><code># Enable backup for VM
+az backup protection enable-for-vm \
+  --resource-group myResourceGroup \
+  --vault-name myRecoveryServicesVault \
+  --vm myVM \
+  --policy-name DailyBackupPolicy
+
+# Trigger immediate backup
+az backup protection backup-now \
+  --resource-group myResourceGroup \
+  --vault-name myRecoveryServicesVault \
+  --container-name myVM \
+  --item-name myVM \
+  --retain-until 31-12-2025
+
+# List backup jobs
+az backup job list \
+  --resource-group myResourceGroup \
+  --vault-name myRecoveryServicesVault \
+  --output table
+
+# Check backup status
+az backup protection check-vm \
+  --resource-group myResourceGroup \
+  --vm-id /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.Compute/virtualMachines/myVM</code></pre>
+
+    <h4>VM Backup Features</h4>
+    <ul>
+      <li>Application-consistent snapshots (VSS/FSFreeze)</li>
+      <li>Incremental backups (only changed blocks)</li>
+      <li>Instant restore (from snapshots, 2-5 days)</li>
+      <li>Cross-region restore (with GRS)</li>
+      <li>Selective disk backup</li>
+    </ul>
+
+    <h3 id="configure-files-blob-backups">2.5 Configure Azure Files and Blob Backups</h3>
+
+    <h4>Azure Files Backup</h4>
+    <pre><code># Enable backup for file share
+az backup protection enable-for-azurefileshare \
+  --resource-group myResourceGroup \
+  --vault-name myRecoveryServicesVault \
+  --storage-account mystorageaccount \
+  --azure-file-share myfileshare \
+  --policy-name DefaultPolicy
+
+# Restore file share
+az backup restore restore-azurefileshare \
+  --resource-group myResourceGroup \
+  --vault-name myRecoveryServicesVault \
+  --container-name mystorageaccount \
+  --item-name myfileshare \
+  --rp-name &lt;recovery-point-name&gt; \
+  --restore-mode AlternateLocation \
+  --target-storage-account targetstorageaccount \
+  --target-file-share targetshare</code></pre>
+
+    <h4>Blob Backup (Operational Backup)</h4>
+    <ul>
+      <li>Continuous backup (not scheduled)</li>
+      <li>Point-in-time restore</li>
+      <li>Protects against accidental deletion or corruption</li>
+      <li>Data never leaves source storage account</li>
+    </ul>
+
+    <pre><code># Configure blob backup policy
+az dataprotection backup-policy create \
+  --resource-group myResourceGroup \
+  --vault-name myBackupVault \
+  --name BlobBackupPolicy \
+  --policy blob-policy.json
+
+# Enable blob backup
+az dataprotection backup-instance create \
+  --resource-group myResourceGroup \
+  --vault-name myBackupVault \
+  --backup-instance blob-backup-instance.json</code></pre>
+
+    <h3 id="perform-restore-operations">2.6 Perform Restore Operations</h3>
+
+    <h4>VM Restore Options</h4>
+    <ol>
+      <li><strong>Create new VM</strong>: New VM from recovery point</li>
+      <li><strong>Replace existing disk</strong>: Replace VM's disks</li>
+      <li><strong>Restore disk</strong>: Restore disk only (create VM manually)</li>
+      <li><strong>File recovery</strong>: Mount recovery point, copy specific files</li>
+    </ol>
+
+    <pre><code># Restore VM (create new)
+az backup restore restore-disks \
+  --resource-group myResourceGroup \
+  --vault-name myRecoveryServicesVault \
+  --container-name myVM \
+  --item-name myVM \
+  --rp-name &lt;recovery-point-name&gt; \
+  --storage-account mystorageaccount \
+  --restore-to-staging-storage-account
+
+# After disks are restored, create VM from disk
+# Use Portal or PowerShell to create VM from restored VHD</code></pre>
+
+    <h4>File-Level Recovery</h4>
+    <pre><code># Download script to mount recovery point
+az backup restore files mount-rp \
+  --resource-group myResourceGroup \
+  --vault-name myRecoveryServicesVault \
+  --container-name myVM \
+  --item-name myVM \
+  --rp-name &lt;recovery-point-name&gt;
+
+# Run the downloaded script on a recovery VM
+# Copy files as needed
+# Unmount when done
+az backup restore files unmount-rp \
+  --resource-group myResourceGroup \
+  --vault-name myRecoveryServicesVault \
+  --container-name myVM \
+  --item-name myVM \
+  --rp-name &lt;recovery-point-name&gt;</code></pre>
+
+    <h3 id="configure-site-recovery">2.7 Configure Azure Site Recovery</h3>
+
+    <h4>Site Recovery Scenarios</h4>
+    <ul>
+      <li><strong>Azure to Azure</strong>: Replicate Azure VMs to another region</li>
+      <li><strong>On-premises to Azure</strong>: VMware, Hyper-V, physical servers</li>
+      <li><strong>Azure to on-premises</strong>: Not supported (use backup)</li>
+    </ul>
+
+    <pre><code># Create Recovery Services vault for Site Recovery
+az backup vault create \
+  --resource-group myResourceGroup \
+  --name mySiteRecoveryVault \
+  --location eastus
+
+# Enable replication for Azure VM (typically done via Portal)
+# Portal &gt; Recovery Services Vault &gt; Site Recovery &gt; Enable Replication
+
+# Perform test failover
+az site-recovery test-failover \
+  --resource-group myResourceGroup \
+  --vault-name mySiteRecoveryVault \
+  --name myVM
+
+# Perform actual failover
+az site-recovery failover \
+  --resource-group myResourceGroup \
+  --vault-name mySiteRecoveryVault \
+  --name myVM</code></pre>
+
+    <h4>Site Recovery Components</h4>
+    <ul>
+      <li><strong>Protection Policy</strong>: RPO, retention, crash-consistent/app-consistent snapshots</li>
+      <li><strong>Recovery Plan</strong>: Group VMs, define failover order, add scripts</li>
+      <li><strong>Replication Policy</strong>: Snapshot frequency, recovery points</li>
+      <li><strong>Test Failover</strong>: Validate DR without affecting production</li>
+    </ul>
+
+    <h4>Failover Process</h4>
+    <ol>
+      <li><strong>Test Failover</strong>: Validate DR configuration (isolated network)</li>
+      <li><strong>Planned Failover</strong>: Graceful shutdown, replicate final changes</li>
+      <li><strong>Unplanned Failover</strong>: Emergency failover (data loss possible)</li>
+      <li><strong>Commit</strong>: Accept failover, delete source VM</li>
+      <li><strong>Reprotect</strong>: Reverse replication direction</li>
+      <li><strong>Failback</strong>: Return to original location</li>
+    </ol>
+
+    <h3 id="monitor-backup-site-recovery">2.8 Monitor Backup and Site Recovery</h3>
+
+    <pre><code># View backup reports
+az backup protection check-vm \
+  --resource-group myResourceGroup \
+  --vm-id &lt;vm-resource-id&gt;
+
+# List recovery points
+az backup recoverypoint list \
+  --resource-group myResourceGroup \
+  --vault-name myRecoveryServicesVault \
+  --container-name myVM \
+  --item-name myVM \
+  --output table
+
+# Configure backup alerts
+az monitor metrics alert create \
+  --resource-group myResourceGroup \
+  --name BackupFailureAlert \
+  --scopes /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.RecoveryServices/vaults/myRecoveryServicesVault \
+  --condition "count BackupHealthEvent > 0" \
+  --window-size 1h \
+  --evaluation-frequency 30m \
+  --action myActionGroup</code></pre>
+
+    <h4>Backup Reports</h4>
+    <ul>
+      <li>Built-in Power BI reports</li>
+      <li>Backup health</li>
+      <li>Job success/failure rates</li>
+      <li>Storage consumption trends</li>
+      <li>Policy compliance</li>
+    </ul>
+
+    <h2 id="key-exam-tips">Key Exam Tips</h2>
+    <ol>
+      <li><strong>Metrics vs. Logs</strong>: Metrics are time-series (93 days), logs are in Log Analytics (30-730 days)</li>
+      <li><strong>Alert Types</strong>: Metric (real-time), Log (query-based), Activity (Azure operations)</li>
+      <li><strong>Application Insights</strong>: APM solution, tracks requests/dependencies/exceptions</li>
+      <li><strong>VM Backup</strong>: Application-consistent, incremental, instant restore</li>
+      <li><strong>Site Recovery RPO</strong>: Recovery Point Objective, how much data loss acceptable</li>
+      <li><strong>Backup Vault Types</strong>: Recovery Services (VMs, files) vs. Backup Vault (PostgreSQL, blobs)</li>
+      <li><strong>Soft Delete</strong>: 14-day retention for deleted backups</li>
+      <li><strong>Storage Redundancy</strong>: LRS (local), GRS (geo), ZRS (zonal)</li>
+      <li><strong>NSG Flow Logs</strong>: Require Network Watcher and storage account</li>
+      <li><strong>KQL</strong>: Query language for Log Analytics</li>
+    </ol>
+
+    <h2 id="practice-scenarios">Practice Scenarios</h2>
+
+    <h3 id="scenario-1">Scenario 1: Alert on High CPU</h3>
+    <p><strong>Question</strong>: Alert when VM CPU exceeds 85% for 10 minutes, send email to admin.</p>
+    <p><strong>Answer</strong>:</p>
+    <ol>
+      <li>Create action group with email receiver</li>
+      <li>Create metric alert on "Percentage CPU" metric</li>
+      <li>Condition: Average &gt; 85%</li>
+      <li>Window size: 10 minutes</li>
+      <li>Evaluation frequency: 1 minute</li>
+      <li>Associate action group</li>
+    </ol>
+
+    <h3 id="scenario-2">Scenario 2: VM Disaster Recovery</h3>
+    <p><strong>Question</strong>: Replicate production VMs to secondary region with 1-hour RPO.</p>
+    <p><strong>Answer</strong>:</p>
+    <ol>
+      <li>Create Recovery Services vault in primary region</li>
+      <li>Enable Site Recovery replication for VMs</li>
+      <li>Configure replication policy with 1-hour RPO</li>
+      <li>Create recovery plan grouping VMs by tier</li>
+      <li>Perform test failover to validate</li>
+      <li>Schedule regular test failovers</li>
+    </ol>
+
+    <h3 id="scenario-3">Scenario 3: Monitor Storage Errors</h3>
+    <p><strong>Question</strong>: Track and alert on storage account errors (HTTP 5xx).</p>
+    <p><strong>Answer</strong>:</p>
+    <ol>
+      <li>Enable diagnostic settings on storage account</li>
+      <li>Send logs to Log Analytics workspace</li>
+      <li>Create log query alert:
+        <pre><code>StorageBlobLogs
+| where StatusCode >= 500 and StatusCode &lt; 600
+| summarize count() by bin(TimeGenerated, 5m)
+| where count_ > 10</code></pre>
+      </li>
+      <li>Configure action group for notifications</li>
+    </ol>
+
+    <h2 id="additional-resources">Additional Resources</h2>
+    <ul>
+      <li><a href="https://learn.microsoft.com/en-us/azure/azure-monitor/" target="_blank" rel="noopener">Azure Monitor Documentation</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/backup/" target="_blank" rel="noopener">Azure Backup Documentation</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/site-recovery/" target="_blank" rel="noopener">Azure Site Recovery Documentation</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/data-explorer/kql-quick-reference" target="_blank" rel="noopener">KQL Quick Reference</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview" target="_blank" rel="noopener">Application Insights Documentation</a></li>
+    </ul>
+
+    <nav class="guide-nav" aria-label="Guide navigation">
+      <a href="/guides/az-104/networking/" class="guide-nav-card prev">
+        <div class="guide-nav-label">Previous</div>
+        <h4>&#x2190; Virtual Networking</h4>
+      </a>
+      <span class="guide-nav-card next" style="visibility:hidden"></span>
+    </nav>
+  </article>
+</div>
+
+<footer class="footer">
+  <a href="https://ops4life.com">ops4life.com</a> &middot; Azure Certification &middot;
+  <a href="/">Back to Roadmaps</a> &middot;
+  <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener">GitHub</a>
+</footer>
+
+<script src="/shared/notes.js"></script>
+<script>
+    initNotes('.guide-content', '/guides/az-104/monitoring/');
+</script>
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#111;color:#e0e0e0;border-top:2px solid #000;padding:12px 20px;align-items:center;gap:12px;flex-wrap:wrap;font-family:'Space Mono','Courier New',monospace;font-size:11px;line-height:1.5;">
+  <span style="flex:1;min-width:200px;">This site uses cookies and local storage to remember your preferences.</span>
+  <div style="display:flex;gap:8px;flex-shrink:0;">
+    <button id="cookie-accept" style="background:#ff4400;color:#fff;border:none;padding:7px 16px;cursor:pointer;font-family:inherit;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Accept</button>
+    <button id="cookie-decline" style="background:transparent;color:#aaa;border:1px solid #444;padding:7px 14px;cursor:pointer;font-family:inherit;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;">Decline</button>
+  </div>
+</div>
+<script>
+(function(){
+  var b=document.getElementById('cookie-banner');
+  if(!localStorage.getItem('cookie-consent')){b.style.display='flex';}
+  document.getElementById('cookie-accept').onclick=function(){localStorage.setItem('cookie-consent','accepted');b.style.display='none';};
+  document.getElementById('cookie-decline').onclick=function(){localStorage.setItem('cookie-consent','declined');b.style.display='none';};
+})();
+</script>
+
+</body>
+</html>

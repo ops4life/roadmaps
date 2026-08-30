@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Domain 3: Continuous Improvement &mdash; ops4life Roadmaps</title>
+  <link rel="canonical" href="https://roadmap.ops4life.com/guides/sap-c02/continuous-improvement/">
+  <meta name="description" content="AWS SAP-C02 Domain 3 (25%): continuous improvement for existing solutions — operational excellence, security, performance, reliability, and cost optimization.">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/tokens.css">
+  <link rel="stylesheet" href="/shared/guide.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="https://ops4life.com" class="nav-back">&larr; ops4life.com</a>
+  <a href="/" class="nav-back">&larr; Roadmaps</a>
+  <img src="/favicon.png" alt="" style="width: 28px; height: 28px; display: block" />
+  <span class="nav-title">AWS Certification</span>
+  <span style="margin-left: auto; display: flex; align-items: center; gap: 0.75rem">
+    <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener" aria-label="GitHub" style="display: flex; align-items: center; color: inherit">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 98 96" aria-hidden="true">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"/>
+      </svg>
+    </a>
+  </span>
+</nav>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="/">Roadmaps</a>
+    <span class="breadcrumb-sep">&#x203A;</span>
+    <span>AWS Certification</span>
+    <span class="breadcrumb-sep">&#x203A;</span>
+    <span class="breadcrumb-current">Domain 3: Continuous Improvement</span>
+  </div>
+</div>
+
+<div class="guide-layout">
+  <aside class="guide-sidebar">
+    <div class="sidebar-widget">
+      <h4>On This Page</h4>
+      <ul class="toc-list">
+        <li><a href="#operational-excellence">1. Improve Operational Excellence</a></li>
+        <li><a href="#monitoring-logging-strategy">1.1 Monitoring and Logging Strategy</a></li>
+        <li><a href="#alerting-automated-remediation">1.2 Alerting and Automated Remediation</a></li>
+        <li><a href="#improving-deployment-processes">1.3 Improving Deployment Processes</a></li>
+        <li><a href="#failure-scenario-exercises">1.4 Failure-Scenario Exercises</a></li>
+        <li><a href="#security-improvement">2. Improve Security</a></li>
+        <li><a href="#secrets-credential-management">2.1 Secrets and Credential Management</a></li>
+        <li><a href="#least-privilege-auditing">2.2 Least-Privilege Auditing</a></li>
+        <li><a href="#vulnerability-detection-response">2.3 Vulnerability Detection and Response</a></li>
+        <li><a href="#patch-backup-review">2.4 Patch and Backup Practice Review</a></li>
+        <li><a href="#performance-improvement">3. Improve Performance</a></li>
+        <li><a href="#high-performing-architectures">3.1 High-Performing Architectures</a></li>
+        <li><a href="#global-performance-improvements">3.2 Global Performance Improvements</a></li>
+        <li><a href="#measuring-slas-kpis">3.3 Measuring Against SLAs/KPIs</a></li>
+        <li><a href="#identifying-bottlenecks">3.4 Identifying Bottlenecks</a></li>
+        <li><a href="#reliability-improvement">4. Improve Reliability</a></li>
+        <li><a href="#evaluating-reliability-gaps">4.1 Evaluating Reliability Gaps</a></li>
+        <li><a href="#remediating-spof">4.2 Remediating Single Points of Failure</a></li>
+        <li><a href="#data-replication-self-healing">4.3 Data Replication, Self-Healing &amp; Elasticity</a></li>
+        <li><a href="#cost-optimization-opportunities">5. Cost Optimization Opportunities</a></li>
+        <li><a href="#usage-analysis">5.1 Usage Analysis</a></li>
+        <li><a href="#identifying-unused-resources">5.2 Identifying Unused Resources</a></li>
+        <li><a href="#billing-alarms-reporting">5.3 Billing Alarms and Reporting</a></li>
+        <li><a href="#key-exam-tips">Key Exam Tips</a></li>
+        <li><a href="#practice-scenarios">Practice Scenarios</a></li>
+        <li><a href="#additional-resources">Additional Resources</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-widget">
+      <h4>Guide Info</h4>
+      <p style="font-size:0.8rem;color:var(--color-text-muted);line-height:1.9;">
+        &#x1F4DA; Exam weight: 25%<br>
+        &#x23F1; ~22 min read
+      </p>
+    </div>
+  </aside>
+
+  <article class="guide-content" id="guide-content">
+    <div class="guide-card-top" style="margin-bottom:0.5rem"><span class="guide-card-chapter">Domain 3</span></div>
+    <h1>Continuous Improvement for Existing Solutions</h1>
+    <div class="guide-meta">
+      <span class="meta-badge badge-cert">25% of exam</span>
+      <span class="meta-badge badge-time">&#x23F1; ~22 min read</span>
+    </div>
+
+    <p>This domain is about operating and evolving workloads that already exist in production: improving operational excellence, security posture, performance, reliability, and cost &mdash; through monitoring, automation, and iterative remediation rather than greenfield design.</p>
+
+    <h2 id="operational-excellence">1. Determine a Strategy to Improve Overall Operational Excellence</h2>
+
+    <h3 id="monitoring-logging-strategy">1.1 Monitoring and Logging Strategy</h3>
+
+    <ul>
+      <li><strong>Amazon CloudWatch</strong>: metrics, logs, alarms, dashboards, and <strong>Logs Insights</strong> for ad hoc log querying. <strong>Composite alarms</strong> combine multiple alarms with AND/OR logic to reduce noise (e.g., only page if both latency AND error-rate alarms are in ALARM).</li>
+      <li><strong>CloudWatch anomaly detection</strong>: ML-based dynamic thresholds instead of static thresholds, useful when normal traffic has strong daily/weekly seasonality.</li>
+      <li><strong>AWS X-Ray</strong>: distributed tracing across microservices &mdash; the answer whenever the question is about pinpointing <em>which downstream service</em> in a call chain is causing latency/errors.</li>
+      <li><strong>Centralized logging</strong>: ship logs from all accounts/services to a central CloudWatch Logs account or an S3-based log lake queried via Athena, so operations has one place to look, not 20 accounts.</li>
+    </ul>
+
+    <pre><code>aws cloudwatch put-metric-alarm --alarm-name high-5xx-rate \
+  --metric-name HTTPCode_Target_5XX_Count --namespace AWS/ApplicationELB \
+  --statistic Sum --period 60 --threshold 10 --comparison-operator GreaterThanThreshold \
+  --evaluation-periods 3 --alarm-actions arn:aws:sns:us-east-1:111111111111:ops-alerts</code></pre>
+
+    <h3 id="alerting-automated-remediation">1.2 Alerting and Automated Remediation</h3>
+
+    <ul>
+      <li>Pattern: <strong>CloudWatch Alarm &rarr; EventBridge/SNS &rarr; Lambda (or Systems Manager Automation document)</strong> to auto-remediate known issues (restart a service, scale out, roll back a deployment) without waiting on a human.</li>
+      <li><strong>AWS Systems Manager Automation runbooks</strong>: pre-built and custom documents to perform standardized remediation (e.g., stop-and-start a stuck instance, rotate a credential) &mdash; reusable and auditable, preferred over one-off scripts.</li>
+    </ul>
+
+    <h3 id="improving-deployment-processes">1.3 Improving Deployment Processes</h3>
+
+    <ul>
+      <li>Review existing deployment pipelines for missing automated testing/rollback gates; add <strong>CodePipeline manual approval actions</strong> only where truly required (they're a bottleneck), and prefer automated CloudWatch-alarm-based rollback (see Domain 2 &sect;1.2) over relying on a human to notice a bad deploy.</li>
+      <li><strong>AWS Config</strong> + <strong>Config Rules</strong> (including <strong>Conformance Packs</strong> for a bundled rule set) continuously evaluate resource configuration against desired state &mdash; a foundational tool for "detect configuration drift" answers.</li>
+    </ul>
+
+    <h3 id="failure-scenario-exercises">1.4 Failure-Scenario Exercises</h3>
+
+    <ul>
+      <li><strong>AWS Fault Injection Service (FIS)</strong> to run controlled game-days that intentionally break things (kill an AZ, add latency, throttle an API) to validate that automated recovery/runbooks actually work before a real incident forces the question.</li>
+    </ul>
+
+    <div class="callout note">
+      <span class="callout-icon">&#x1F4A1;</span>
+      <div class="callout-body">
+        <strong>Naming Correction: AWS Fault Injection Service</strong>
+        <p>The source material referred to this service as "AWS Fault Injection Simulator." AWS renamed the service to <strong>AWS Fault Injection Service</strong> (still abbreviated FIS); current AWS documentation ("What is AWS Fault Injection Service?") confirms this is the current official name. Corrected above and used consistently throughout this guide.</p>
+      </div>
+    </div>
+
+    <h2 id="security-improvement">2. Determine a Strategy to Improve Security</h2>
+
+    <h3 id="secrets-credential-management">2.1 Secrets and Credential Management</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Service</th><th>Best for</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>AWS Secrets Manager</strong></td><td>Secrets needing <strong>automatic rotation</strong> (DB credentials, API keys) with built-in Lambda rotation templates for RDS/Aurora/DocumentDB/Redshift</td></tr>
+          <tr><td><strong>Systems Manager Parameter Store</strong></td><td>General config + secrets (SecureString with KMS) without built-in rotation Lambda, lower cost, higher throughput for read-heavy config lookups</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="least-privilege-auditing">2.2 Least-Privilege Auditing</h3>
+
+    <ul>
+      <li><strong>IAM Access Analyzer</strong> (policy generation feature): generates a least-privilege IAM policy based on actual CloudTrail access activity &mdash; the direct answer for "reduce over-permissioned roles based on what they actually use."</li>
+      <li><strong>IAM Access Advisor</strong>: shows last-accessed service/action data per role/user to find unused permissions to remove.</li>
+      <li><strong>AWS Config rule <code>iam-policy-no-statements-with-admin-access</code></strong> and similar managed rules to continuously flag overly broad policies.</li>
+    </ul>
+
+    <h3 id="vulnerability-detection-response">2.3 Vulnerability Detection and Response Prioritization</h3>
+
+    <ul>
+      <li><strong>Amazon Inspector</strong>: continuous, automated vulnerability scanning (CVEs, network reachability) for EC2, ECR container images, and Lambda functions &mdash; replaces point-in-time manual scans.</li>
+      <li><strong>Amazon GuardDuty + Security Hub + EventBridge</strong>: automatically prioritize and route findings by severity, trigger the right automated response (e.g., isolate an EC2 instance's security group on a <code>CryptoCurrency:EC2/BitcoinTool.B</code> finding) via Lambda.</li>
+      <li><strong>Amazon Detective</strong>: after a GuardDuty finding, use Detective to visualize the resource's interaction history and find root cause faster than manually correlating CloudTrail/VPC Flow Logs.</li>
+    </ul>
+
+    <h3 id="patch-backup-review">2.4 Patch and Backup Practice Review</h3>
+
+    <p>Reuse Systems Manager Patch Manager (Domain 2 &sect;3.4) and AWS Backup (Domain 1 &sect;3.3); the "improvement" angle here is auditing <strong>compliance</strong> (Patch Manager compliance reports, AWS Backup Audit Manager / Backup compliance reports) and closing gaps found, not initial setup.</p>
+
+    <h2 id="performance-improvement">3. Determine a Strategy to Improve Performance</h2>
+
+    <h3 id="high-performing-architectures">3.1 High-Performing Architectures</h3>
+
+    <ul>
+      <li><strong>Auto Scaling refinements</strong>: move from simple/step scaling to <strong>target tracking</strong> policies (simplest to tune, e.g., target 50% average CPU) or <strong>predictive scaling</strong> (ML forecast of known cyclical patterns, scales ahead of the load instead of reactively).</li>
+      <li><strong>Placement groups</strong>: <strong>Cluster</strong> (low-latency, same rack, HPC/tightly-coupled compute), <strong>Spread</strong> (each instance on distinct hardware, max fault isolation for a small number of critical instances), <strong>Partition</strong> (groups of instances isolated from each other, for large distributed systems like HDFS/Cassandra needing rack-awareness).</li>
+      <li><strong>Instance fleets</strong>: EC2 Fleet / Spot Fleet mixing instance types/purchase options to maintain target capacity cost-effectively even if some Spot capacity is reclaimed.</li>
+    </ul>
+
+    <h3 id="global-performance-improvements">3.2 Global Performance Improvements</h3>
+
+    <ul>
+      <li><strong>Amazon CloudFront</strong>: caches static/dynamic content at edge locations across CloudFront's global network; use <strong>Origin Shield</strong> to reduce origin load from regional cache misses.</li>
+      <li><strong>AWS Global Accelerator</strong>: improves performance for <strong>non-cacheable, TCP/UDP</strong> traffic (gaming, VoIP, non-HTTP APIs) by routing over the AWS global network backbone to the nearest healthy endpoint &mdash; different use case from CloudFront (HTTP/HTTPS content caching).</li>
+      <li><strong>Edge computing</strong>: Lambda@Edge / CloudFront Functions to run logic at the edge (header manipulation, auth checks, A/B testing) without a round trip to origin.</li>
+    </ul>
+
+    <div class="callout note">
+      <span class="callout-icon">&#x1F4A1;</span>
+      <div class="callout-body">
+        <strong>context7 fact-check note</strong>
+        <p>The source material cited "400+ edge locations" for CloudFront. AWS's edge location/point-of-presence count is a marketing figure that changes frequently and current AWS documentation available via context7 did not surface a precise, stable count worth committing to print. The specific number was dropped above rather than repeating a figure that may already be stale &mdash; the architectural guidance (edge caching, Origin Shield) is unaffected.</p>
+      </div>
+    </div>
+
+    <h3 id="measuring-slas-kpis">3.3 Measuring Against SLAs/KPIs</h3>
+
+    <p>Translate business SLAs into concrete, measurable CloudWatch metrics/alarms (e.g., "99.9% of requests under 200ms" &rarr; p99 latency CloudWatch alarm + dashboard), not just infrastructure-level metrics that don't map to the actual business requirement.</p>
+
+    <h3 id="identifying-bottlenecks">3.4 Identifying Bottlenecks</h3>
+
+    <p>Use <strong>CloudWatch Logs Insights</strong>, <strong>X-Ray Service Map</strong>, <strong>RDS Performance Insights</strong> (top SQL by wait time/load) to find the actual bottleneck instead of guessing &mdash; a recurring exam pattern is "which single tool identifies a slow SQL query" &rarr; RDS/Aurora Performance Insights.</p>
+
+    <h2 id="reliability-improvement">4. Determine a Strategy to Improve Reliability</h2>
+
+    <h3 id="evaluating-reliability-gaps">4.1 Evaluating Existing Architecture for Reliability Gaps</h3>
+
+    <ul>
+      <li>Look for <strong>single points of failure</strong>: single-AZ resources (a lone EC2 instance, single-AZ RDS, a NAT instance instead of NAT Gateway), hardcoded IPs instead of DNS, tightly-coupled synchronous calls with no retry/backoff.</li>
+      <li><strong>AWS Resilience Hub</strong>: assesses an application against a defined resiliency policy (RTO/RPO targets) and produces specific, actionable recommendations &mdash; the direct exam answer for "systematically identify reliability gaps against a target RTO/RPO."</li>
+    </ul>
+
+    <h3 id="remediating-spof">4.2 Remediating Single Points of Failure</h3>
+
+    <ul>
+      <li>Convert single-AZ to Multi-AZ (RDS Multi-AZ, ASG spanning AZs), NAT instance &rarr; NAT Gateway (managed, HA within an AZ; deploy one per AZ for AZ-level redundancy), replace hardcoded endpoints with Route 53 records / Service Discovery.</li>
+      <li>Implement <strong>retries with exponential backoff and jitter</strong> in application code/SDKs (default AWS SDK behavior, but must not be disabled) and <strong>circuit breakers</strong> to prevent cascading failure when a downstream dependency degrades.</li>
+    </ul>
+
+    <h3 id="data-replication-self-healing">4.3 Data Replication, Self-Healing, and Elasticity</h3>
+
+    <p>Reuse Domain 2 &sect;4 mechanisms (Multi-AZ, read replicas, ASG health-check replacement) &mdash; the "improvement" framing here means retrofitting them onto an existing architecture that lacks them, prioritized by business impact and quota/service limits that might block scale-out during remediation.</p>
+
+    <h2 id="cost-optimization-opportunities">5. Identify Opportunities for Cost Optimization</h2>
+
+    <h3 id="usage-analysis">5.1 Usage Analysis</h3>
+
+    <ul>
+      <li><strong>Cost Explorer "Rightsizing Recommendations"</strong> and <strong>AWS Compute Optimizer</strong> to find over-provisioned EC2/EBS/Lambda; <strong>Trusted Advisor cost checks</strong> to find idle load balancers, unattached EBS volumes, idle RDS instances.</li>
+      <li><strong>AWS Cost and Usage Report (CUR) via Athena/QuickSight</strong> for granular, custom "which team/service is driving this cost" investigation beyond what Cost Explorer's UI supports.</li>
+    </ul>
+
+    <h3 id="identifying-unused-resources">5.2 Identifying Unused Resources</h3>
+
+    <p>Trusted Advisor + Compute Optimizer flag idle resources; combine with <strong>AWS Config</strong> rules (e.g., unattached EBS volume, unused Elastic IP) for continuous (not point-in-time) detection, and automate cleanup via Lambda/Systems Manager Automation on a schedule.</p>
+
+    <h3 id="billing-alarms-reporting">5.3 Billing Alarms and Reporting</h3>
+
+    <pre><code>aws budgets create-budget --account-id 111111111111 --budget file://budget.json \
+  --notifications-with-subscribers file://notifications.json</code></pre>
+
+    <ul>
+      <li><strong>AWS Budgets</strong> alarms based on expected usage patterns (not just a flat dollar amount &mdash; budgets can alert on % variance from forecast).</li>
+      <li>Tagging (Domain 1 &sect;5.3) enables cost allocation reporting per team/project in CUR/Cost Explorer &mdash; a prerequisite most "identify which team is overspending" scenarios assume is already in place, or call out as the first remediation step if missing.</li>
+    </ul>
+
+    <h2 id="key-exam-tips">Key Exam Tips</h2>
+    <ol>
+      <li><strong>AWS Resilience Hub</strong> is the purpose-built answer for "assess an existing application's reliability against RTO/RPO targets" &mdash; don't overthink it into a manual audit.</li>
+      <li><strong>RDS/Aurora Performance Insights</strong> is the go-to answer for "identify the specific slow SQL query/wait event," not generic CloudWatch metrics.</li>
+      <li><strong>CloudFront = cacheable HTTP(S) content; Global Accelerator = non-HTTP/non-cacheable TCP/UDP traffic performance.</strong> This distinction is tested repeatedly.</li>
+      <li><strong>Predictive scaling</strong> is the answer for known, recurring traffic patterns (e.g., daily 9am spike); <strong>target tracking</strong> for general-purpose reactive scaling.</li>
+      <li>IAM Access Analyzer's <strong>policy generation</strong> feature (from CloudTrail activity) is the specific tool for "right-size an over-permissioned role" &mdash; distinct from Access Analyzer's other job of finding externally-shared resources.</li>
+      <li>Composite alarms and EventBridge-triggered Systems Manager Automation are how "automated remediation" answers are usually built at the service level &mdash; memorize the chain: <strong>Alarm &rarr; EventBridge/SNS &rarr; Automation/Lambda</strong>.</li>
+    </ol>
+
+    <h2 id="practice-scenarios">Practice Scenarios</h2>
+
+    <h3 id="scenario-1">Scenario 1: Reducing Alert Fatigue</h3>
+    <p><strong>Question</strong>: An operations team is overwhelmed by CloudWatch alarms firing independently for latency and error rate, most of which are false positives when only one metric is briefly abnormal. How should alerting be improved?</p>
+    <p><strong>Answer</strong>:</p>
+    <ol>
+      <li>Create a CloudWatch composite alarm that only enters ALARM state when both the latency alarm AND the error-rate alarm are simultaneously in ALARM.</li>
+      <li>Route the composite alarm (not the individual alarms) to the paging system via SNS.</li>
+      <li>Keep the individual alarms visible on a dashboard for context but not paging.</li>
+    </ol>
+
+    <h3 id="scenario-2">Scenario 2: Diagnosing Intermittent Database Slowness</h3>
+    <p><strong>Question</strong>: An Aurora MySQL database intermittently experiences high latency, and the team cannot identify which query is responsible using standard CloudWatch metrics.</p>
+    <p><strong>Answer</strong>:</p>
+    <ol>
+      <li>Enable RDS/Aurora Performance Insights on the database.</li>
+      <li>Use the Performance Insights dashboard to identify the top SQL statements by DB load/wait events during the slow periods.</li>
+      <li>Optimize or index the identified query, or move it to a read replica if it's a heavy read query contending with writes.</li>
+    </ol>
+
+    <h2 id="additional-resources">Additional Resources</h2>
+    <ul>
+      <li><a href="https://docs.aws.amazon.com/resilience-hub/" target="_blank" rel="noopener">AWS Resilience Hub documentation</a></li>
+      <li><a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Create_Composite_Alarm.html" target="_blank" rel="noopener">Amazon CloudWatch composite alarms</a></li>
+      <li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_PerfInsights.html" target="_blank" rel="noopener">RDS Performance Insights</a></li>
+      <li><a href="https://docs.aws.amazon.com/fis/" target="_blank" rel="noopener">AWS Fault Injection Service</a></li>
+      <li><a href="https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html" target="_blank" rel="noopener">AWS Well-Architected Framework &mdash; Operational Excellence Pillar</a></li>
+    </ul>
+
+    <nav class="guide-nav" aria-label="Guide navigation">
+      <a href="/guides/sap-c02/new-solutions/" class="guide-nav-card prev">
+        <div class="guide-nav-label">Previous</div>
+        <h4>&#x2190; New Solutions</h4>
+      </a>
+      <a href="/guides/sap-c02/migration-modernization/" class="guide-nav-card next">
+        <div class="guide-nav-label">Next</div>
+        <h4>Migration and Modernization &#x2192;</h4>
+      </a>
+    </nav>
+  </article>
+</div>
+
+<footer class="footer">
+  <a href="https://ops4life.com">ops4life.com</a> &middot; AWS Certification &middot;
+  <a href="/">Back to Roadmaps</a> &middot;
+  <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener">GitHub</a>
+</footer>
+
+<script src="/shared/notes.js"></script>
+<script>
+    initNotes('.guide-content', '/guides/sap-c02/continuous-improvement/');
+</script>
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#111;color:#e0e0e0;border-top:2px solid #000;padding:12px 20px;align-items:center;gap:12px;flex-wrap:wrap;font-family:'Space Mono','Courier New',monospace;font-size:11px;line-height:1.5;">
+  <span style="flex:1;min-width:200px;">This site uses cookies and local storage to remember your preferences.</span>
+  <div style="display:flex;gap:8px;flex-shrink:0;">
+    <button id="cookie-accept" style="background:#ff4400;color:#fff;border:none;padding:7px 16px;cursor:pointer;font-family:inherit;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Accept</button>
+    <button id="cookie-decline" style="background:transparent;color:#aaa;border:1px solid #444;padding:7px 14px;cursor:pointer;font-family:inherit;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;">Decline</button>
+  </div>
+</div>
+<script>
+(function(){
+  var b=document.getElementById('cookie-banner');
+  if(!localStorage.getItem('cookie-consent')){b.style.display='flex';}
+  document.getElementById('cookie-accept').onclick=function(){localStorage.setItem('cookie-consent','accepted');b.style.display='none';};
+  document.getElementById('cookie-decline').onclick=function(){localStorage.setItem('cookie-consent','declined');b.style.display='none';};
+})();
+</script>
+
+</body>
+</html>

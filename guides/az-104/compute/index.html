@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Domain 3: Compute Resources &mdash; ops4life Roadmaps</title>
+  <link rel="canonical" href="https://roadmap.ops4life.com/guides/az-104/compute/">
+  <meta name="description" content="AZ-104 Domain 3 (20-25%): deploy and manage Azure compute resources — ARM templates and Bicep, virtual machines, availability zones and sets, VM scale sets, containers (ACR, ACI, Container Apps), and App Service.">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/tokens.css">
+  <link rel="stylesheet" href="/shared/guide.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="https://ops4life.com" class="nav-back">&larr; ops4life.com</a>
+  <a href="/" class="nav-back">&larr; Roadmaps</a>
+  <img src="/favicon.png" alt="" style="width: 28px; height: 28px; display: block" />
+  <span class="nav-title">Azure Certification</span>
+  <span style="margin-left: auto; display: flex; align-items: center; gap: 0.75rem">
+    <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener" aria-label="GitHub" style="display: flex; align-items: center; color: inherit">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 98 96" aria-hidden="true">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"/>
+      </svg>
+    </a>
+  </span>
+</nav>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="/">Roadmaps</a>
+    <span class="breadcrumb-sep">&#x203A;</span>
+    <span>Azure Certification</span>
+    <span class="breadcrumb-sep">&#x203A;</span>
+    <span class="breadcrumb-current">Domain 3: Compute</span>
+  </div>
+</div>
+
+<div class="guide-layout">
+  <aside class="guide-sidebar">
+    <div class="sidebar-widget">
+      <h4>On This Page</h4>
+      <ul class="toc-list">
+        <li><a href="#automate-deployment-arm-bicep">1. Automate Deployment Using ARM Templates and Bicep</a></li>
+        <li><a href="#interpret-arm-templates">1.1 Interpret ARM Templates</a></li>
+        <li><a href="#modify-arm-templates">1.2 Modify ARM Templates</a></li>
+        <li><a href="#deploy-arm-templates">1.3 Deploy ARM Templates</a></li>
+        <li><a href="#export-deployment-arm-template">1.4 Export Deployment as ARM Template</a></li>
+        <li><a href="#interpret-bicep-files">1.5 Interpret Bicep Files</a></li>
+        <li><a href="#modify-bicep-files">1.6 Modify Bicep Files</a></li>
+        <li><a href="#deploy-bicep-files">1.7 Deploy Bicep Files</a></li>
+        <li><a href="#create-configure-vms">2. Create and Configure Virtual Machines</a></li>
+        <li><a href="#create-virtual-machines">2.1 Create Virtual Machines</a></li>
+        <li><a href="#configure-disk-encryption">2.2 Configure Azure Disk Encryption</a></li>
+        <li><a href="#move-vms-resource-groups">2.3 Move VMs Between Resource Groups</a></li>
+        <li><a href="#manage-vm-sizes">2.4 Manage VM Sizes</a></li>
+        <li><a href="#deploy-vms-availability-zones">2.5 Deploy VMs to Availability Zones</a></li>
+        <li><a href="#deploy-vms-availability-sets">2.6 Deploy VMs to Availability Sets</a></li>
+        <li><a href="#configure-vmss">2.7 Configure Virtual Machine Scale Sets (VMSS)</a></li>
+        <li><a href="#provision-manage-containers">3. Provision and Manage Containers</a></li>
+        <li><a href="#manage-acr">3.1 Manage Azure Container Registry (ACR)</a></li>
+        <li><a href="#create-configure-aci">3.2 Create and Configure Azure Container Instances (ACI)</a></li>
+        <li><a href="#create-configure-container-apps">3.3 Create and Configure Azure Container Apps</a></li>
+        <li><a href="#create-configure-app-service">4. Create and Configure Azure App Service</a></li>
+        <li><a href="#provision-app-service-plans">4.1 Provision App Service Plans</a></li>
+        <li><a href="#configure-scaling-app-service">4.2 Configure Scaling for App Service Plans</a></li>
+        <li><a href="#create-web-apps">4.3 Create App Service Web Apps</a></li>
+        <li><a href="#configure-certificates-domains">4.4 Configure Certificates and Custom Domains</a></li>
+        <li><a href="#configure-application-settings">4.5 Configure Application Settings</a></li>
+        <li><a href="#configure-backup">4.6 Configure Backup for App Service</a></li>
+        <li><a href="#configure-networking">4.7 Configure Networking for App Service</a></li>
+        <li><a href="#configure-deployment-slots">4.8 Configure Deployment Slots</a></li>
+        <li><a href="#key-exam-tips">Key Exam Tips</a></li>
+        <li><a href="#practice-scenarios">Practice Scenarios</a></li>
+        <li><a href="#additional-resources">Additional Resources</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-widget">
+      <h4>Guide Info</h4>
+      <p style="font-size:0.8rem;color:var(--color-text-muted);line-height:1.9;">
+        &#x1F4DA; Exam weight: 20-25%<br>
+        &#x23F1; ~25 min read
+      </p>
+    </div>
+  </aside>
+
+  <article class="guide-content" id="guide-content">
+    <div class="guide-card-top" style="margin-bottom:0.5rem"><span class="guide-card-chapter">Domain 3</span></div>
+    <h1>Deploy and Manage Azure Compute Resources</h1>
+    <div class="guide-meta">
+      <span class="meta-badge badge-cert">20-25% of exam</span>
+      <span class="meta-badge badge-time">&#x23F1; ~25 min read</span>
+    </div>
+
+    <p>This domain covers Azure compute services including virtual machines, containers, and App Services, as well as infrastructure-as-code using ARM templates and Bicep.</p>
+
+    <div class="callout note">
+      <span class="callout-icon">&#x1F4A1;</span>
+      <div class="callout-body">
+        <strong>Naming Correction: Shared Image Gallery &#x2192; Azure Compute Gallery</strong>
+        <p>Source material for VM images listed <strong>Shared Image Gallery</strong> and <strong>Azure Compute Gallery</strong> as two separate options. They are the same service &mdash; Microsoft renamed Shared Image Gallery to <strong>Azure Compute Gallery</strong>, and the old name now only appears as a legacy alias in some CLI command names (e.g. <code>az sig create</code>). This guide treats them as one option in <a href="#create-virtual-machines">2.1 Create Virtual Machines</a>.</p>
+      </div>
+    </div>
+
+    <h2 id="automate-deployment-arm-bicep">1. Automate Deployment Using ARM Templates and Bicep</h2>
+
+    <h3 id="interpret-arm-templates">1.1 Interpret ARM Templates</h3>
+
+    <h4>ARM Template Structure</h4>
+    <pre><code>{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmName": {
+      "type": "string",
+      "defaultValue": "myVM"
+    }
+  },
+  "variables": {
+    "location": "[resourceGroup().location]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2023-03-01",
+      "name": "[parameters('vmName')]",
+      "location": "[variables('location')]",
+      "properties": { }
+    }
+  ],
+  "outputs": {
+    "vmId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
+    }
+  }
+}</code></pre>
+
+    <h4>Key Sections</h4>
+    <ul>
+      <li><strong>$schema</strong>: Defines template language version</li>
+      <li><strong>contentVersion</strong>: Template version (for tracking)</li>
+      <li><strong>parameters</strong>: Input values for deployment</li>
+      <li><strong>variables</strong>: Values computed during deployment</li>
+      <li><strong>resources</strong>: Azure resources to deploy</li>
+      <li><strong>outputs</strong>: Values returned after deployment</li>
+    </ul>
+
+    <h4>Common Functions</h4>
+    <ul>
+      <li><code>resourceGroup()</code>: Get resource group properties</li>
+      <li><code>subscription()</code>: Get subscription properties</li>
+      <li><code>concat()</code>: Concatenate strings</li>
+      <li><code>uniqueString()</code>: Create unique string (for resource names)</li>
+      <li><code>reference()</code>: Get runtime state of resource</li>
+    </ul>
+
+    <h3 id="modify-arm-templates">1.2 Modify ARM Templates</h3>
+
+    <h4>Adding Parameters</h4>
+    <pre><code>"parameters": {
+  "vmSize": {
+    "type": "string",
+    "defaultValue": "Standard_B2s",
+    "allowedValues": [
+      "Standard_B2s",
+      "Standard_D2s_v3",
+      "Standard_D4s_v3"
+    ],
+    "metadata": {
+      "description": "Size of the virtual machine"
+    }
+  }
+}</code></pre>
+
+    <h4>Using Conditional Deployment</h4>
+    <pre><code>"resources": [
+  {
+    "condition": "[equals(parameters('environment'), 'production')]",
+    "type": "Microsoft.Compute/virtualMachines",
+    "name": "prodVM"
+  }
+]</code></pre>
+
+    <h4>Dependency Management</h4>
+    <pre><code>"resources": [
+  {
+    "type": "Microsoft.Network/networkInterfaces",
+    "name": "myNIC",
+    "dependsOn": [
+      "[resourceId('Microsoft.Network/virtualNetworks', 'myVNet')]"
+    ]
+  }
+]</code></pre>
+
+    <h3 id="deploy-arm-templates">1.3 Deploy ARM Templates</h3>
+
+    <pre><code># Deploy to resource group
+az deployment group create \
+  --resource-group myResourceGroup \
+  --template-file template.json \
+  --parameters @parameters.json
+
+# Deploy with inline parameters
+az deployment group create \
+  --resource-group myResourceGroup \
+  --template-file template.json \
+  --parameters vmName=myVM vmSize=Standard_D2s_v3
+
+# What-if deployment (preview changes)
+az deployment group what-if \
+  --resource-group myResourceGroup \
+  --template-file template.json \
+  --parameters @parameters.json
+
+# Deploy to subscription level
+az deployment sub create \
+  --location eastus \
+  --template-file template.json</code></pre>
+
+    <h4>Deployment Modes</h4>
+    <ul>
+      <li><strong>Incremental</strong> (default): Adds resources, keeps existing resources</li>
+      <li><strong>Complete</strong>: Deletes resources not in template (use with caution)</li>
+    </ul>
+
+    <h3 id="export-deployment-arm-template">1.4 Export Deployment as ARM Template</h3>
+
+    <pre><code># Export resource group as template
+az group export \
+  --name myResourceGroup \
+  --output-file exported-template.json
+
+# Download deployment template
+az deployment group export \
+  --name myDeployment \
+  --resource-group myResourceGroup
+
+# Export specific resource
+az resource show \
+  --resource-group myResourceGroup \
+  --name myVM \
+  --resource-type Microsoft.Compute/virtualMachines \
+  --query properties</code></pre>
+
+    <h3 id="interpret-bicep-files">1.5 Interpret Bicep Files</h3>
+
+    <h4>Bicep Syntax</h4>
+    <pre><code>// Parameters
+param vmName string = 'myVM'
+param location string = resourceGroup().location
+param vmSize string = 'Standard_B2s'
+
+// Variables
+var nicName = '${vmName}-nic'
+var vnetName = '${vmName}-vnet'
+
+// Resources
+resource vnet 'Microsoft.Network/virtualNetworks@2023-04-01' = {
+  name: vnetName
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        '10.0.0.0/16'
+      ]
+    }
+    subnets: [
+      {
+        name: 'default'
+        properties: {
+          addressPrefix: '10.0.0.0/24'
+        }
+      }
+    ]
+  }
+}
+
+// Outputs
+output vnetId string = vnet.id</code></pre>
+
+    <h4>Bicep Advantages</h4>
+    <ul>
+      <li>Simpler syntax than JSON</li>
+      <li>Better IntelliSense support</li>
+      <li>Automatic dependency management</li>
+      <li>Modular design with modules</li>
+    </ul>
+
+    <h3 id="modify-bicep-files">1.6 Modify Bicep Files</h3>
+
+    <h4>Using Modules</h4>
+    <pre><code>// main.bicep
+module storage './storage.bicep' = {
+  name: 'storageDeploy'
+  params: {
+    storageAccountName: 'mystorageaccount'
+    location: location
+  }
+}
+
+// storage.bicep
+param storageAccountName string
+param location string
+
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
+  name: storageAccountName
+  location: location
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+}
+
+output storageAccountId string = storageAccount.id</code></pre>
+
+    <h4>Conditional Resources</h4>
+    <pre><code>param deployPublicIP bool = true
+
+resource publicIP 'Microsoft.Network/publicIPAddresses@2023-04-01' = if (deployPublicIP) {
+  name: 'myPublicIP'
+  location: location
+  properties: {
+    publicIPAllocationMethod: 'Static'
+  }
+}</code></pre>
+
+    <h3 id="deploy-bicep-files">1.7 Deploy Bicep Files</h3>
+
+    <pre><code># Deploy Bicep file
+az deployment group create \
+  --resource-group myResourceGroup \
+  --template-file main.bicep \
+  --parameters vmName=myVM
+
+# Build Bicep to ARM template
+az bicep build --file main.bicep
+
+# Decompile ARM to Bicep
+az bicep decompile --file template.json</code></pre>
+
+    <div class="callout tip">
+      <span class="callout-icon">&#x2705;</span>
+      <div class="callout-body">
+        <strong>Exam Tip</strong>
+        <p><strong>Bicep</strong> is a domain-specific language that compiles down to ARM JSON &mdash; there's no functional difference in what gets deployed, only in authoring experience. If a scenario emphasizes readability, IntelliSense, or modules, the answer is usually Bicep.</p>
+      </div>
+    </div>
+
+    <h2 id="create-configure-vms">2. Create and Configure Virtual Machines</h2>
+
+    <h3 id="create-virtual-machines">2.1 Create Virtual Machines</h3>
+
+    <h4>VM Creation Options</h4>
+    <ul>
+      <li>Azure Portal</li>
+      <li>Azure CLI</li>
+      <li>PowerShell</li>
+      <li>ARM templates / Bicep</li>
+      <li>Terraform</li>
+    </ul>
+
+    <pre><code># Create VM with Azure CLI
+az vm create \
+  --resource-group myResourceGroup \
+  --name myVM \
+  --image Ubuntu2204 \
+  --size Standard_B2s \
+  --admin-username azureuser \
+  --generate-ssh-keys \
+  --public-ip-sku Standard \
+  --vnet-name myVNet \
+  --subnet mySubnet
+
+# Create Windows VM
+az vm create \
+  --resource-group myResourceGroup \
+  --name myWindowsVM \
+  --image Win2022Datacenter \
+  --size Standard_D2s_v3 \
+  --admin-username azureuser \
+  --admin-password &lt;password&gt;</code></pre>
+
+    <h4>VM Images</h4>
+    <ul>
+      <li><strong>Marketplace Images</strong>: Pre-configured by Microsoft/partners</li>
+      <li><strong>Custom Images</strong>: Your own generalized VMs</li>
+      <li><strong>Azure Compute Gallery</strong>: Centralized image management, version management, replication (formerly named Shared Image Gallery &mdash; see the callout above)</li>
+    </ul>
+
+    <h3 id="configure-disk-encryption">2.2 Configure Azure Disk Encryption</h3>
+
+    <h4>Encryption Options</h4>
+    <ol>
+      <li><strong>Server-Side Encryption (SSE)</strong>: Default, automatic</li>
+      <li><strong>Azure Disk Encryption (ADE)</strong>: BitLocker (Windows) / dm-crypt (Linux)</li>
+      <li><strong>Encryption at Host</strong>: Encryption on VM host</li>
+    </ol>
+
+    <h4>Azure Disk Encryption (ADE)</h4>
+    <pre><code># Prerequisites: Azure Key Vault
+
+# Enable ADE on Linux VM
+az vm encryption enable \
+  --resource-group myResourceGroup \
+  --name myVM \
+  --disk-encryption-keyvault myKeyVault \
+  --volume-type All
+
+# Enable ADE on Windows VM
+az vm encryption enable \
+  --resource-group myResourceGroup \
+  --name myWindowsVM \
+  --disk-encryption-keyvault myKeyVault \
+  --volume-type All
+
+# Check encryption status
+az vm encryption show \
+  --resource-group myResourceGroup \
+  --name myVM</code></pre>
+
+    <h4>Encryption at Host</h4>
+    <ul>
+      <li>Encrypts temp disk and OS/data disk caches</li>
+      <li>Enabled at VM creation (cannot be changed later)</li>
+    </ul>
+
+    <pre><code># Create VM with encryption at host
+az vm create \
+  --resource-group myResourceGroup \
+  --name myVM \
+  --image Ubuntu2204 \
+  --encryption-at-host true</code></pre>
+
+    <h3 id="move-vms-resource-groups">2.3 Move VMs Between Resource Groups</h3>
+
+    <pre><code># Move VM and associated resources
+az resource move \
+  --destination-group targetResourceGroup \
+  --ids $(az resource show --resource-group sourceRG --name myVM --resource-type Microsoft.Compute/virtualMachines --query id --output tsv)
+
+# Note: Must move associated resources (NICs, disks, etc.) together</code></pre>
+
+    <p><strong>Important Considerations</strong>:</p>
+    <ul>
+      <li>VM must be stopped (deallocated)</li>
+      <li>Source and destination subscriptions must be in same tenant</li>
+      <li>Some resource types cannot be moved</li>
+      <li>Validate move operation first</li>
+    </ul>
+
+    <h3 id="manage-vm-sizes">2.4 Manage VM Sizes</h3>
+
+    <h4>VM Size Families</h4>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Family</th><th>Description</th><th>Use Case</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>B-series</strong></td><td>Burstable</td><td>Development, test, small workloads</td></tr>
+          <tr><td><strong>D-series</strong></td><td>General purpose</td><td>Web servers, databases</td></tr>
+          <tr><td><strong>E-series</strong></td><td>Memory optimized</td><td>Large databases, in-memory analytics</td></tr>
+          <tr><td><strong>F-series</strong></td><td>Compute optimized</td><td>Gaming, analytics, batch processing</td></tr>
+          <tr><td><strong>L-series</strong></td><td>Storage optimized</td><td>Big data, SQL, NoSQL databases</td></tr>
+          <tr><td><strong>N-series</strong></td><td>GPU enabled</td><td>ML, rendering, video processing</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre><code># List available sizes in a region
+az vm list-sizes --location eastus --output table
+
+# Resize VM (VM must be stopped)
+az vm deallocate --resource-group myResourceGroup --name myVM
+az vm resize --resource-group myResourceGroup --name myVM --size Standard_D4s_v3
+az vm start --resource-group myResourceGroup --name myVM
+
+# Resize without downtime (if size is available in current cluster)
+az vm resize --resource-group myResourceGroup --name myVM --size Standard_D4s_v3</code></pre>
+
+    <h3 id="deploy-vms-availability-zones">2.5 Deploy VMs to Availability Zones</h3>
+
+    <h4>Availability Zones</h4>
+    <ul>
+      <li>Physically separate datacenters within a region</li>
+      <li>Protects from datacenter failures</li>
+      <li>3 zones per supported region</li>
+      <li>99.99% SLA (vs. 99.95% for single VM with Premium SSD)</li>
+    </ul>
+
+    <pre><code># Create VM in availability zone
+az vm create \
+  --resource-group myResourceGroup \
+  --name myVM \
+  --image Ubuntu2204 \
+  --zone 1 \
+  --size Standard_D2s_v3
+
+# Create VMs in multiple zones
+for zone in 1 2 3; do
+  az vm create \
+    --resource-group myResourceGroup \
+    --name myVM-zone$zone \
+    --zone $zone \
+    --image Ubuntu2204
+done</code></pre>
+
+    <p><strong>Important</strong>:</p>
+    <ul>
+      <li>Cannot change zones after VM creation</li>
+      <li>Must use Standard SKU public IP and load balancer</li>
+      <li>Managed disks are automatically zone-redundant</li>
+    </ul>
+
+    <h3 id="deploy-vms-availability-sets">2.6 Deploy VMs to Availability Sets</h3>
+
+    <h4>Availability Sets</h4>
+    <ul>
+      <li>Logical grouping within a datacenter</li>
+      <li>Protects from hardware failures and updates</li>
+      <li>99.95% SLA (for 2+ VMs in availability set)</li>
+    </ul>
+
+    <p><strong>Fault Domains (FD)</strong>: Separate power/network (max 3)<br>
+    <strong>Update Domains (UD)</strong>: Separate update groups (max 20)</p>
+
+    <pre><code># Create availability set
+az vm availability-set create \
+  --resource-group myResourceGroup \
+  --name myAvailabilitySet \
+  --platform-fault-domain-count 2 \
+  --platform-update-domain-count 5
+
+# Create VM in availability set
+az vm create \
+  --resource-group myResourceGroup \
+  --name myVM \
+  --availability-set myAvailabilitySet \
+  --image Ubuntu2204</code></pre>
+
+    <p><strong>Limitations</strong>:</p>
+    <ul>
+      <li>Cannot combine with availability zones</li>
+      <li>Must specify at VM creation (cannot add later)</li>
+      <li>All VMs must be in same availability set</li>
+    </ul>
+
+    <div class="callout warn">
+      <span class="callout-icon">&#x26A0;&#xFE0F;</span>
+      <div class="callout-body">
+        <strong>Exam Trap</strong>
+        <p><strong>Availability Zones</strong> protect against datacenter failure (99.99% SLA); <strong>Availability Sets</strong> only protect against rack-level hardware/update failure within a single datacenter (99.95% SLA). The two cannot be combined on the same VM &mdash; know which SLA number pairs with which feature.</p>
+      </div>
+    </div>
+
+    <h3 id="configure-vmss">2.7 Configure Virtual Machine Scale Sets (VMSS)</h3>
+
+    <h4>VMSS Features</h4>
+    <ul>
+      <li>Auto-scaling (metric-based or schedule-based)</li>
+      <li>Load balanced across instances</li>
+      <li>Automatic OS updates</li>
+      <li>Instance repair policies</li>
+    </ul>
+
+    <pre><code># Create VMSS
+az vmss create \
+  --resource-group myResourceGroup \
+  --name myVMSS \
+  --image Ubuntu2204 \
+  --instance-count 2 \
+  --vm-sku Standard_D2s_v3 \
+  --admin-username azureuser \
+  --generate-ssh-keys \
+  --load-balancer myLoadBalancer
+
+# Scale manually
+az vmss scale \
+  --resource-group myResourceGroup \
+  --name myVMSS \
+  --new-capacity 5
+
+# Configure autoscale
+az monitor autoscale create \
+  --resource-group myResourceGroup \
+  --resource myVMSS \
+  --resource-type Microsoft.Compute/virtualMachineScaleSets \
+  --name autoscale \
+  --min-count 2 \
+  --max-count 10 \
+  --count 2
+
+# Add scale-out rule (CPU > 75%)
+az monitor autoscale rule create \
+  --resource-group myResourceGroup \
+  --autoscale-name autoscale \
+  --condition "Percentage CPU > 75 avg 5m" \
+  --scale out 1
+
+# Add scale-in rule (CPU < 25%)
+az monitor autoscale rule create \
+  --resource-group myResourceGroup \
+  --autoscale-name autoscale \
+  --condition "Percentage CPU < 25 avg 5m" \
+  --scale in 1</code></pre>
+
+    <h4>VMSS Orchestration Modes</h4>
+    <ul>
+      <li><strong>Uniform</strong>: Identical VMs, better for large-scale stateless workloads</li>
+      <li><strong>Flexible</strong>: Mix of VM sizes and types, better control</li>
+    </ul>
+
+    <h4>VMSS Update Policy</h4>
+    <ul>
+      <li><strong>Automatic</strong>: Instances updated immediately</li>
+      <li><strong>Rolling</strong>: Instances updated in batches</li>
+      <li><strong>Manual</strong>: You control when instances are updated</li>
+    </ul>
+
+    <h2 id="provision-manage-containers">3. Provision and Manage Containers</h2>
+
+    <h3 id="manage-acr">3.1 Manage Azure Container Registry (ACR)</h3>
+
+    <h4>ACR Features</h4>
+    <ul>
+      <li>Private container registry</li>
+      <li>Integrated with Azure services</li>
+      <li>Geo-replication for multi-region deployments</li>
+      <li>Security scanning and vulnerability assessment</li>
+    </ul>
+
+    <h4>ACR SKUs</h4>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>SKU</th><th>Storage</th><th>Throughput</th><th>Use Case</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Basic</strong></td><td>10 GB</td><td>Low</td><td>Development</td></tr>
+          <tr><td><strong>Standard</strong></td><td>100 GB</td><td>Medium</td><td>Production</td></tr>
+          <tr><td><strong>Premium</strong></td><td>500 GB</td><td>High</td><td>Geo-replication, VNet integration</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre><code># Create container registry
+az acr create \
+  --resource-group myResourceGroup \
+  --name myContainerRegistry \
+  --sku Standard \
+  --admin-enabled true
+
+# Log in to ACR
+az acr login --name myContainerRegistry
+
+# Build and push image
+az acr build \
+  --registry myContainerRegistry \
+  --image myapp:v1 \
+  --file Dockerfile .
+
+# List images
+az acr repository list --name myContainerRegistry --output table
+
+# List tags
+az acr repository show-tags \
+  --name myContainerRegistry \
+  --repository myapp \
+  --output table
+
+# Pull image
+docker pull mycontainerregistry.azurecr.io/myapp:v1</code></pre>
+
+    <h4>ACR Tasks</h4>
+    <ul>
+      <li>Build images in cloud</li>
+      <li>Multi-step tasks</li>
+      <li>Triggered builds (code commit, base image update)</li>
+    </ul>
+
+    <pre><code># Quick build
+az acr build --registry myContainerRegistry --image myapp:v2 .
+
+# Create task for automatic builds
+az acr task create \
+  --registry myContainerRegistry \
+  --name buildtask \
+  --image myapp:{{.Run.ID}} \
+  --context https://github.com/user/repo.git \
+  --file Dockerfile \
+  --git-access-token &lt;PAT&gt;</code></pre>
+
+    <h3 id="create-configure-aci">3.2 Create and Configure Azure Container Instances (ACI)</h3>
+
+    <h4>ACI Features</h4>
+    <ul>
+      <li>Fastest way to run containers</li>
+      <li>No orchestration needed</li>
+      <li>Per-second billing</li>
+      <li>Both Windows and Linux containers</li>
+    </ul>
+
+    <pre><code># Create container instance
+az container create \
+  --resource-group myResourceGroup \
+  --name mycontainer \
+  --image mcr.microsoft.com/azuredocs/aci-helloworld \
+  --dns-name-label myapp-unique \
+  --ports 80
+
+# Create with private registry
+az container create \
+  --resource-group myResourceGroup \
+  --name mycontainer \
+  --image mycontainerregistry.azurecr.io/myapp:v1 \
+  --registry-login-server mycontainerregistry.azurecr.io \
+  --registry-username &lt;username&gt; \
+  --registry-password &lt;password&gt; \
+  --dns-name-label myapp
+
+# View logs
+az container logs \
+  --resource-group myResourceGroup \
+  --name mycontainer
+
+# Execute command in container
+az container exec \
+  --resource-group myResourceGroup \
+  --name mycontainer \
+  --exec-command /bin/bash</code></pre>
+
+    <h4>Container Groups</h4>
+    <ul>
+      <li>Deploy multiple containers together</li>
+      <li>Share network, storage, lifecycle</li>
+      <li>Similar to Kubernetes pod</li>
+    </ul>
+
+    <pre><code># YAML definition for container group
+apiVersion: '2021-09-01'
+location: eastus
+name: mycontainergroup
+properties:
+  containers:
+  - name: web
+    properties:
+      image: nginx
+      ports:
+      - port: 80
+      resources:
+        requests:
+          cpu: 1
+          memoryInGb: 1.5
+  - name: sidecar
+    properties:
+      image: alpine
+      command: ["/bin/sh", "-c", "while true; do sleep 30; done"]
+      resources:
+        requests:
+          cpu: 0.5
+          memoryInGb: 0.5
+  osType: Linux
+  ipAddress:
+    type: Public
+    ports:
+    - protocol: tcp
+      port: 80</code></pre>
+
+    <pre><code># Deploy container group
+az container create \
+  --resource-group myResourceGroup \
+  --file containergroup.yaml</code></pre>
+
+    <h3 id="create-configure-container-apps">3.3 Create and Configure Azure Container Apps</h3>
+
+    <h4>Container Apps Features</h4>
+    <ul>
+      <li>Built on Kubernetes (abstracted away)</li>
+      <li>Auto-scaling (scale to zero)</li>
+      <li>HTTPS ingress</li>
+      <li>Traffic splitting (A/B testing, blue-green)</li>
+      <li>Managed revisions</li>
+    </ul>
+
+    <pre><code># Create Container Apps environment
+az containerapp env create \
+  --name myEnvironment \
+  --resource-group myResourceGroup \
+  --location eastus
+
+# Create container app
+az containerapp create \
+  --name myapp \
+  --resource-group myResourceGroup \
+  --environment myEnvironment \
+  --image mcr.microsoft.com/azuredocs/containerapps-helloworld:latest \
+  --target-port 80 \
+  --ingress external \
+  --min-replicas 0 \
+  --max-replicas 10
+
+# Update container app
+az containerapp update \
+  --name myapp \
+  --resource-group myResourceGroup \
+  --image mycontainerregistry.azurecr.io/myapp:v2
+
+# View revisions
+az containerapp revision list \
+  --name myapp \
+  --resource-group myResourceGroup \
+  --output table
+
+# Configure traffic splitting
+az containerapp ingress traffic set \
+  --name myapp \
+  --resource-group myResourceGroup \
+  --revision-weight latest=80 previous=20</code></pre>
+
+    <h4>Scaling Configuration</h4>
+    <pre><code># Configure autoscaling
+az containerapp update \
+  --name myapp \
+  --resource-group myResourceGroup \
+  --min-replicas 1 \
+  --max-replicas 10 \
+  --scale-rule-name http-rule \
+  --scale-rule-type http \
+  --scale-rule-metadata concurrentRequests=50</code></pre>
+
+    <div class="callout tip">
+      <span class="callout-icon">&#x2705;</span>
+      <div class="callout-body">
+        <strong>Exam Tip</strong>
+        <p><strong>ACI vs. ACA vs. AKS</strong>: use ACI for simple, single/few-container workloads with no orchestration; ACA (Container Apps) for microservices needing scale-to-zero and traffic splitting without managing Kubernetes; AKS for full Kubernetes control. If a scenario mentions "no orchestration needed" or "fastest way to run a container," the answer is ACI.</p>
+      </div>
+    </div>
+
+    <h2 id="create-configure-app-service">4. Create and Configure Azure App Service</h2>
+
+    <h3 id="provision-app-service-plans">4.1 Provision App Service Plans</h3>
+
+    <h4>App Service Plan Tiers</h4>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Tier</th><th>Features</th><th>Use Case</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Free (F1)</strong></td><td>Shared compute, 60 min/day</td><td>Learning, testing</td></tr>
+          <tr><td><strong>Shared (D1)</strong></td><td>Shared compute, 240 min/day</td><td>Small apps</td></tr>
+          <tr><td><strong>Basic (B1-B3)</strong></td><td>Dedicated compute, manual scale</td><td>Development</td></tr>
+          <tr><td><strong>Standard (S1-S3)</strong></td><td>Auto-scale, staging slots, backups</td><td>Production</td></tr>
+          <tr><td><strong>Premium (P1v3-P3v3)</strong></td><td>Enhanced performance, VNet integration</td><td>High-performance production</td></tr>
+          <tr><td><strong>Isolated (I1v2-I3v2)</strong></td><td>App Service Environment, network isolation</td><td>Enterprise, compliance</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre><code># Create App Service plan
+az appservice plan create \
+  --name myAppServicePlan \
+  --resource-group myResourceGroup \
+  --sku B1 \
+  --is-linux
+
+# Scale up (change tier)
+az appservice plan update \
+  --name myAppServicePlan \
+  --resource-group myResourceGroup \
+  --sku S1
+
+# Scale out (add instances)
+az appservice plan update \
+  --name myAppServicePlan \
+  --resource-group myResourceGroup \
+  --number-of-workers 3</code></pre>
+
+    <h3 id="configure-scaling-app-service">4.2 Configure Scaling for App Service Plans</h3>
+
+    <h4>Manual Scaling</h4>
+    <pre><code># Scale to specific instance count
+az appservice plan update \
+  --name myAppServicePlan \
+  --resource-group myResourceGroup \
+  --number-of-workers 5</code></pre>
+
+    <h4>Auto-scaling (Standard tier and above)</h4>
+    <pre><code># Create autoscale setting
+az monitor autoscale create \
+  --resource-group myResourceGroup \
+  --resource myAppServicePlan \
+  --resource-type Microsoft.Web/serverfarms \
+  --name autoscale \
+  --min-count 2 \
+  --max-count 10 \
+  --count 2
+
+# Add scale-out rule
+az monitor autoscale rule create \
+  --resource-group myResourceGroup \
+  --autoscale-name autoscale \
+  --condition "CpuPercentage > 70 avg 5m" \
+  --scale out 2
+
+# Add scale-in rule
+az monitor autoscale rule create \
+  --resource-group myResourceGroup \
+  --autoscale-name autoscale \
+  --condition "CpuPercentage < 30 avg 5m" \
+  --scale in 1</code></pre>
+
+    <h3 id="create-web-apps">4.3 Create App Service Web Apps</h3>
+
+    <pre><code># Create web app
+az webapp create \
+  --resource-group myResourceGroup \
+  --plan myAppServicePlan \
+  --name myWebApp \
+  --runtime "NODE:18-lts"
+
+# Create web app with deployment
+az webapp up \
+  --resource-group myResourceGroup \
+  --name myWebApp \
+  --runtime "PYTHON:3.11" \
+  --sku B1
+
+# Deploy from local Git
+az webapp deployment source config-local-git \
+  --name myWebApp \
+  --resource-group myResourceGroup
+
+# Deploy from GitHub
+az webapp deployment source config \
+  --name myWebApp \
+  --resource-group myResourceGroup \
+  --repo-url https://github.com/user/repo \
+  --branch main \
+  --manual-integration</code></pre>
+
+    <h3 id="configure-certificates-domains">4.4 Configure Certificates and Custom Domains</h3>
+
+    <h4>Custom Domain</h4>
+    <pre><code># Add custom domain
+az webapp config hostname add \
+  --webapp-name myWebApp \
+  --resource-group myResourceGroup \
+  --hostname www.contoso.com
+
+# Note: Must configure DNS CNAME or A record first
+# CNAME: www.contoso.com -> mywebapp.azurewebsites.net
+# OR
+# A record: www.contoso.com -> &lt;app-ip&gt;
+# TXT record: asuid.www.contoso.com -> &lt;verification-id&gt;</code></pre>
+
+    <h4>SSL/TLS Certificates</h4>
+    <pre><code># Create managed certificate (free, requires custom domain)
+az webapp config ssl create \
+  --resource-group myResourceGroup \
+  --name myWebApp \
+  --hostname www.contoso.com
+
+# Upload certificate
+az webapp config ssl upload \
+  --resource-group myResourceGroup \
+  --name myWebApp \
+  --certificate-file certificate.pfx \
+  --certificate-password &lt;password&gt;
+
+# Bind certificate
+az webapp config ssl bind \
+  --resource-group myResourceGroup \
+  --name myWebApp \
+  --certificate-thumbprint &lt;thumbprint&gt; \
+  --ssl-type SNI
+
+# Enforce HTTPS
+az webapp update \
+  --resource-group myResourceGroup \
+  --name myWebApp \
+  --https-only true</code></pre>
+
+    <h3 id="configure-application-settings">4.5 Configure Application Settings</h3>
+
+    <pre><code># Set app settings (environment variables)
+az webapp config appsettings set \
+  --resource-group myResourceGroup \
+  --name myWebApp \
+  --settings \
+    DB_HOST=mydbserver.database.windows.net \
+    DB_NAME=mydb \
+    API_KEY=@Microsoft.KeyVault(SecretUri=https://myvault.vault.azure.net/secrets/apikey/)
+
+# List app settings
+az webapp config appsettings list \
+  --resource-group myResourceGroup \
+  --name myWebApp
+
+# Configure connection strings
+az webapp config connection-string set \
+  --resource-group myResourceGroup \
+  --name myWebApp \
+  --connection-string-type SQLAzure \
+  --settings DefaultConnection="Server=tcp:myserver.database.windows.net;Database=mydb"</code></pre>
+
+    <h3 id="configure-backup">4.6 Configure Backup for App Service</h3>
+
+    <pre><code># Create storage account for backups
+az storage account create \
+  --name mybackupstorage \
+  --resource-group myResourceGroup
+
+# Create storage container
+az storage container create \
+  --name backups \
+  --account-name mybackupstorage
+
+# Generate SAS token
+sasToken=$(az storage container generate-sas \
+  --account-name mybackupstorage \
+  --name backups \
+  --permissions rwdl \
+  --expiry 2026-01-01 \
+  --output tsv)
+
+# Configure backup
+az webapp config backup create \
+  --resource-group myResourceGroup \
+  --webapp-name myWebApp \
+  --container-url "https://mybackupstorage.blob.core.windows.net/backups?$sasToken" \
+  --backup-name mybackup
+
+# Configure scheduled backup
+az webapp config backup update \
+  --resource-group myResourceGroup \
+  --webapp-name myWebApp \
+  --container-url "https://mybackupstorage.blob.core.windows.net/backups?$sasToken" \
+  --frequency 1d \
+  --retain-one true \
+  --retention 30</code></pre>
+
+    <p><strong>Backup includes</strong>:</p>
+    <ul>
+      <li>App configuration</li>
+      <li>File content</li>
+      <li>Connected database (if configured)</li>
+    </ul>
+
+    <p><strong>Requirements</strong>:</p>
+    <ul>
+      <li>Standard tier or higher</li>
+      <li>Storage account in same subscription</li>
+    </ul>
+
+    <h3 id="configure-networking">4.7 Configure Networking for App Service</h3>
+
+    <h4>VNet Integration (Outbound)</h4>
+    <pre><code># Integrate with VNet (for outbound traffic)
+az webapp vnet-integration add \
+  --resource-group myResourceGroup \
+  --name myWebApp \
+  --vnet myVNet \
+  --subnet appSubnet</code></pre>
+
+    <h4>Access Restrictions (Inbound)</h4>
+    <pre><code># Add IP restriction
+az webapp config access-restriction add \
+  --resource-group myResourceGroup \
+  --name myWebApp \
+  --rule-name AllowOffice \
+  --action Allow \
+  --ip-address 203.0.113.0/24 \
+  --priority 100
+
+# Add VNet restriction
+az webapp config access-restriction add \
+  --resource-group myResourceGroup \
+  --name myWebApp \
+  --rule-name AllowVNet \
+  --action Allow \
+  --vnet-name myVNet \
+  --subnet mySubnet \
+  --priority 200</code></pre>
+
+    <h3 id="configure-deployment-slots">4.8 Configure Deployment Slots</h3>
+
+    <h4>Deployment Slots Features</h4>
+    <ul>
+      <li>Swap slots with zero downtime</li>
+      <li>Warm up before swap</li>
+      <li>Auto-swap (for CI/CD)</li>
+      <li>Slot-specific settings</li>
+    </ul>
+
+    <pre><code># Create deployment slot
+az webapp deployment slot create \
+  --resource-group myResourceGroup \
+  --name myWebApp \
+  --slot staging
+
+# Deploy to staging slot
+az webapp deployment source config \
+  --resource-group myResourceGroup \
+  --name myWebApp \
+  --slot staging \
+  --repo-url https://github.com/user/repo \
+  --branch develop
+
+# Swap slots (staging -> production)
+az webapp deployment slot swap \
+  --resource-group myResourceGroup \
+  --name myWebApp \
+  --slot staging \
+  --target-slot production
+
+# Configure slot-specific setting (won't swap)
+az webapp config appsettings set \
+  --resource-group myResourceGroup \
+  --name myWebApp \
+  --slot staging \
+  --settings ENVIRONMENT=Staging \
+  --slot-settings ENVIRONMENT</code></pre>
+
+    <p><strong>Slot Settings</strong>:</p>
+    <ul>
+      <li>Sticky (slot-specific): Stay with slot during swap</li>
+      <li>Non-sticky: Move with content during swap</li>
+    </ul>
+
+    <div class="callout warn">
+      <span class="callout-icon">&#x26A0;&#xFE0F;</span>
+      <div class="callout-body">
+        <strong>Exam Trap</strong>
+        <p>Deployment slots require <strong>Standard tier or higher</strong> &mdash; Basic and below don't support them. If a scenario asks for zero-downtime deployment with quick rollback and the plan is Free/Shared/Basic, the first step is scaling up the plan before slots can be configured.</p>
+      </div>
+    </div>
+
+    <h2 id="key-exam-tips">Key Exam Tips</h2>
+    <ol>
+      <li><strong>ARM vs. Bicep</strong>: Bicep is simpler, compiles to ARM</li>
+      <li><strong>Availability Zones vs. Sets</strong>: Zones protect from datacenter failure, Sets protect from rack failure</li>
+      <li><strong>VMSS Autoscale</strong>: Based on metrics (CPU, memory) or schedule</li>
+      <li><strong>ACI vs. ACA vs. AKS</strong>: ACI for simple containers, ACA for microservices, AKS for full Kubernetes</li>
+      <li><strong>App Service Tiers</strong>: Free/Shared use shared compute, Basic+ use dedicated</li>
+      <li><strong>Deployment Slots</strong>: Require Standard tier or higher</li>
+      <li><strong>Disk Encryption</strong>: ADE requires Key Vault, SSE is automatic</li>
+      <li><strong>Container Registry</strong>: Premium tier required for geo-replication</li>
+      <li><strong>App Service Backup</strong>: Standard tier or higher, includes databases</li>
+      <li><strong>Custom Domains</strong>: Free managed certificates available</li>
+    </ol>
+
+    <h2 id="practice-scenarios">Practice Scenarios</h2>
+
+    <h3 id="scenario-1">Scenario 1: High Availability VM</h3>
+    <p><strong>Question</strong>: Deploy a web application across 3 VMs with 99.99% SLA.</p>
+    <p><strong>Answer</strong>:</p>
+    <ol>
+      <li>Create VMs in 3 different availability zones</li>
+      <li>Use Standard SKU load balancer</li>
+      <li>Use Premium SSD or Standard SSD for OS disks</li>
+      <li>Configure health probes on load balancer</li>
+    </ol>
+
+    <h3 id="scenario-2">Scenario 2: Auto-scaling Web App</h3>
+    <p><strong>Question</strong>: Web app needs to scale from 2 to 10 instances based on CPU usage.</p>
+    <p><strong>Answer</strong>:</p>
+    <ol>
+      <li>Use Standard S1 or higher App Service plan</li>
+      <li>Configure autoscale with min=2, max=10</li>
+      <li>Add rule: Scale out when CPU &gt; 70% for 5 minutes</li>
+      <li>Add rule: Scale in when CPU &lt; 30% for 5 minutes</li>
+    </ol>
+
+    <h3 id="scenario-3">Scenario 3: Blue-Green Deployment</h3>
+    <p><strong>Question</strong>: Deploy new version with zero downtime and quick rollback capability.</p>
+    <p><strong>Answer</strong>:</p>
+    <ol>
+      <li>Create staging deployment slot</li>
+      <li>Deploy new version to staging</li>
+      <li>Test staging slot</li>
+      <li>Swap staging and production slots</li>
+      <li>If issues, swap back immediately</li>
+    </ol>
+
+    <h2 id="additional-resources">Additional Resources</h2>
+    <ul>
+      <li><a href="https://learn.microsoft.com/en-us/azure/virtual-machines/" target="_blank" rel="noopener">Azure Virtual Machines Documentation</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/" target="_blank" rel="noopener">ARM Templates Documentation</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/" target="_blank" rel="noopener">Bicep Documentation</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/container-instances/" target="_blank" rel="noopener">Azure Container Instances Documentation</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/app-service/" target="_blank" rel="noopener">App Service Documentation</a></li>
+    </ul>
+
+    <nav class="guide-nav" aria-label="Guide navigation">
+      <a href="/guides/az-104/storage/" class="guide-nav-card prev">
+        <div class="guide-nav-label">Previous</div>
+        <h4>&#x2190; Storage</h4>
+      </a>
+      <a href="/guides/az-104/networking/" class="guide-nav-card next">
+        <div class="guide-nav-label">Next</div>
+        <h4>Virtual Networking &#x2192;</h4>
+      </a>
+    </nav>
+  </article>
+</div>
+
+<footer class="footer">
+  <a href="https://ops4life.com">ops4life.com</a> &middot; Azure Certification &middot;
+  <a href="/">Back to Roadmaps</a> &middot;
+  <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener">GitHub</a>
+</footer>
+
+<script src="/shared/notes.js"></script>
+<script>
+    initNotes('.guide-content', '/guides/az-104/compute/');
+</script>
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#111;color:#e0e0e0;border-top:2px solid #000;padding:12px 20px;align-items:center;gap:12px;flex-wrap:wrap;font-family:'Space Mono','Courier New',monospace;font-size:11px;line-height:1.5;">
+  <span style="flex:1;min-width:200px;">This site uses cookies and local storage to remember your preferences.</span>
+  <div style="display:flex;gap:8px;flex-shrink:0;">
+    <button id="cookie-accept" style="background:#ff4400;color:#fff;border:none;padding:7px 16px;cursor:pointer;font-family:inherit;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Accept</button>
+    <button id="cookie-decline" style="background:transparent;color:#aaa;border:1px solid #444;padding:7px 14px;cursor:pointer;font-family:inherit;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;">Decline</button>
+  </div>
+</div>
+<script>
+(function(){
+  var b=document.getElementById('cookie-banner');
+  if(!localStorage.getItem('cookie-consent')){b.style.display='flex';}
+  document.getElementById('cookie-accept').onclick=function(){localStorage.setItem('cookie-consent','accepted');b.style.display='none';};
+  document.getElementById('cookie-decline').onclick=function(){localStorage.setItem('cookie-consent','declined');b.style.display='none';};
+})();
+</script>
+
+</body>
+</html>

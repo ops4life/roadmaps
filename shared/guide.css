@@ -94,6 +94,7 @@ pre code {
 }
 .badge-time { background: var(--bg-3); color: var(--ink-3); }
 .badge-category { color: var(--ink); background: var(--accent); }
+.badge-cert { background: var(--accent); color: var(--ink); }
 
 /* ===== Sidebar Widget ===== */
 .sidebar-widget {

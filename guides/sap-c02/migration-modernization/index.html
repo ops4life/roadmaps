@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Domain 4: Migration and Modernization &mdash; ops4life Roadmaps</title>
+  <link rel="canonical" href="https://roadmap.ops4life.com/guides/sap-c02/migration-modernization/">
+  <meta name="description" content="AWS SAP-C02 Domain 4 (20%): migration and modernization — workload assessment, the 7 Rs, migration tooling, target architecture selection, and post-migration modernization.">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/tokens.css">
+  <link rel="stylesheet" href="/shared/guide.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="https://ops4life.com" class="nav-back">&larr; ops4life.com</a>
+  <a href="/" class="nav-back">&larr; Roadmaps</a>
+  <img src="/favicon.png" alt="" style="width: 28px; height: 28px; display: block" />
+  <span class="nav-title">AWS Certification</span>
+  <span style="margin-left: auto; display: flex; align-items: center; gap: 0.75rem">
+    <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener" aria-label="GitHub" style="display: flex; align-items: center; color: inherit">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 98 96" aria-hidden="true">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"/>
+      </svg>
+    </a>
+  </span>
+</nav>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="/">Roadmaps</a>
+    <span class="breadcrumb-sep">&#x203A;</span>
+    <span>AWS Certification</span>
+    <span class="breadcrumb-sep">&#x203A;</span>
+    <span class="breadcrumb-current">Domain 4: Migration and Modernization</span>
+  </div>
+</div>
+
+<div class="guide-layout">
+  <aside class="guide-sidebar">
+    <div class="sidebar-widget">
+      <h4>On This Page</h4>
+      <ul class="toc-list">
+        <li><a href="#migration-workload-selection">1. Select Workloads and Processes for Migration</a></li>
+        <li><a href="#migration-assessment-tracking">1.1 Migration Assessment and Tracking</a></li>
+        <li><a href="#seven-rs-portfolio-assessment">1.2 Portfolio Assessment and the 7 Rs</a></li>
+        <li><a href="#wave-planning-tco">1.3 Wave Planning and TCO</a></li>
+        <li><a href="#optimal-migration-approach">2. Determine the Optimal Migration Approach</a></li>
+        <li><a href="#data-migration">2.1 Data Migration</a></li>
+        <li><a href="#application-migration">2.2 Application Migration</a></li>
+        <li><a href="#database-migration">2.3 Database Migration</a></li>
+        <li><a href="#networking-identity-governance">2.4 Networking, Identity, and Governance</a></li>
+        <li><a href="#new-architecture-determination">3. Determine a New Architecture</a></li>
+        <li><a href="#compute-platform-selection">3.1 Compute Platform Selection</a></li>
+        <li><a href="#container-hosting-platform-selection">3.2 Container Hosting Platform Selection</a></li>
+        <li><a href="#storage-service-selection">3.3 Storage Service Selection</a></li>
+        <li><a href="#database-platform-selection">3.4 Database Platform Selection</a></li>
+        <li><a href="#modernization-opportunities">4. Determine Opportunities for Modernization</a></li>
+        <li><a href="#serverless-decoupling">4.1 Serverless and Decoupling Opportunities</a></li>
+        <li><a href="#container-modernization">4.2 Container Modernization</a></li>
+        <li><a href="#purpose-built-database-adoption">4.3 Purpose-Built Database Adoption</a></li>
+        <li><a href="#application-integration-modernization">4.4 Application Integration Modernization</a></li>
+        <li><a href="#key-exam-tips">Key Exam Tips</a></li>
+        <li><a href="#practice-scenarios">Practice Scenarios</a></li>
+        <li><a href="#additional-resources">Additional Resources</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-widget">
+      <h4>Guide Info</h4>
+      <p style="font-size:0.8rem;color:var(--color-text-muted);line-height:1.9;">
+        &#x1F4DA; Exam weight: 20%<br>
+        &#x23F1; ~18 min read
+      </p>
+    </div>
+  </aside>
+
+  <article class="guide-content" id="guide-content">
+    <div class="guide-card-top" style="margin-bottom:0.5rem"><span class="guide-card-chapter">Domain 4</span></div>
+    <h1>Accelerate Workload Migration and Modernization</h1>
+    <div class="guide-meta">
+      <span class="meta-badge badge-cert">20% of exam</span>
+      <span class="meta-badge badge-time">&#x23F1; ~18 min read</span>
+    </div>
+
+    <p>This domain covers selecting and executing migrations of existing on-premises/other-cloud workloads to AWS &mdash; assessment, migration approach and tooling, target architecture selection, and post-migration modernization opportunities.</p>
+
+    <h2 id="migration-workload-selection">1. Select Existing Workloads and Processes for Potential Migration</h2>
+
+    <h3 id="migration-assessment-tracking">1.1 Migration Assessment and Tracking</h3>
+
+    <ul>
+      <li><strong>AWS Migration Hub</strong>: single place to track migration progress across multiple AWS and partner migration tools, and to view/import a discovered application portfolio.</li>
+      <li><strong>AWS Application Discovery Service</strong>: agentless (via VMware vCenter) or agent-based discovery of on-prem server inventory, performance data, and process/network dependency mapping &mdash; the required first step before you can build a valid migration wave plan.</li>
+      <li><strong>AWS Migration Evaluator</strong> (formerly TSO Logic): builds a data-driven business case (current-state cost vs. projected AWS cost) from discovery data.</li>
+    </ul>
+
+    <h3 id="seven-rs-portfolio-assessment">1.2 Portfolio Assessment and the 7 Rs</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>R</th><th>Meaning</th><th>When to use</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Retire</strong></td><td>Decommission</td><td>App no longer needed</td></tr>
+          <tr><td><strong>Retain</strong></td><td>Keep as-is (for now)</td><td>Not ready, revisit later, or too costly to migrate now</td></tr>
+          <tr><td><strong>Rehost</strong> (&ldquo;lift and shift&rdquo;)</td><td>Move as-is, no code change</td><td>Fast migration, minimal risk &mdash; e.g., via AWS Application Migration Service</td></tr>
+          <tr><td><strong>Relocate</strong></td><td>Move to AWS without changes, for VMware/hypervisor-level workloads</td><td>e.g., VMware Cloud on AWS</td></tr>
+          <tr><td><strong>Replatform</strong> (&ldquo;lift, tinker, and shift&rdquo;)</td><td>Some optimization, no core architecture change</td><td>e.g., move DB to RDS, keep app logic the same</td></tr>
+          <tr><td><strong>Repurchase</strong> (&ldquo;drop and shop&rdquo;)</td><td>Replace with a SaaS/different product</td><td>Move to a COTS/SaaS replacement</td></tr>
+          <tr><td><strong>Refactor / Re-architect</strong></td><td>Redesign using cloud-native services</td><td>Long-term strategic apps needing new features/scale not possible on the current architecture</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="wave-planning-tco">1.3 Wave Planning and TCO</h3>
+
+    <ul>
+      <li>Group applications into <strong>migration waves</strong> based on dependencies (discovered via Application Discovery Service), business priority, complexity, and risk &mdash; typically start with low-complexity, low-risk, high-confidence wins to build momentum, and sequence dependent applications together.</li>
+      <li><strong>Total Cost of Ownership (TCO)</strong> comparison (via AWS Migration Evaluator or AWS Pricing Calculator) justifies the migration business case and informs which target architecture (rehost vs. replatform) delivers the best ROI for a given app.</li>
+    </ul>
+
+    <h2 id="optimal-migration-approach">2. Determine the Optimal Migration Approach for Existing Workloads</h2>
+
+    <h3 id="data-migration">2.1 Data Migration</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Tool</th><th>Use case</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>AWS DataSync</strong></td><td>Online, automated transfer of large datasets (NFS/SMB/object storage) to/from S3, EFS, FSx, with scheduling and validation</td></tr>
+          <tr><td><strong>AWS Transfer Family</strong></td><td>Managed SFTP/FTPS/FTP endpoints backed by S3/EFS, for partners/legacy workflows expecting those protocols</td></tr>
+          <tr><td><strong>AWS Snow Family</strong> (Snowcone, Snowball)</td><td>Offline, physical transfer for very large datasets or limited/no network connectivity</td></tr>
+          <tr><td><strong>Amazon S3 Transfer Acceleration</strong></td><td>Speeds up uploads over long distances via CloudFront edge locations</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Decision driver: <strong>available bandwidth and data volume</strong>. Rule of thumb the exam expects &mdash; if transferring over the network would take <strong>weeks</strong>, use the Snow Family; if there's a decent pipe and it's an ongoing/scheduled sync, use DataSync.</p>
+
+    <pre><code>aws datasync create-task --source-location-arn arn:aws:datasync:...:location/loc-0nfs \
+  --destination-location-arn arn:aws:datasync:...:location/loc-0s3 \
+  --schedule ScheduleExpression="cron(0 2 * * ? *)"</code></pre>
+
+    <div class="callout note">
+      <span class="callout-icon">&#x1F4A1;</span>
+      <div class="callout-body">
+        <strong>Correction: AWS Snowmobile Retired</strong>
+        <p>The source material listed the Snow Family as &ldquo;Snowcone/Snowball/Snowmobile.&rdquo; Current AWS documentation and reporting confirm AWS retired the Snowmobile truck-based transfer service in April 2024 &mdash; it is no longer offered for order. The table above lists only the currently available devices (Snowcone, Snowball). For a scenario needing to move an exabyte-scale dataset that once would have pointed to Snowmobile, the current AWS-recommended path is multiple parallel Snowball Edge devices or a dedicated AWS Direct Connect link, not a truck.</p>
+      </div>
+    </div>
+
+    <h3 id="application-migration">2.2 Application Migration</h3>
+
+    <ul>
+      <li><strong>AWS Application Migration Service (MGN)</strong>: agent-based, continuous block-level replication of on-prem/other-cloud servers to AWS with minimal-downtime cutover &mdash; the current standard rehost tool (successor to CloudEndure Migration; shares underlying technology with AWS Elastic Disaster Recovery).</li>
+      <li><strong>AWS Server Migration Service (SMS)</strong>: legacy, being phased out in favor of MGN for most new rehost projects &mdash; know it exists for the exam, but MGN is the primary current answer.</li>
+    </ul>
+
+    <h3 id="database-migration">2.3 Database Migration</h3>
+
+    <ul>
+      <li><strong>AWS Database Migration Service (DMS)</strong>: homogeneous (MySQL&rarr;MySQL) or heterogeneous (Oracle&rarr;Aurora PostgreSQL) migration, supports <strong>continuous data replication (CDC)</strong> for minimal-downtime cutover.</li>
+      <li><strong>AWS Schema Conversion Tool (SCT)</strong>: converts source schema/stored procedures/code to the target engine's dialect for <strong>heterogeneous</strong> migrations &mdash; required before DMS can move data when engines differ significantly. Not needed for homogeneous migrations.</li>
+    </ul>
+
+    <pre><code>aws dms create-replication-task --replication-task-identifier ora-to-aurora \
+  --source-endpoint-arn arn:aws:dms:...:endpoint:src-oracle \
+  --target-endpoint-arn arn:aws:dms:...:endpoint:tgt-aurora \
+  --migration-type full-load-and-cdc --table-mappings file://mappings.json</code></pre>
+
+    <h3 id="networking-identity-governance">2.4 Networking, Identity, and Governance for Migration</h3>
+
+    <ul>
+      <li>Extend the on-prem network to AWS via Direct Connect/VPN (Domain 1 &sect;1.2) before migrating so hybrid dependencies keep working during transition.</li>
+      <li><strong>AWS Directory Service</strong> (AWS Managed Microsoft AD, or a trust relationship to on-prem AD) so migrated Windows workloads keep existing AD-based auth without a parallel identity system; <strong>IAM Identity Center</strong> for centralized human access to the new AWS environment.</li>
+      <li>Apply <strong>AWS Control Tower / Organizations</strong> governance (Domain 1 &sect;4.1) to the landing zone <em>before</em> migrating workloads into it, not after.</li>
+    </ul>
+
+    <h2 id="new-architecture-determination">3. Determine a New Architecture for Existing Workloads</h2>
+
+    <h3 id="compute-platform-selection">3.1 Compute Platform Selection</h3>
+
+    <p>Choose based on how much re-architecture the workload can tolerate: <strong>EC2</strong> (rehost, most control), <strong>Elastic Beanstalk</strong> (replatform, managed PaaS with less ops overhead but still EC2-based), containers (repurpose existing container workloads), <strong>Lambda</strong> (only for refactored, event-driven/stateless workloads &mdash; not a direct rehost target).</p>
+
+    <h3 id="container-hosting-platform-selection">3.2 Container Hosting Platform Selection</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Option</th><th>Control plane</th><th>Data plane</th><th>Use case</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>ECS on EC2</strong></td><td>AWS-managed</td><td>Self-managed EC2 capacity</td><td>Cost control, existing EC2 reservations, simpler AWS-native orchestration</td></tr>
+          <tr><td><strong>ECS on Fargate</strong></td><td>AWS-managed</td><td>AWS-managed (serverless)</td><td>No infrastructure management, pay per task</td></tr>
+          <tr><td><strong>EKS on EC2</strong></td><td>AWS-managed control plane</td><td>Self-managed EC2 capacity</td><td>Existing Kubernetes tooling/expertise, need node-level control</td></tr>
+          <tr><td><strong>EKS on Fargate</strong></td><td>AWS-managed</td><td>AWS-managed (serverless)</td><td>Kubernetes API compatibility with no node management</td></tr>
+          <tr><td><strong>Amazon ECR</strong></td><td>&mdash;</td><td>&mdash;</td><td>Private container registry for all of the above</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Exam signal</strong>: &ldquo;team already has significant Kubernetes investment/tooling&rdquo; &rarr; EKS; &ldquo;team wants AWS-native simplicity, no existing K8s requirement&rdquo; &rarr; ECS; &ldquo;no infrastructure management at all&rdquo; &rarr; Fargate (either orchestrator).</p>
+
+    <h3 id="storage-service-selection">3.3 Storage Service Selection for Migrated Workloads</h3>
+
+    <p>Reapply the Domain 2 &sect;5.2 selection criteria to the migration context: e.g., an on-prem NFS file share typically maps to <strong>EFS</strong>; an on-prem Windows file share maps to <strong>FSx for Windows File Server</strong>; on-prem SAN/iSCSI block storage maps to <strong>EBS</strong> (per-instance) or <strong>FSx</strong>; <strong>AWS Storage Gateway</strong> (File, Volume, or Tape Gateway) provides a hybrid bridge that lets an on-prem application keep using local-like storage while data is actually tiered to S3/EBS/Glacier during a phased migration.</p>
+
+    <h3 id="database-platform-selection">3.4 Database Platform Selection for Migrated Workloads</h3>
+
+    <p>Reapply the Domain 2 &sect;5.3 purpose-built database table; the migration-specific nuance is <strong>self-managed databases on EC2</strong> as an interim/rehost option when the source engine/version isn't supported by a managed service yet, with a plan to move to RDS/Aurora once supportable &mdash; call this out explicitly when a question describes an unsupported legacy engine version.</p>
+
+    <h2 id="modernization-opportunities">4. Determine Opportunities for Modernization and Enhancements</h2>
+
+    <h3 id="serverless-decoupling">4.1 Serverless and Decoupling Opportunities</h3>
+
+    <ul>
+      <li><strong>AWS Lambda</strong> for event-driven, short-duration, bursty-traffic components &mdash; the top modernization target after a rehost/replatform, once traffic patterns and integration points are well understood in the AWS environment.</li>
+      <li>Identify components to <strong>decouple</strong> (see Domain 2 &sect;4.2 loose-coupling patterns) that were tightly coupled on-prem simply because synchronous calls were the only option available in the old environment &mdash; post-migration is the natural point to introduce SQS/SNS/EventBridge between them.</li>
+    </ul>
+
+    <h3 id="container-modernization">4.2 Container Modernization</h3>
+
+    <p>Migrate a monolith-in-a-VM to containers on ECS/EKS/Fargate as an intermediate modernization step before further decomposition into microservices, when a full serverless rewrite isn't yet justified.</p>
+
+    <h3 id="purpose-built-database-adoption">4.3 Purpose-Built Database Adoption</h3>
+
+    <p>Post-migration, revisit whether the &ldquo;safe&rdquo; choice made during migration (e.g., lift-and-shift to RDS for everything) should be selectively replaced: high-scale key-value access patterns &rarr; DynamoDB; unpredictable relational load &rarr; Aurora Serverless v2; hot cache-friendly reads &rarr; ElastiCache &mdash; using the Domain 2 &sect;5.3 table as the decision framework.</p>
+
+    <h3 id="application-integration-modernization">4.4 Application Integration Modernization</h3>
+
+    <p>Replace custom polling/batch integration code inherited from the on-prem design with <strong>SQS/SNS/EventBridge/Step Functions</strong>, matching the pattern to the need: point-to-point buffering &rarr; SQS; fan-out &rarr; SNS; complex multi-step orchestration with retries/compensation &rarr; Step Functions; SaaS/partner event ingestion &rarr; EventBridge.</p>
+
+    <h2 id="key-exam-tips">Key Exam Tips</h2>
+    <ol>
+      <li><strong>Know the 7 Rs cold</strong> &mdash; questions frequently describe a scenario and ask &ldquo;which migration strategy&rdquo; without naming the R explicitly.</li>
+      <li><strong>MGN is the current rehost tool</strong> (agent-based, continuous replication, minimal-downtime cutover); SMS is legacy &mdash; if a question emphasizes &ldquo;current AWS-recommended,&rdquo; pick MGN.</li>
+      <li><strong>SCT is only needed for heterogeneous DMS migrations</strong> (different source/target engines) &mdash; a same-engine (e.g., MySQL&rarr;MySQL) migration needs DMS alone.</li>
+      <li><strong>Snow Family vs. DataSync</strong>: decide based on available bandwidth/timeline, not just data volume alone &mdash; a huge dataset with ample bandwidth and time can still use DataSync.</li>
+      <li><strong>Discovery before wave planning</strong>: Application Discovery Service dependency mapping must precede grouping applications into migration waves &mdash; a question describing &ldquo;we don't know our application dependencies yet&rdquo; points to this service as the missing first step.</li>
+      <li>Post-migration modernization opportunities (Lambda, purpose-built DBs, decoupling) are usually a <strong>second-phase</strong> answer &mdash; don't pick &ldquo;refactor to serverless&rdquo; as the <em>migration</em> strategy itself unless the question is explicitly about a new architecture design, not the migration approach.</li>
+    </ol>
+
+    <h2 id="practice-scenarios">Practice Scenarios</h2>
+
+    <h3 id="scenario-1">Scenario 1: Choosing a Data Transfer Method</h3>
+    <p><strong>Question</strong>: A company needs to migrate 400 TB of archival data from an on-premises NAS to Amazon S3. The site has a 100 Mbps internet connection, and the data must be available in AWS within one week.</p>
+    <p><strong>Answer</strong>:</p>
+    <ol>
+      <li>Calculate transfer time over the available link &mdash; at 100 Mbps, 400 TB would take months, not one week.</li>
+      <li>Use the AWS Snow Family (Snowball Edge, or multiple devices in parallel) to physically ship the data.</li>
+      <li>Once in AWS, use AWS DataSync for ongoing incremental syncs of any new data generated after the initial bulk transfer.</li>
+    </ol>
+
+    <h3 id="scenario-2">Scenario 2: Heterogeneous Database Migration</h3>
+    <p><strong>Question</strong>: A company is migrating a business-critical Oracle database to Amazon Aurora PostgreSQL with minimal downtime, and the source database uses complex stored procedures.</p>
+    <p><strong>Answer</strong>:</p>
+    <ol>
+      <li>Use AWS Schema Conversion Tool (SCT) to convert the Oracle schema and stored procedures to PostgreSQL-compatible equivalents, flagging any that need manual rework.</li>
+      <li>Use AWS DMS with full-load-and-CDC (change data capture) to perform the initial bulk load and then continuously replicate ongoing changes.</li>
+      <li>Cut over during a brief maintenance window once DMS CDC lag reaches near-zero, minimizing downtime.</li>
+    </ol>
+
+    <h2 id="additional-resources">Additional Resources</h2>
+    <ul>
+      <li><a href="https://docs.aws.amazon.com/migrationhub/" target="_blank" rel="noopener">AWS Migration Hub documentation</a></li>
+      <li><a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/strategy-migration/welcome.html" target="_blank" rel="noopener">AWS Prescriptive Guidance &mdash; Migration strategies (the 7 Rs)</a></li>
+      <li><a href="https://docs.aws.amazon.com/mgn/" target="_blank" rel="noopener">AWS Application Migration Service (MGN)</a></li>
+      <li><a href="https://docs.aws.amazon.com/dms/" target="_blank" rel="noopener">AWS Database Migration Service</a></li>
+      <li><a href="https://aws.amazon.com/snow/" target="_blank" rel="noopener">AWS Snow Family</a></li>
+    </ul>
+
+    <nav class="guide-nav" aria-label="Guide navigation">
+      <a href="/guides/sap-c02/continuous-improvement/" class="guide-nav-card prev">
+        <div class="guide-nav-label">Previous</div>
+        <h4>&#x2190; Continuous Improvement</h4>
+      </a>
+      <span class="guide-nav-card next" style="visibility:hidden"></span>
+    </nav>
+  </article>
+</div>
+
+<footer class="footer">
+  <a href="https://ops4life.com">ops4life.com</a> &middot; AWS Certification &middot;
+  <a href="/">Back to Roadmaps</a> &middot;
+  <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener">GitHub</a>
+</footer>
+
+<script src="/shared/notes.js"></script>
+<script>
+    initNotes('.guide-content', '/guides/sap-c02/migration-modernization/');
+</script>
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#111;color:#e0e0e0;border-top:2px solid #000;padding:12px 20px;align-items:center;gap:12px;flex-wrap:wrap;font-family:'Space Mono','Courier New',monospace;font-size:11px;line-height:1.5;">
+  <span style="flex:1;min-width:200px;">This site uses cookies and local storage to remember your preferences.</span>
+  <div style="display:flex;gap:8px;flex-shrink:0;">
+    <button id="cookie-accept" style="background:#ff4400;color:#fff;border:none;padding:7px 16px;cursor:pointer;font-family:inherit;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Accept</button>
+    <button id="cookie-decline" style="background:transparent;color:#aaa;border:1px solid #444;padding:7px 14px;cursor:pointer;font-family:inherit;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;">Decline</button>
+  </div>
+</div>
+<script>
+(function(){
+  var b=document.getElementById('cookie-banner');
+  if(!localStorage.getItem('cookie-consent')){b.style.display='flex';}
+  document.getElementById('cookie-accept').onclick=function(){localStorage.setItem('cookie-consent','accepted');b.style.display='none';};
+  document.getElementById('cookie-decline').onclick=function(){localStorage.setItem('cookie-consent','declined');b.style.display='none';};
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Domain 2: New Solutions &mdash; ops4life Roadmaps</title>
+  <link rel="canonical" href="https://roadmap.ops4life.com/guides/sap-c02/new-solutions/">
+  <meta name="description" content="AWS SAP-C02 Domain 2 (29%): designing new solutions — deployment strategy and IaC, business continuity, security controls, reliability, performance, and cost optimization.">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/tokens.css">
+  <link rel="stylesheet" href="/shared/guide.css">
+</head>
+<body>
+
+<nav class="nav">
+  <a href="https://ops4life.com" class="nav-back">&larr; ops4life.com</a>
+  <a href="/" class="nav-back">&larr; Roadmaps</a>
+  <img src="/favicon.png" alt="" style="width: 28px; height: 28px; display: block" />
+  <span class="nav-title">AWS Certification</span>
+  <span style="margin-left: auto; display: flex; align-items: center; gap: 0.75rem">
+    <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener" aria-label="GitHub" style="display: flex; align-items: center; color: inherit">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 98 96" aria-hidden="true">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"/>
+      </svg>
+    </a>
+  </span>
+</nav>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="/">Roadmaps</a>
+    <span class="breadcrumb-sep">&#x203A;</span>
+    <span>AWS Certification</span>
+    <span class="breadcrumb-sep">&#x203A;</span>
+    <span class="breadcrumb-current">Domain 2: New Solutions</span>
+  </div>
+</div>
+
+<div class="guide-layout">
+  <aside class="guide-sidebar">
+    <div class="sidebar-widget">
+      <h4>On This Page</h4>
+      <ul class="toc-list">
+        <li><a href="#deployment-strategy">1. Design a Deployment Strategy</a></li>
+        <li><a href="#infrastructure-as-code">1.1 Infrastructure as Code</a></li>
+        <li><a href="#cicd-deployment-strategies">1.2 CI/CD and Deployment Strategies</a></li>
+        <li><a href="#configuration-management">1.3 Configuration Management</a></li>
+        <li><a href="#business-continuity">2. Ensure Business Continuity</a></li>
+        <li><a href="#route53-routing-resiliency">2.1 Route 53 Routing for Resiliency</a></li>
+        <li><a href="#data-database-replication">2.2 Data and Database Replication</a></li>
+        <li><a href="#dr-testing-automated-recovery">2.3 DR Testing and Automated Recovery</a></li>
+        <li><a href="#security-controls">3. Determine Security Controls</a></li>
+        <li><a href="#least-privilege-iam">3.1 Least-Privilege IAM Design</a></li>
+        <li><a href="#network-flow-control">3.2 Network Flow Control</a></li>
+        <li><a href="#attack-mitigation">3.3 Attack Mitigation for Web Apps</a></li>
+        <li><a href="#encryption-patch-compliance">3.4 Encryption and Patch Compliance</a></li>
+        <li><a href="#reliability-requirements">4. Meet Reliability Requirements</a></li>
+        <li><a href="#multi-az-region-patterns">4.1 Multi-AZ / Multi-Region Patterns</a></li>
+        <li><a href="#loose-coupling-integration">4.2 Loose Coupling and Integration</a></li>
+        <li><a href="#ha-operations">4.3 High-Availability Operations</a></li>
+        <li><a href="#performance-objectives">5. Meet Performance Objectives</a></li>
+        <li><a href="#compute-selection">5.1 Compute Selection</a></li>
+        <li><a href="#storage-selection">5.2 Storage Selection</a></li>
+        <li><a href="#purpose-built-databases">5.3 Purpose-Built Databases</a></li>
+        <li><a href="#caching-buffering-elasticity">5.4 Caching, Buffering &amp; Elasticity</a></li>
+        <li><a href="#cost-optimization">6. Cost Optimization Strategy</a></li>
+        <li><a href="#key-exam-tips">Key Exam Tips</a></li>
+        <li><a href="#practice-scenarios">Practice Scenarios</a></li>
+        <li><a href="#additional-resources">Additional Resources</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-widget">
+      <h4>Guide Info</h4>
+      <p style="font-size:0.8rem;color:var(--color-text-muted);line-height:1.9;">
+        &#x1F4DA; Exam weight: 29%<br>
+        &#x23F1; ~28 min read
+      </p>
+    </div>
+  </aside>
+
+  <article class="guide-content" id="guide-content">
+    <div class="guide-card-top" style="margin-bottom:0.5rem"><span class="guide-card-chapter">Domain 2</span></div>
+    <h1>New Solutions</h1>
+    <div class="guide-meta">
+      <span class="meta-badge badge-cert">29% of exam</span>
+      <span class="meta-badge badge-time">&#x23F1; ~28 min read</span>
+    </div>
+
+    <p>This domain covers greenfield solution design: deployment/IaC strategy, business continuity, security controls by requirement, reliability, performance, and cost optimization for new workloads. It is the largest domain (29%) and overlaps heavily with the AWS Well-Architected Framework pillars.</p>
+
+    <h2 id="deployment-strategy">1. Design a Deployment Strategy to Meet Business Requirements</h2>
+
+    <h3 id="infrastructure-as-code">1.1 Infrastructure as Code</h3>
+
+    <ul>
+      <li><strong>AWS CloudFormation</strong>: declarative, native IaC. <strong>Nested stacks</strong> for reuse; <strong>StackSets</strong> to deploy the same template across many accounts/Regions (the exam answer for "deploy a baseline stack to every account in the Organization").</li>
+      <li><strong>AWS CDK</strong>: imperative code (TypeScript/Python/etc.) that synthesizes to CloudFormation &mdash; preferred when the team wants programming-language constructs (loops, conditionals, testing) over raw templates.</li>
+      <li><strong>Change Sets</strong>: preview what a stack update will actually do before executing &mdash; the answer whenever a question asks about "safely preview infrastructure changes."</li>
+    </ul>
+
+    <pre><code>aws cloudformation deploy --template-file template.yaml --stack-name my-stack \
+  --capabilities CAPABILITY_NAMED_IAM
+
+aws cloudformation create-stack-set --stack-set-name org-baseline \
+  --template-body file://baseline.yaml --permission-model SERVICE_MANAGED \
+  --auto-deployment Enabled=true,RetainStacksOnAccountRemoval=false</code></pre>
+
+    <h3 id="cicd-deployment-strategies">1.2 CI/CD and Deployment Strategies</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Strategy</th><th>Downtime</th><th>Rollback speed</th><th>Risk</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>All-at-once</strong></td><td>Yes</td><td>Slow (redeploy)</td><td>Highest</td></tr>
+          <tr><td><strong>Rolling</strong></td><td>No (partial capacity dip)</td><td>Slow</td><td>Medium</td></tr>
+          <tr><td><strong>Rolling with additional batch</strong></td><td>No</td><td>Medium</td><td>Medium</td></tr>
+          <tr><td><strong>Blue/Green</strong></td><td>No</td><td>Instant (flip traffic back)</td><td>Low</td></tr>
+          <tr><td><strong>Canary</strong></td><td>No</td><td>Fast (shift % of traffic back)</td><td>Lowest</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ul>
+      <li><strong>AWS CodePipeline</strong> orchestrates <strong>CodeCommit/GitHub &rarr; CodeBuild &rarr; CodeDeploy</strong>; <strong>CodeDeploy</strong> natively supports in-place and blue/green deployments for EC2/ECS/Lambda.</li>
+      <li><strong>Lambda</strong>: use <strong>weighted alias traffic shifting</strong> (linear/canary via CodeDeploy) to gradually shift invocations to a new version, with CloudWatch alarm-triggered automatic rollback.</li>
+      <li><strong>ECS/EKS</strong>: blue/green via CodeDeploy (ECS) or rolling/blue-green via native Kubernetes deployment strategies + a service mesh or ALB weighted target groups.</li>
+    </ul>
+
+    <div class="callout note">
+      <span class="callout-icon">&#x1F4A1;</span>
+      <div class="callout-body">
+        <strong>Key Exam Distinction</strong>
+        <p>Blue/green flips <strong>all</strong> traffic to the new environment at once (or in one controlled cutover) and can flip back instantly; canary/linear shifts traffic gradually in percentages with automatic rollback on alarm. Both are zero-downtime &mdash; the difference is <em>how much</em> traffic is exposed to the new version before rollback would trigger.</p>
+      </div>
+    </div>
+
+    <h3 id="configuration-management">1.3 Configuration Management and Managed-Service Adoption</h3>
+
+    <ul>
+      <li><strong>AWS Systems Manager</strong>: State Manager (enforce config state), Patch Manager (automated patching), Run Command (ad hoc execution at scale), Parameter Store (config/secrets), Automation (runbooks) &mdash; the toolset for "reduce patching/config overhead" answers.</li>
+      <li>Prefer managed services (Aurora over self-managed MySQL on EC2, Fargate over self-managed ECS EC2 capacity, managed NAT Gateway over self-managed NAT instance) whenever the requirement is to "reduce operational overhead" &mdash; a very common phrase pointing to the managed-service answer.</li>
+    </ul>
+
+    <h2 id="business-continuity">2. Design a Solution to Ensure Business Continuity</h2>
+
+    <h3 id="route53-routing-resiliency">2.1 Route 53 Routing for Resiliency</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Routing policy</th><th>Use case</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Simple</strong></td><td>Single resource, no health checks</td></tr>
+          <tr><td><strong>Failover</strong></td><td>Active-passive DR &mdash; primary record with health check, secondary as failover</td></tr>
+          <tr><td><strong>Latency-based</strong></td><td>Route to the Region with lowest latency for the user</td></tr>
+          <tr><td><strong>Geolocation</strong></td><td>Route based on user's geographic location (compliance/data residency)</td></tr>
+          <tr><td><strong>Geoproximity</strong> (traffic flow)</td><td>Shift traffic between Regions using a "bias" value</td></tr>
+          <tr><td><strong>Weighted</strong></td><td>Percentage-based split, e.g., canary or A/B</td></tr>
+          <tr><td><strong>Multi-value answer</strong></td><td>Return multiple healthy IPs, client-side load balancing with health checks</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="data-database-replication">2.2 Data and Database Replication for BC</h3>
+
+    <ul>
+      <li><strong>RDS Multi-AZ</strong>: synchronous standby in another AZ, automatic failover (same Region) &mdash; availability, not primarily a read-scaling feature.</li>
+      <li><strong>RDS Read Replicas</strong> (can be cross-Region): asynchronous, for read scaling; a cross-Region replica can be <strong>promoted</strong> to standalone for DR, but that's a manual/scripted failover, not automatic.</li>
+      <li><strong>Aurora Global Database</strong>: one primary Region plus up to 10 secondary Regions (secondary clusters), sub-second replication lag via the storage layer, and a secondary can typically be promoted in under a minute for cross-Region DR with much lower RPO/RTO than standard cross-Region read replicas.</li>
+      <li><strong>S3 Cross-Region Replication (CRR)</strong>, <strong>DynamoDB Global Tables</strong> (multi-Region, multi-active, last-writer-wins) for other data stores.</li>
+    </ul>
+
+    <div class="callout note">
+      <span class="callout-icon">&#x1F4A1;</span>
+      <div class="callout-body">
+        <strong>Correction: Aurora Global Database Secondary Region Limit</strong>
+        <p>The source material stated Aurora Global Database supports "up to 5 secondary Regions." Current AWS documentation (Aurora User Guide, Replicating Aurora MySQL DB clusters across AWS Regions) states a global database supports <strong>one primary cluster and up to 10 secondary read-only clusters</strong>, each of which can have up to 16 Aurora Replicas. Corrected above.</p>
+      </div>
+    </div>
+
+    <h3 id="dr-testing-automated-recovery">2.3 DR Testing and Automated Recovery</h3>
+
+    <ul>
+      <li>Regularly <strong>test failover</strong> (not just configure it) &mdash; e.g., scheduled Route 53 failover drills, AWS Fault Injection Service to inject failure and validate automated recovery actually works.</li>
+      <li><strong>AWS Fault Injection Service (FIS)</strong>: chaos-engineering service (formerly "Fault Injection Simulator") to simulate AZ outages, instance termination, API throttling, etc., in a controlled way to validate resiliency assumptions before a real disaster.</li>
+      <li>Centralized monitoring (CloudWatch composite alarms, EventBridge rules) that trigger automated remediation (e.g., Lambda restarts a service, ASG replaces instances) rather than relying on a human to notice.</li>
+    </ul>
+
+    <h2 id="security-controls">3. Determine Security Controls Based on Requirements</h2>
+
+    <h3 id="least-privilege-iam">3.1 Least-Privilege IAM Design</h3>
+
+    <ul>
+      <li>Write IAM policies scoped to specific resources/actions/conditions (not <code>Resource: "*"</code>), use <strong>permissions boundaries</strong> to cap what an IAM role/user can be granted even by someone with <code>iam:CreatePolicy</code> access, and prefer roles over long-lived credentials.</li>
+      <li><strong>IAM policy conditions</strong> (<code>aws:SourceIp</code>, <code>aws:MultiFactorAuthPresent</code>, <code>aws:PrincipalOrgID</code>) to further restrict access (e.g., require MFA for sensitive actions, restrict API calls to only originate from within the Organization).</li>
+    </ul>
+
+    <h3 id="network-flow-control">3.2 Network Flow Control</h3>
+
+    <p>Reuse security groups/NACLs (see Domain 1 &sect;2.2) at the per-application level: e.g., a 3-tier app's ALB SG allows 443 from <code>0.0.0.0/0</code>, the app-tier SG allows the app port only from the ALB's SG (SG-to-SG reference, not CIDR), and the DB-tier SG allows only from the app-tier SG.</p>
+
+    <h3 id="attack-mitigation">3.3 Attack Mitigation for Web Applications</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Service</th><th>Protects against</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>AWS WAF</strong></td><td>Layer 7: SQLi, XSS, bad bots, rate-based rules</td></tr>
+          <tr><td><strong>AWS Shield Standard</strong></td><td>Automatic, free, Layer 3/4 DDoS protection for all customers</td></tr>
+          <tr><td><strong>AWS Shield Advanced</strong></td><td>Enhanced DDoS protection, 24/7 DRT support, cost protection during attacks, integrates with WAF</td></tr>
+          <tr><td><strong>Amazon GuardDuty</strong></td><td>Threat detection (compromised credentials, malicious IPs, crypto-mining)</td></tr>
+          <tr><td><strong>AWS Firewall Manager</strong></td><td>Centrally manage WAF rules/Shield Advanced/Security Groups across accounts in an Organization</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre><code>aws wafv2 create-web-acl --name protect-alb --scope REGIONAL \
+  --default-action Allow={} --visibility-config SampledRequestsEnabled=true,CloudWatchMetricsEnabled=true,MetricName=protectAlb \
+  --rules file://waf-rules.json</code></pre>
+
+    <h3 id="encryption-patch-compliance">3.4 Encryption and Patch Compliance</h3>
+
+    <p>Same KMS/ACM tools as Domain 1 &sect;2.3, applied per-workload. For patch compliance, <strong>Systems Manager Patch Manager</strong> with <strong>Patch Baselines</strong> and <strong>Maintenance Windows</strong>, reporting compliance via <strong>Systems Manager Compliance</strong> &mdash; a required answer whenever "remain compliant with organizational patching standards" appears.</p>
+
+    <h2 id="reliability-requirements">4. Design a Strategy to Meet Reliability Requirements</h2>
+
+    <h3 id="multi-az-region-patterns">4.1 Multi-AZ / Multi-Region Architecture Patterns</h3>
+
+    <ul>
+      <li>Stateless compute tier behind an ALB spanning &ge;2 AZs, ASG with <code>min</code> &ge; 2.</li>
+      <li>Stateful tier: Multi-AZ RDS/Aurora, ElastiCache with Multi-AZ replication group (Redis) or cluster mode.</li>
+      <li>Service quotas: know that <strong>default service quotas can block scaling</strong> during a real event (e.g., EC2 vCPU limits per Region) &mdash; request quota increases proactively (via Service Quotas console/API) for critical services ahead of expected peak.</li>
+    </ul>
+
+    <h3 id="loose-coupling-integration">4.2 Loose Coupling and Application Integration</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Service</th><th>Pattern</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Amazon SQS</strong></td><td>Point-to-point buffering/decoupling; standard (at-least-once) or FIFO (exactly-once, ordered)</td></tr>
+          <tr><td><strong>Amazon SNS</strong></td><td>Pub/sub fan-out to multiple SQS queues/Lambdas/HTTP endpoints</td></tr>
+          <tr><td><strong>AWS Step Functions</strong></td><td>Orchestrate multi-step workflows with retries/error handling as first-class citizens</td></tr>
+          <tr><td><strong>Amazon EventBridge</strong></td><td>Event bus for decoupled, event-driven architectures, including SaaS/cross-account event sources</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-icon">&#x2705;</span>
+      <div class="callout-body">
+        <strong>SQS + ASG Scaling Pattern</strong>
+        <p>Scale the consumer ASG based on the <code>ApproximateNumberOfMessagesVisible</code> CloudWatch metric &mdash; this decouples the producer's burst rate from consumer capacity, a classic "handle unpredictable spiky load reliably" answer.</p>
+      </div>
+    </div>
+
+    <h3 id="ha-operations">4.3 High-Availability Operations</h3>
+
+    <ul>
+      <li><strong>Application-level health checks</strong> (ALB target group health check hitting a real app endpoint) catch more failure modes than <strong>EC2 status checks</strong> alone.</li>
+      <li>DNS-level failover (Route 53 health check + failover routing) for Region-level HA; database-level failover (RDS Multi-AZ, Aurora) for data-tier HA &mdash; the exam expects layered HA at every tier, not just compute.</li>
+    </ul>
+
+    <h2 id="performance-objectives">5. Design a Solution to Meet Performance Objectives</h2>
+
+    <h3 id="compute-selection">5.1 Compute Selection</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Family</th><th>Optimized for</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>General purpose (M, T)</strong></td><td>Balanced &mdash; web servers, small DBs</td></tr>
+          <tr><td><strong>Compute optimized (C)</strong></td><td>CPU-bound &mdash; batch processing, gaming servers, HPC</td></tr>
+          <tr><td><strong>Memory optimized (R, X, z1d)</strong></td><td>In-memory DBs, real-time big data analytics</td></tr>
+          <tr><td><strong>Storage optimized (I, D, H)</strong></td><td>High sequential I/O &mdash; NoSQL DBs, data warehousing</td></tr>
+          <tr><td><strong>Accelerated computing (P, G, Inf, Trn)</strong></td><td>ML training/inference, graphics</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="storage-selection">5.2 Storage Selection</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Service</th><th>Type</th><th>Use case</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>EBS gp3/io2</strong></td><td>Block, single-AZ, attach to one instance (Multi-Attach exception for io1/io2)</td><td>Boot volumes, DBs</td></tr>
+          <tr><td><strong>Instance Store</strong></td><td>Ephemeral, highest IOPS</td><td>Temp/cache data, lost on stop</td></tr>
+          <tr><td><strong>EFS</strong></td><td>File, multi-AZ, shared across instances</td><td>Shared content, Linux workloads</td></tr>
+          <tr><td><strong>FSx for Windows/Lustre/NetApp/OpenZFS</strong></td><td>File, protocol/workload-specific</td><td>Windows shares, HPC, enterprise NAS migration</td></tr>
+          <tr><td><strong>S3</strong></td><td>Object</td><td>Static content, data lake, backups</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="purpose-built-databases">5.3 Purpose-Built Databases</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Database</th><th>Model</th><th>Best for</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>RDS/Aurora</strong></td><td>Relational</td><td>Transactional, ACID, complex joins</td></tr>
+          <tr><td><strong>DynamoDB</strong></td><td>Key-value/document</td><td>Massive scale, single-digit ms latency, serverless</td></tr>
+          <tr><td><strong>ElastiCache (Redis/Memcached)</strong></td><td>In-memory cache</td><td>Sub-ms latency caching, session store, leaderboards</td></tr>
+          <tr><td><strong>DocumentDB</strong></td><td>Document (MongoDB-compatible)</td><td>JSON document workloads</td></tr>
+          <tr><td><strong>Neptune</strong></td><td>Graph</td><td>Highly connected data, fraud detection, social graphs</td></tr>
+          <tr><td><strong>Timestream</strong></td><td>Time-series</td><td>IoT/metrics data</td></tr>
+          <tr><td><strong>Keyspaces</strong></td><td>Wide-column (Cassandra-compatible)</td><td>Existing Cassandra workloads</td></tr>
+          <tr><td><strong>Redshift</strong></td><td>Data warehouse (columnar)</td><td>Analytics/BI, large-scale aggregation</td></tr>
+          <tr><td><strong>OpenSearch</strong></td><td>Search/log analytics</td><td>Full-text search, log analytics</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="caching-buffering-elasticity">5.4 Caching, Buffering, and Elasticity Patterns</h3>
+
+    <ul>
+      <li><strong>Caching</strong>: CloudFront (edge, static/dynamic content), ElastiCache (application/DB query cache), DAX (DynamoDB-specific microsecond cache).</li>
+      <li><strong>Buffering</strong>: SQS/Kinesis Data Streams absorb burst write rates so downstream systems process at their own sustainable pace.</li>
+      <li><strong>Elasticity</strong>: Auto Scaling (target tracking &gt; step &gt; simple scaling policies, in that preference order for most cases), Aurora Serverless v2 for unpredictable DB load, Lambda/Fargate for workloads with no idle-capacity tolerance.</li>
+    </ul>
+
+    <h2 id="cost-optimization">6. Determine a Cost Optimization Strategy for New Solutions</h2>
+
+    <p>Builds on Domain 1 &sect;5. New-solution-specific angle: pick the <strong>right pricing model at design time</strong> (e.g., default new fleets to Savings Plans commitment once usage is predictable; use Spot for stateless/fault-tolerant batch/CI workers from day one), model <strong>data transfer costs</strong> early (same-AZ traffic is free between resources with private IP, cross-AZ and cross-Region transfer both cost money &mdash; a frequent "why is this architecture expensive" root cause), and choose storage tiering (S3 Intelligent-Tiering when access patterns are unknown) instead of over-provisioning.</p>
+
+    <h2 id="key-exam-tips">Key Exam Tips</h2>
+    <ol>
+      <li><strong>"Reduce operational overhead" / "reduce management burden"</strong> almost always points to a managed/serverless service (Aurora, Fargate, Lambda, managed NAT Gateway) over the self-managed equivalent.</li>
+      <li><strong>Blue/green or canary is the answer when the requirement is "zero-downtime with instant rollback."</strong> Rolling deployments still have some risk window and slower rollback.</li>
+      <li><strong>Aurora Global Database beats standard cross-Region read replicas</strong> whenever the question needs low-RPO, fast-promote cross-Region DR for a relational database.</li>
+      <li>Loose coupling questions (spiky/unpredictable load, one component's failure shouldn't cascade) &rarr; <strong>SQS/SNS/EventBridge</strong>, not direct synchronous calls.</li>
+      <li><strong>Data transfer costs and same-AZ vs cross-AZ traffic</strong> are a recurring cost-optimization scenario trigger.</li>
+      <li>Choosing a purpose-built database is about <strong>access pattern</strong>, not just data size &mdash; know the table above cold.</li>
+    </ol>
+
+    <h2 id="practice-scenarios">Practice Scenarios</h2>
+
+    <h3 id="scenario-1">Scenario 1: Zero-Downtime Deployment with Fast Rollback</h3>
+    <p><strong>Question</strong>: An application team deploys a new version weekly and needs zero downtime, with the ability to abort within seconds if error rates spike after deployment. What deployment strategy and tools should be used?</p>
+    <p><strong>Answer</strong>:</p>
+    <ol>
+      <li>Use AWS CodeDeploy with a blue/green deployment strategy (ECS or EC2/ASG).</li>
+      <li>Configure CloudWatch alarms on error rate/latency tied to the deployment.</li>
+      <li>Enable automatic rollback on alarm &mdash; CodeDeploy shifts traffic back to the original (blue) environment automatically.</li>
+      <li>For Lambda, use a canary/linear alias-shifting deployment with the same CloudWatch alarm-based rollback.</li>
+    </ol>
+
+    <h3 id="scenario-2">Scenario 2: Decoupling a Spiky Order-Processing Workload</h3>
+    <p><strong>Question</strong>: An order-processing service receives unpredictable traffic spikes up to 50x baseline for short periods, and downstream inventory processing cannot handle synchronous spikes without errors.</p>
+    <p><strong>Answer</strong>:</p>
+    <ol>
+      <li>Insert an Amazon SQS queue between the order API and the inventory processing service.</li>
+      <li>Have the inventory service (ASG or Lambda) scale based on <code>ApproximateNumberOfMessagesVisible</code> (or Lambda's native SQS event-source scaling).</li>
+      <li>This buffers the burst, letting inventory processing consume messages at a sustainable rate without dropping orders.</li>
+    </ol>
+
+    <h2 id="additional-resources">Additional Resources</h2>
+    <ul>
+      <li><a href="https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html" target="_blank" rel="noopener">AWS Well-Architected Framework &mdash; Reliability Pillar</a></li>
+      <li><a href="https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/welcome.html" target="_blank" rel="noopener">AWS Well-Architected Framework &mdash; Performance Efficiency Pillar</a></li>
+      <li><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy.html" target="_blank" rel="noopener">Amazon Route 53 Routing Policies</a></li>
+      <li><a href="https://docs.aws.amazon.com/codedeploy/latest/userguide/primary-components.html" target="_blank" rel="noopener">AWS CodeDeploy deployment types</a></li>
+      <li><a href="https://aws.amazon.com/products/databases/" target="_blank" rel="noopener">Choosing an AWS database service</a></li>
+    </ul>
+
+    <nav class="guide-nav" aria-label="Guide navigation">
+      <a href="/guides/sap-c02/organizational-complexity/" class="guide-nav-card prev">
+        <div class="guide-nav-label">Previous</div>
+        <h4>&#x2190; Organizational Complexity</h4>
+      </a>
+      <a href="/guides/sap-c02/continuous-improvement/" class="guide-nav-card next">
+        <div class="guide-nav-label">Next</div>
+        <h4>Continuous Improvement &#x2192;</h4>
+      </a>
+    </nav>
+  </article>
+</div>
+
+<footer class="footer">
+  <a href="https://ops4life.com">ops4life.com</a> &middot; AWS Certification &middot;
+  <a href="/">Back to Roadmaps</a> &middot;
+  <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener">GitHub</a>
+</footer>
+
+<script src="/shared/notes.js"></script>
+<script>
+    initNotes('.guide-content', '/guides/sap-c02/new-solutions/');
+</script>
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#111;color:#e0e0e0;border-top:2px solid #000;padding:12px 20px;align-items:center;gap:12px;flex-wrap:wrap;font-family:'Space Mono','Courier New',monospace;font-size:11px;line-height:1.5;">
+  <span style="flex:1;min-width:200px;">This site uses cookies and local storage to remember your preferences.</span>
+  <div style="display:flex;gap:8px;flex-shrink:0;">
+    <button id="cookie-accept" style="background:#ff4400;color:#fff;border:none;padding:7px 16px;cursor:pointer;font-family:inherit;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Accept</button>
+    <button id="cookie-decline" style="background:transparent;color:#aaa;border:1px solid #444;padding:7px 14px;cursor:pointer;font-family:inherit;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;">Decline</button>
+  </div>
+</div>
+<script>
+(function(){
+  var b=document.getElementById('cookie-banner');
+  if(!localStorage.getItem('cookie-consent')){b.style.display='flex';}
+  document.getElementById('cookie-accept').onclick=function(){localStorage.setItem('cookie-consent','accepted');b.style.display='none';};
+  document.getElementById('cookie-decline').onclick=function(){localStorage.setItem('cookie-consent','declined');b.style.display='none';};
+})();
+</script>
+
+</body>
+</html>
