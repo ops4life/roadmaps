@@ -201,7 +201,7 @@ body {
 }
 .rm-canvas {
   display: flex;
-  gap: 0;
+  gap: 1.5rem;
   min-width: max-content;
   position: relative;
 }
