@@ -785,3 +785,208 @@ a.chip:hover {
 .feedback-card-icon { font-size: 1.25rem; display: block; margin-bottom: 0.3rem; }
 .feedback-card-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
 .feedback-card-sub { font-size: 0.65rem; color: #555; margin-top: 0.15rem; }
+
+/* ── Highlight tooltip ──────────────────────────────── */
+.rm-highlight {
+  background: var(--purple);
+  color: #fff;
+  padding: 0 2px;
+}
+.rm-hl-tooltip {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  z-index: 9100;
+  display: none;
+  background: #fff;
+  border: 2px solid #000;
+  box-shadow: 4px 4px 0 #000;
+  font-family: "Space Mono", monospace;
+  padding: 0.5rem;
+  max-width: 280px;
+}
+.rm-hl-tooltip.open {
+  display: block;
+}
+.rm-hl-actions {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+.rm-hl-btn {
+  font-family: "Space Mono", monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border: 2px solid #000;
+  background: #fff;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.rm-hl-btn:hover {
+  background: #000;
+  color: #fff;
+}
+.rm-hl-close {
+  border: 2px solid #000;
+  background: #fff;
+  width: 26px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.rm-hl-close:hover {
+  background: #000;
+  color: #fff;
+}
+.rm-hl-expand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+}
+.rm-hl-textarea {
+  font-family: "Space Mono", monospace;
+  font-size: 0.68rem;
+  border: 2px solid #000;
+  padding: 0.4rem;
+  resize: vertical;
+  min-height: 50px;
+}
+
+/* ── Notes panel ────────────────────────────────────── */
+.notes-panel-toggle {
+  font-family: "Space Mono", monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border: 2px solid #000;
+  background: var(--bg);
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.notes-panel-toggle:hover {
+  background: #000;
+  color: var(--bg);
+}
+.notes-toggle-count {
+  opacity: 0.7;
+}
+.rm-notes-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 340px;
+  max-width: 92vw;
+  height: 100vh;
+  background: var(--bg);
+  border-left: 2px solid #000;
+  transform: translateX(105%);
+  transition: transform 0.25s ease;
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+}
+.rm-notes-panel.open {
+  transform: translateX(0);
+}
+.rm-notes-panel-header {
+  padding: 1rem;
+  border-bottom: 2px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.rm-notes-panel-title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.rm-notes-panel-close {
+  border: 2px solid #000;
+  background: none;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.rm-notes-panel-close:hover {
+  background: #000;
+  color: var(--bg);
+}
+.rm-notes-panel-tabs {
+  display: flex;
+  border-bottom: 2px solid #000;
+}
+.rm-notes-tab {
+  flex: 1;
+  font-family: "Space Mono", monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+.rm-notes-tab.active {
+  border-bottom-color: var(--purple);
+  color: var(--purple);
+}
+.rm-notes-panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+.rm-notes-empty {
+  font-size: 0.7rem;
+  color: #555;
+  line-height: 1.5;
+}
+.rm-notes-group {
+  margin-bottom: 1rem;
+}
+.rm-notes-group-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+.rm-note-item {
+  background: #fff;
+  border: 1px solid #000;
+  padding: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+.rm-note-item-quote {
+  font-size: 0.68rem;
+  font-style: italic;
+  margin-bottom: 0.3rem;
+}
+.rm-note-item-text {
+  font-size: 0.68rem;
+  margin-bottom: 0.4rem;
+}
+.rm-note-item-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.6rem;
+  color: #555;
+}
+.rm-note-item-delete {
+  border: none;
+  background: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 0.6rem;
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .rm-notes-panel {
+    width: 100%;
+  }
+}

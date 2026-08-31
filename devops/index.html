@@ -205,6 +205,8 @@
     <!-- Page-specific data -->
     <script>
       const STORAGE_KEY = "devops-roadmap-progress";
+      const PAGE_KEY = "devops";
+      const PAGE_LABEL = "DevOps Roadmap";
       // ─── ROADMAP DATA ──────────────────────────────────────────────────────────
       const ROADMAP = [
         {
@@ -1396,6 +1398,7 @@
     </script>
     <!-- Shared engine -->
     <script src="../shared/roadmap.js"></script>
+    <script src="../shared/roadmap-notes.js"></script>
     <!-- DevOps-only: SDLC 3D visualization -->
     <script type="module">
       import * as THREE from "three";
