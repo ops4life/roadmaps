@@ -4222,13 +4222,13 @@ function Drawer({ open, item, section, status, onClose, onMark, wide }) {
           )}
         </div>
 
-        <div style={{ padding: wide ? "18px 22px" : "14px 18px", borderTop:"2px solid var(--ink)", background:"var(--bg-2)", display:"flex", gap: wide ? 14 : 10 }}>
-          <Btn variant={status==="learning" ? "accent" : "secondary"} size={wide ? "lg" : "md"}
+        <div style={{ padding:"14px 18px", borderTop:"2px solid var(--ink)", background:"var(--bg-2)", display:"flex", gap:10 }}>
+          <Btn variant={status==="learning" ? "accent" : "secondary"} size="md"
             onClick={() => onMark(item.id, "learning")}
             style={{flex:1, justifyContent:"center"}}>
             {status==="learning" ? "Learning ✓" : "Mark as learning"}
           </Btn>
-          <Btn variant={status==="done" ? "primary" : "secondary"} size={wide ? "lg" : "md"}
+          <Btn variant={status==="done" ? "primary" : "secondary"} size="md"
             onClick={() => onMark(item.id, "done")}
             style={{ flex:1, justifyContent:"center", background: status==="done" ? "var(--done)" : undefined, color: status==="done" ? "var(--ink)" : undefined }}>
             {status==="done" ? "Done ✓" : "Mark as done"}
