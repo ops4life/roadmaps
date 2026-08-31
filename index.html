@@ -4319,18 +4319,20 @@ function Newsletter() {
 }
 
 // ── FEEDBACK ──────────────────────────────────────────────────────────
-function Feedback() {
+function Feedback({ hidden }) {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <button onClick={() => setOpen(true)} style={{
-        position:"fixed", bottom:"1.25rem", right:"1.25rem", zIndex:900,
-        background:"var(--bg-2)", border:"2px solid var(--ink)",
-        fontFamily:"'Space Mono','Courier New',monospace", fontSize:"0.7rem",
-        fontWeight:700, textTransform:"uppercase", letterSpacing:"0.06em",
-        padding:"0.45rem 0.85rem", cursor:"pointer",
-        transition:"transform .12s, box-shadow .12s",
-      }} className="brut-hover">Feedback</button>
+      {!hidden && (
+        <button onClick={() => setOpen(true)} style={{
+          position:"fixed", bottom:"1.25rem", right:"1.25rem", zIndex:900,
+          background:"var(--bg-2)", border:"2px solid var(--ink)",
+          fontFamily:"'Space Mono','Courier New',monospace", fontSize:"0.7rem",
+          fontWeight:700, textTransform:"uppercase", letterSpacing:"0.06em",
+          padding:"0.45rem 0.85rem", cursor:"pointer",
+          transition:"transform .12s, box-shadow .12s",
+        }} className="brut-hover">Feedback</button>
+      )}
 
       {open && (
         <>
@@ -4493,7 +4495,7 @@ function App() {
         onClose={() => setOpenItem(null)}
         onMark={onMark} />
 
-      <Feedback />
+      <Feedback hidden={!!openItem} />
 
       <style>{`
         @media (max-width: 560px){ .board-main{ padding: 14px 14px 56px !important } }
