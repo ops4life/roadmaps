@@ -113,6 +113,7 @@ button{font:inherit;color:inherit}
 .guide-embed .callout-body{ flex:1; font-size:13px; line-height:1.5; color:var(--ink); }
 .guide-embed .callout-body p{ margin:4px 0 0; color:var(--ink); }
 .guide-embed .callout-body strong{ text-transform:uppercase; letter-spacing:.04em; font-size:11px; }
+.rm-guide-highlight{ background:var(--c-yellow); padding:0 2px; }
 </style>
 </head>
 <body>
@@ -4153,7 +4154,7 @@ function HighlightableText({ text, pageKey, pageLabel, itemId, itemLabel, notes,
   const [draft, setDraft] = useState("");
 
   const itemNotes = useMemo(
-    () => notes.filter(n => n.page === pageKey && n.itemId === itemId),
+    () => notes.filter(n => n.page === pageKey && n.itemId === itemId && n.scope !== "content"),
     [notes, pageKey, itemId]
   );
 
@@ -4179,7 +4180,7 @@ function HighlightableText({ text, pageKey, pageLabel, itemId, itemLabel, notes,
     if (!tip) return;
     setNotes(list => [...list, {
       id: "n" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
-      page: pageKey, pageLabel, itemId, itemLabel,
+      page: pageKey, pageLabel, itemId, itemLabel, scope: "description",
       text: tip.text, note: noteText || "", createdAt: Date.now(),
     }]);
     setTip(null);
@@ -4221,6 +4222,153 @@ function HighlightableText({ text, pageKey, pageLabel, itemId, itemLabel, notes,
           ? <mark key={seg.id || i} style={{ background:"var(--c-yellow)", padding:"0 2px" }}>{seg.str}</mark>
           : <React.Fragment key={i}>{seg.str}</React.Fragment>)}
       </p>
+
+      {tip && (
+        <div ref={tipRef} className="brut" style={{
+          position:"fixed", zIndex:9100,
+          top: Math.max(8, tip.rect.top - (noteMode ? 150 : 54)),
+          left: Math.min(Math.max(8, tip.rect.left), window.innerWidth - 248),
+          background:"var(--bg-2)", padding:8, width:240,
+          display:"flex", flexDirection:"column", gap:6,
+        }}>
+          {!noteMode ? (
+            <div style={{display:"flex", gap:6, flexWrap:"wrap"}}>
+              <Btn size="sm" variant="secondary" onClick={() => commit("")}>✏️ Highlight</Btn>
+              <Btn size="sm" variant="secondary" onClick={() => setNoteMode(true)}>📝 Note</Btn>
+              <Btn size="sm" variant="secondary" onClick={openAISearch}>🔍 AI Search</Btn>
+            </div>
+          ) : (
+            <div style={{display:"flex", flexDirection:"column", gap:6}}>
+              <textarea autoFocus rows={3} value={draft} onChange={e => setDraft(e.target.value)}
+                placeholder="Add a note…"
+                style={{fontFamily:"inherit", fontSize:12, border:"1.5px solid var(--ink)", padding:6, resize:"vertical"}} />
+              <Btn size="sm" onClick={() => commit(draft.trim())}>Save</Btn>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── HIGHLIGHTABLE GUIDE CONTENT (rich HTML — DOM-based mark injection) ──
+function collectHighlightableTextNodes(root) {
+  const nodes = [];
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      let p = node.parentNode;
+      while (p && p !== root) {
+        if (p.tagName === "MARK" || p.tagName === "CODE" || p.tagName === "PRE") return NodeFilter.FILTER_REJECT;
+        p = p.parentNode;
+      }
+      return NodeFilter.FILTER_ACCEPT;
+    },
+  });
+  let n;
+  while ((n = walker.nextNode())) nodes.push(n);
+  return nodes;
+}
+
+function applyStoredHighlight(textNodes, note) {
+  const needle = note.text;
+  if (!needle) return;
+  for (let i = 0; i < textNodes.length; i++) {
+    const node = textNodes[i];
+    const val = node.nodeValue;
+    const idx = val.indexOf(needle);
+    if (idx === -1) continue;
+    const mark = document.createElement("mark");
+    mark.className = "rm-guide-highlight";
+    mark.dataset.noteId = note.id;
+    mark.textContent = needle;
+    const parent = node.parentNode;
+    if (idx > 0) parent.insertBefore(document.createTextNode(val.slice(0, idx)), node);
+    parent.insertBefore(mark, node);
+    const rest = val.slice(idx + needle.length);
+    if (rest) {
+      const tail = document.createTextNode(rest);
+      parent.insertBefore(tail, node);
+      textNodes[i] = tail;
+    } else {
+      textNodes.splice(i, 1);
+    }
+    parent.removeChild(node);
+    return;
+  }
+}
+
+function GuideContent({ html, pageKey, pageLabel, itemId, itemLabel, notes, setNotes }) {
+  const ref = useRef(null);
+  const tipRef = useRef(null);
+  const [tip, setTip] = useState(null); // { rect, text, range }
+  const [noteMode, setNoteMode] = useState(false);
+  const [draft, setDraft] = useState("");
+
+  const itemNotes = useMemo(
+    () => notes.filter(n => n.page === pageKey && n.itemId === itemId && n.scope === "content"),
+    [notes, pageKey, itemId]
+  );
+
+  // Re-apply persisted highlights into the raw HTML after each mount/update —
+  // dangerouslySetInnerHTML only touches the DOM when `html` itself changes,
+  // so this is safe to re-run whenever the note list changes.
+  useEffect(() => {
+    const root = ref.current;
+    if (!root || !itemNotes.length) return;
+    const textNodes = collectHighlightableTextNodes(root);
+    itemNotes.forEach(n => applyStoredHighlight(textNodes, n));
+  }, [html, itemNotes]);
+
+  useEffect(() => {
+    const onMouseUp = (e) => {
+      if (tipRef.current && tipRef.current.contains(e.target)) return;
+      const root = ref.current;
+      const sel = window.getSelection();
+      const t = sel && sel.toString().trim();
+      if (!root || !t || t.length < 2 || !sel.anchorNode || !root.contains(sel.anchorNode) || sel.rangeCount === 0) {
+        setTip(null);
+        return;
+      }
+      setTip({ rect: sel.getRangeAt(0).getBoundingClientRect(), text: t, range: sel.getRangeAt(0).cloneRange() });
+      setNoteMode(false);
+      setDraft("");
+    };
+    document.addEventListener("mouseup", onMouseUp);
+    return () => document.removeEventListener("mouseup", onMouseUp);
+  }, []);
+
+  function commit(noteText) {
+    if (!tip) return;
+    try {
+      const mark = document.createElement("mark");
+      mark.className = "rm-guide-highlight";
+      tip.range.surroundContents(mark);
+    } catch (e) {
+      // Selection crossed element boundaries (e.g. spans a bold run) — the
+      // effect above will still wrap the plain-text substring on the next
+      // note-list update as a best-effort fallback.
+    }
+    setNotes(list => [...list, {
+      id: "n" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+      page: pageKey, pageLabel, itemId, itemLabel, scope: "content",
+      text: tip.text, note: noteText || "", createdAt: Date.now(),
+    }]);
+    window.getSelection().removeAllRanges();
+    setTip(null);
+    setNoteMode(false);
+  }
+
+  function openAISearch() {
+    if (!tip) return;
+    const q = `${pageLabel}: ${tip.text}`;
+    const url = `https://www.google.com/search?q=${encodeURIComponent(q)}&udm=50`;
+    window.open(url, "rm-ai-search", "width=700,height=640,resizable=yes,scrollbars=yes");
+    setTip(null);
+  }
+
+  return (
+    <div style={{ position:"relative" }}>
+      <div ref={ref} className="guide-embed" dangerouslySetInnerHTML={{ __html: html }} />
 
       {tip && (
         <div ref={tipRef} className="brut" style={{
@@ -4315,7 +4463,12 @@ function Drawer({ open, item, section, status, onClose, onMark, wide, pageKey, p
 
           {item.content && (
             <Section label="GUIDE">
-              <div className="guide-embed" dangerouslySetInnerHTML={{ __html: item.content }} />
+              <GuideContent
+                html={item.content}
+                pageKey={pageKey} pageLabel={pageLabel}
+                itemId={item.id} itemLabel={item.label}
+                notes={notes} setNotes={setNotes}
+              />
             </Section>
           )}
 
