@@ -1262,11 +1262,15 @@ function App() {
   const p1 = useStored(TRACKS[1].storageKey, { learning:{}, done:{} });
   const p2 = useStored(TRACKS[2].storageKey, { learning:{}, done:{} });
   const p3 = useStored(TRACKS[3].storageKey, { learning:{}, done:{} });
+  const p4 = useStored(TRACKS[4].storageKey, { learning:{}, done:{} });
+  const p5 = useStored(TRACKS[5].storageKey, { learning:{}, done:{} });
   const progressByTrack = {
     [TRACKS[0].id]: p0[0], [TRACKS[1].id]: p1[0], [TRACKS[2].id]: p2[0], [TRACKS[3].id]: p3[0],
+    [TRACKS[4].id]: p4[0], [TRACKS[5].id]: p5[0],
   };
   const setProgressByTrack = {
     [TRACKS[0].id]: p0[1], [TRACKS[1].id]: p1[1], [TRACKS[2].id]: p2[1], [TRACKS[3].id]: p3[1],
+    [TRACKS[4].id]: p4[1], [TRACKS[5].id]: p5[1],
   };
 
   const track = useMemo(() => trackId ? TRACKS.find(tr => tr.id === trackId) : null, [trackId]);
