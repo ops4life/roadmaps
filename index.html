@@ -4079,7 +4079,7 @@ function Board({ track, progress, query, onOpen }) {
           <path key={i} d={p.d} fill="none" stroke="var(--ink)" strokeWidth="2" markerEnd="url(#arrow)" strokeLinecap="round" />
         ))}
       </svg>
-      <div style={{ display:"grid", gridTemplateColumns:`repeat(${track.sections.length}, minmax(250px, 1fr))`, gap:"var(--gap-section)", alignItems:"start" }}>
+      <div style={{ display:"grid", gridTemplateColumns:`repeat(${track.sections.length}, minmax(200px, 1fr))`, gap:"var(--gap-section)", alignItems:"start" }}>
         {track.sections.map(s => (
           <SectionColumn key={s.id}
             section={s} progress={progress} query={query} onOpen={onOpen}
@@ -4474,7 +4474,7 @@ function App() {
 
       {track && (
         <main className="board-main" style={{
-          maxWidth: Math.max(1320, track.sections.length * 270 + 44), margin:"0 auto",
+          maxWidth:1320, margin:"0 auto",
           padding:"16px 22px 60px",
           overflowX: view==="grid" ? "auto" : "visible",
         }}>
