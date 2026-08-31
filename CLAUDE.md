@@ -4,13 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**ops4life Roadmaps** — a static site with interactive roadmaps for DevOps, DevSecOps, and MLOps. No build step, no dependencies, no framework. Pure HTML/CSS/JS served statically.
+**ops4life Roadmaps** — a single-page React app with interactive roadmaps for DevOps, DevSecOps, MLOps, DevOps→MLOps, and two certification tracks (AWS SAP-C02, Azure AZ-104). No build step: React 18 + Babel Standalone are loaded from CDN and the entire app (data + components) lives inline in `index.html` as a `<script type="text/babel">` block, transpiled in-browser.
 
 Live site: [roadmap.ops4life.com](https://roadmap.ops4life.com)
 
 ## Development
 
-Open any HTML file directly in a browser — no server required. For local development with a simple server:
+`index.html` must be served over HTTP (not opened as a `file://` URL) because it fetches Babel/React from CDN and calls `/api/subscribe`:
 
 ```bash
 python3 -m http.server 8080
@@ -18,66 +18,81 @@ python3 -m http.server 8080
 npx serve .
 ```
 
-There are no tests, no linting config, and no build process.
+There are no tests, no linting config, and no build process. Since everything is one file, syntax-check the inline JSX after editing before deploying:
+
+```bash
+python3 - <<'PY'
+import re
+content = open('index.html').read()
+m = re.search(r'<script type="text/babel">(.*?)</script>', content, re.S)
+open('/tmp/roadmap.jsx', 'w').write(m.group(1))
+PY
+node -e "require('@babel/core').transformSync(require('fs').readFileSync('/tmp/roadmap.jsx','utf8'), {presets:['@babel/preset-react']}); console.log('OK')"
+```
+(requires `@babel/core` + `@babel/preset-react` installed somewhere reachable by `node -e`, e.g. `npm i` them into a scratch dir first.)
 
 ## Architecture
 
 ### File Structure
 
-- `index.html` — landing page with cards linking to each roadmap
-- `devops/index.html`, `devsecops/index.html`, `mlops/index.html` — individual roadmap pages
-- `shared/roadmap.css` — all shared styles (tokens, components, layout, responsive)
-- `shared/roadmap.js` — all shared behavior (rendering, progress, panels, connectors)
-- `favicon.svg` — shared favicon
+- `index.html` — the entire app: meta/SEO tags, inline CSS (design tokens + component styles), then one large `<script type="text/babel">` with `TRACKS` data + all React components, then `ReactDOM.createRoot(...).render(<App />)`.
+- `favicon.svg` / `favicon.png` — shared favicon.
+- `robots.txt`, `sitemap.xml` — only `/` is listed; there are no other crawlable routes (see Routing below).
 
-### How Roadmap Pages Work
+There is no `shared/` directory and no per-track subdirectories — those (`devops/`, `devsecops/`, `mlops/`, `devops-to-mlops/`, `shared/roadmap.js`, `shared/roadmap.css`) were an earlier multi-page implementation and have been deleted. Do not recreate that pattern; all track content lives in the `TRACKS` array in `index.html`.
 
-Each roadmap page (`devops/`, `devsecops/`, `mlops/`) defines a global `ROADMAP` array in an inline `<script>` at the bottom of the page. `shared/roadmap.js` reads this array to dynamically render the UI via `render()`.
+### Routing
 
-**ROADMAP data shape:**
+nginx serves static files with `try_files $uri $uri/ =404` (see `../nginx.conf`) — there is no server-side or client-side router. Every track lives behind a single URL, `/`; track selection is in-memory React state (`trackId`, persisted to `localStorage["ops4life:active-track"]`), not a URL path. Do not add new top-level directories expecting them to become "pages" — add tracks to the `TRACKS` array instead.
+
+### `TRACKS` Data Shape
+
 ```js
-const ROADMAP = [
+const TRACKS = [
   {
-    id: "section-id",
-    label: "Section Title",
-    color: "purple",          // purple | teal | orange | green
-    items: [
-      {
-        id: "unique-item-id",
-        label: "Item Label",
-        type: "recommended",  // recommended | alt | (omit for default)
-        description: "...",
-        concepts: ["..."],
-        tools: ["..."],
-        resources: [{ label: "...", url: "..." }],
-        tip: "..."            // optional callout
-      }
-    ]
-  }
-]
+    id: "devops", code: "DEVOPS", title: "DevOps",
+    tagline: "...", blurb: "...",
+    storageKey: "ops4life:devops",   // localStorage key for this track's progress
+    accent: "var(--c-teal)",
+    sections: [
+      { id: "section-id", title: "01 · Section Title", color: "var(--c-purple)", items: [
+        { id: "unique-item-id", label: "Item Label", type: "recommended", // or "alt"
+          concepts: ["..."], tools: ["..."],
+          description: "...",
+          resources: [{ kind: "read|docs|interactive", label: "...", url: "..." }],
+          tip: "...",          // optional callout
+          content: "<p>...</p>" // optional: pre-rendered HTML guide body (cert tracks only), rendered via dangerouslySetInnerHTML
+        },
+      ]},
+    ],
+  },
+];
 ```
 
-### Key JS Functions (`shared/roadmap.js`)
+### Key Components (all in the `<script type="text/babel">` block)
 
-- `render()` — builds columns/nodes from `ROADMAP`, attaches event handlers
-- `drawConnectors()` — draws SVG Bezier paths between column headers; uses `ResizeObserver` to redraw on resize
-- `openPanel(item)` / `closePanel()` — manages the right-side detail panel
-- `markStatus(status)` — sets `"learning"` | `"done"` | `null` per item ID in localStorage
-- `loadProgress()` / `saveProgress()` — persists progress under a per-page `STORAGE_KEY`
-- `handleSearch(q)` — fades non-matching nodes (opacity 0.2)
-- `toggleView()` — switches between grid (column) and list view
+- `App()` — top-level state: active track, view (grid/list), search query, open drawer item, notes (see below). Computes per-track progress/percent and renders `Header`, `TrackPicker` (when no track chosen) or `Hero`+`Board`/`ListView`, `Drawer`, `NotesPanel`, `Feedback`, `Footer`.
+- `TrackPicker` — the "no track selected" landing view (cards for all six tracks).
+- `Board` / `ListView` / `SectionColumn` / `NodeCard` — grid (columns + SVG bezier connectors) vs. mobile list rendering of a track's sections/items.
+- `Drawer` — right-side (bottom-sheet on mobile) detail panel for a clicked item: description, concepts/tools (chips linking to `google.com/search?...&udm=50`, Google's AI-mode search), optional `content` guide embed, resources, tip, mark-as-learning/done buttons. `wide` prop (`75vw` instead of `440px`) is set for the two cert tracks, which have much longer guide content.
+- `HighlightableText` — renders `item.description` with text-selection support: selecting text shows a floating tooltip (Highlight / Note / AI Search). Highlight and Note both persist to the shared notes store; AI Search opens the same `udm=50` Google AI-mode popup as the concept/tool chips, prefixed with the track title.
+- `NotesPanel` / `NoteItem` — slide-in panel (toggled from the `Notes` header button) listing saved highlights/notes, with "This Track" / "All Tracks" tabs and a delete action. Clicking a note's quote jumps to that item's drawer (switching tracks first if needed).
+- `useStored(key, init)` — the shared `localStorage`-backed `useState` hook; used for per-track progress, the active track id, and the notes array.
+- `Feedback` — floating feedback button + modal (GitHub issue/discussion links), hidden while the drawer or notes panel is open.
+- `Newsletter` — email subscribe form, posts to `/api/subscribe` (see `../docker-compose.yml` for the `roadmap-api` sidecar).
 
 ### Design System
 
-- **Colors:** Purple `#6d28d9`, Teal `#0d9488`, Orange `#f97316`, Green `#16a34a`
-- **Fonts:** Space Mono (body/code), Bebas Neue (headings)
-- **Border:** 2px solid black throughout (`--border`)
-- **Hover effect:** `translate(-2px, -2px)` + `box-shadow: 4px 4px 0 #000`
-- **Breakpoints:** `<768px` auto-switches to list view; `<640px` panel becomes bottom sheet
+- **Colors:** neo-brutalist palette defined as CSS custom properties at the top of `index.html` (`--bg`, `--ink`, `--c-purple`, `--c-teal`, `--c-orange`, `--c-pink`, `--c-yellow`, `--c-lime`, `--accent`).
+- **Fonts:** Archivo (`display`/`display-mid` classes, headings), Space Mono (body/code).
+- **Border/shadow utility classes:** `.brut`, `.brut-sm` (2px/1.5px border + offset box-shadow), `.brut-hover` (lift on hover), `.brut-press` (press-down on active).
+- **Breakpoints:** `<768px` auto-switches Board to ListView; `<640px` the Drawer becomes a bottom sheet.
 
-### Progress Persistence
+### Progress & Notes Persistence
 
-User progress (learning/done status per item) is stored in `localStorage` with a key defined by each page's `STORAGE_KEY` constant (e.g., `devops-progress`).
+- Per-track learning/done status: `localStorage[track.storageKey]` (e.g. `ops4life:devops`), shape `{ learning: {itemId: true}, done: {itemId: true} }`.
+- Active track: `localStorage["ops4life:active-track"]`.
+- Notes/highlights (shared across all tracks): `localStorage["roadmap_notes"]`, an array of `{ id, page (track id), pageLabel, itemId, itemLabel, text, note, createdAt }`.
 
 ## Commit Rules
 
@@ -90,10 +105,9 @@ fix(kuma): update routing rule
 chore: update dependencies
 ```
 
-## Adding a New Roadmap
+## Adding a New Track
 
-1. Create a new directory (e.g., `platform/`) with an `index.html`
-2. Copy an existing roadmap page as a template
-3. Replace the `ROADMAP` array with new content
-4. Set a unique `STORAGE_KEY`
-5. Add a card to the root `index.html`
+1. Add an entry to the `TRACKS` array in `index.html` (copy an existing track's shape).
+2. Add a `useStored(TRACKS[n].storageKey, ...)` line in `App()` and wire it into `progressByTrack`/`setProgressByTrack` (the array is indexed positionally — keep all six/seven in sync).
+3. If the track has long-form guide content (like the cert tracks), populate `item.content` with pre-rendered HTML and add the track's `id` to the `wide` check in the `<Drawer>` call in `App()`.
+4. No sitemap/robots changes needed — there's only one crawlable URL (`/`).

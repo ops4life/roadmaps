@@ -3639,6 +3639,7 @@ const Icon = {
   Ext:     (p) => <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M6 3H3v10h10v-3M9 3h4v4M8 8l5-5"/></svg>,
   Chevron: (p) => <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M3 6l5 5 5-5"/></svg>,
   Back:    (p) => <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M13 8H3M7 4L3 8l4 4"/></svg>,
+  Notes:   (p) => <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><rect x="2.5" y="2" width="11" height="12" rx="1"/><path d="M5 6h6M5 9h6M5 12h3"/></svg>,
 };
 
 // ── PRIMITIVES ────────────────────────────────────────────────────────
@@ -3757,7 +3758,7 @@ function TrackSwitcher({ track, onTrackChange, onShowPicker }) {
 }
 
 // ── HEADER ────────────────────────────────────────────────────────────
-function Header({ track, onTrackChange, onShowPicker, query, setQuery, view, setView, percent }) {
+function Header({ track, onTrackChange, onShowPicker, query, setQuery, view, setView, percent, notesCount, onOpenNotes }) {
   return (
     <header style={{ position:"sticky", top:0, zIndex:30, background:"var(--bg)", borderBottom:"2px solid var(--ink)" }}>
       <div className="header-inner" style={{
@@ -3807,6 +3808,20 @@ function Header({ track, onTrackChange, onShowPicker, query, setQuery, view, set
                 }}>{ic}</button>
               ))}
             </div>
+
+            <button onClick={onOpenNotes} className="brut-sm brut-hover brut-press" style={{
+              appearance:"none", cursor:"pointer", fontFamily:"inherit",
+              display:"flex", alignItems:"center", gap:6,
+              height:36, padding:"0 10px",
+              background:"var(--bg-2)", borderWidth:"1.5px",
+              fontSize:11.5, fontWeight:700, letterSpacing:".05em", textTransform:"uppercase",
+            }}>
+              <Icon.Notes />
+              <span>Notes</span>
+              {notesCount > 0 && (
+                <span style={{ background:"var(--c-yellow)", border:"1.5px solid var(--ink)", padding:"0 5px", fontSize:10 }}>{notesCount}</span>
+              )}
+            </button>
 
             <div className="header-progress" style={{
               display:"flex", alignItems:"center", gap:9,
@@ -4129,8 +4144,114 @@ function Section({ label, children }) {
   );
 }
 
+// ── HIGHLIGHTABLE TEXT (select → highlight / note / Google AI search) ──
+function HighlightableText({ text, pageKey, pageLabel, itemId, itemLabel, notes, setNotes }) {
+  const ref = useRef(null);
+  const tipRef = useRef(null);
+  const [tip, setTip] = useState(null); // { rect, text }
+  const [noteMode, setNoteMode] = useState(false);
+  const [draft, setDraft] = useState("");
+
+  const itemNotes = useMemo(
+    () => notes.filter(n => n.page === pageKey && n.itemId === itemId),
+    [notes, pageKey, itemId]
+  );
+
+  useEffect(() => {
+    const onMouseUp = (e) => {
+      if (tipRef.current && tipRef.current.contains(e.target)) return;
+      const el = ref.current;
+      const sel = window.getSelection();
+      const t = sel && sel.toString().trim();
+      if (!el || !t || t.length < 2 || !sel.anchorNode || !el.contains(sel.anchorNode)) {
+        setTip(null);
+        return;
+      }
+      setTip({ rect: sel.getRangeAt(0).getBoundingClientRect(), text: t });
+      setNoteMode(false);
+      setDraft("");
+    };
+    document.addEventListener("mouseup", onMouseUp);
+    return () => document.removeEventListener("mouseup", onMouseUp);
+  }, []);
+
+  function commit(noteText) {
+    if (!tip) return;
+    setNotes(list => [...list, {
+      id: "n" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+      page: pageKey, pageLabel, itemId, itemLabel,
+      text: tip.text, note: noteText || "", createdAt: Date.now(),
+    }]);
+    setTip(null);
+    setNoteMode(false);
+  }
+
+  function openAISearch() {
+    if (!tip) return;
+    const q = `${pageLabel}: ${tip.text}`;
+    const url = `https://www.google.com/search?q=${encodeURIComponent(q)}&udm=50`;
+    window.open(url, "rm-ai-search", "width=700,height=640,resizable=yes,scrollbars=yes");
+    setTip(null);
+  }
+
+  const segments = useMemo(() => {
+    if (!itemNotes.length) return [{ str: text, marked: false }];
+    let parts = [{ str: text, marked: false }];
+    itemNotes.forEach(n => {
+      if (!n.text) return;
+      const next = [];
+      parts.forEach(p => {
+        if (p.marked) { next.push(p); return; }
+        const idx = p.str.indexOf(n.text);
+        if (idx === -1) { next.push(p); return; }
+        if (idx > 0) next.push({ str: p.str.slice(0, idx), marked: false });
+        next.push({ str: n.text, marked: true, id: n.id });
+        const rest = p.str.slice(idx + n.text.length);
+        if (rest) next.push({ str: rest, marked: false });
+      });
+      parts = next;
+    });
+    return parts;
+  }, [text, itemNotes]);
+
+  return (
+    <div ref={ref} style={{ position: "relative" }}>
+      <p style={{margin:"0 0 22px", fontSize:14, color:"var(--ink-2)", lineHeight:1.55}}>
+        {segments.map((seg, i) => seg.marked
+          ? <mark key={seg.id || i} style={{ background:"var(--c-yellow)", padding:"0 2px" }}>{seg.str}</mark>
+          : <React.Fragment key={i}>{seg.str}</React.Fragment>)}
+      </p>
+
+      {tip && (
+        <div ref={tipRef} className="brut" style={{
+          position:"fixed", zIndex:9100,
+          top: Math.max(8, tip.rect.top - (noteMode ? 150 : 54)),
+          left: Math.min(Math.max(8, tip.rect.left), window.innerWidth - 248),
+          background:"var(--bg-2)", padding:8, width:240,
+          display:"flex", flexDirection:"column", gap:6,
+        }}>
+          {!noteMode ? (
+            <div style={{display:"flex", gap:6, flexWrap:"wrap"}}>
+              <Btn size="sm" variant="secondary" onClick={() => commit("")}>✏️ Highlight</Btn>
+              <Btn size="sm" variant="secondary" onClick={() => setNoteMode(true)}>📝 Note</Btn>
+              <Btn size="sm" variant="secondary" onClick={openAISearch}>🔍 AI Search</Btn>
+            </div>
+          ) : (
+            <div style={{display:"flex", flexDirection:"column", gap:6}}>
+              <textarea autoFocus rows={3} value={draft} onChange={e => setDraft(e.target.value)}
+                placeholder="Add a note…"
+                style={{fontFamily:"inherit", fontSize:12, border:"1.5px solid var(--ink)", padding:6, resize:"vertical"}} />
+              <Btn size="sm" onClick={() => commit(draft.trim())}>Save</Btn>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── DRAWER ────────────────────────────────────────────────────────────
-function Drawer({ open, item, section, status, onClose, onMark, wide }) {
+function Drawer({ open, item, section, status, onClose, onMark, wide, pageKey, pageLabel, notes, setNotes }) {
   useEffect(() => {
     const onKey = (e) => { if (e.key === "Escape") onClose(); };
     if (open) document.addEventListener("keydown", onKey);
@@ -4161,9 +4282,12 @@ function Drawer({ open, item, section, status, onClose, onMark, wide }) {
           <h3 className="display" style={{margin:"0 0 14px", fontSize:42, lineHeight:.92, letterSpacing:"-.02em"}}>
             {item.label}<span style={{color:"var(--accent)"}}>.</span>
           </h3>
-          <p style={{margin:"0 0 22px", fontSize:14, color:"var(--ink-2)", lineHeight:1.55}}>
-            {item.description || `A foundational node in the ${section?.title.split("·")[1]?.trim() || ""} section. Hands-on with these concepts will give you the muscle memory the rest of the track depends on.`}
-          </p>
+          <HighlightableText
+            text={item.description || `A foundational node in the ${section?.title.split("·")[1]?.trim() || ""} section. Hands-on with these concepts will give you the muscle memory the rest of the track depends on.`}
+            pageKey={pageKey} pageLabel={pageLabel}
+            itemId={item.id} itemLabel={item.label}
+            notes={notes} setNotes={setNotes}
+          />
 
           {item.concepts?.length > 0 && (
             <Section label="CORE CONCEPTS">
@@ -4242,6 +4366,84 @@ function Drawer({ open, item, section, status, onClose, onMark, wide }) {
           .drawer-aside{ width:100% !important; top:auto !important; bottom:0 !important; height:70vh !important; border-left:none !important; border-top:2px solid var(--ink) !important; box-shadow:0 -6px 0 var(--ink) !important; animation: slideUp .2s ease !important; }
         }
         @keyframes slideUp { from{transform:translateY(20px); opacity:0} to{transform:translateY(0); opacity:1} }
+      `}</style>
+    </>
+  );
+}
+
+// ── NOTES PANEL ───────────────────────────────────────────────────────
+function NoteItem({ n, onDelete, onJump }) {
+  return (
+    <div className="brut-sm" style={{background:"var(--bg)", padding:10, marginBottom:8}}>
+      <p style={{fontSize:12, fontStyle:"italic", margin:"0 0 6px", cursor: onJump ? "pointer" : "default"}}
+        onClick={() => onJump && onJump(n)}>
+        “{n.text}”
+      </p>
+      {n.note && <p style={{fontSize:12, margin:"0 0 6px", color:"var(--ink-2)"}}>{n.note}</p>}
+      <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", fontSize:10.5, color:"var(--ink-3)"}}>
+        <span>{n.itemLabel} · {new Date(n.createdAt).toLocaleDateString(undefined, {month:"short", day:"numeric"})}</span>
+        <button onClick={() => onDelete(n.id)} style={{appearance:"none", border:"none", background:"none", cursor:"pointer", color:"var(--accent)", textDecoration:"underline", fontSize:10.5, fontFamily:"inherit"}}>Delete</button>
+      </div>
+    </div>
+  );
+}
+
+function NotesPanel({ open, onClose, notes, setNotes, track, onJump }) {
+  const [tab, setTab] = useState("track");
+  if (!open) return null;
+
+  const sorted = [...notes].sort((a, b) => b.createdAt - a.createdAt);
+  const list = tab === "track" && track ? sorted.filter(n => n.page === track.id) : sorted;
+  const remove = (id) => setNotes(list => list.filter(n => n.id !== id));
+
+  const groups = tab === "all" ? list.reduce((acc, n) => {
+    (acc[n.page] = acc[n.page] || { label: n.pageLabel || n.page, items: [] }).items.push(n);
+    return acc;
+  }, {}) : null;
+
+  return (
+    <>
+      <div onClick={onClose} style={{position:"fixed", inset:0, zIndex:60, background:"rgba(0,0,0,.35)", animation:"fade .15s ease"}} />
+      <aside className="notes-panel-aside" style={{
+        position:"fixed", right:0, top:0, height:"100%", width:"min(360px, 100vw)",
+        background:"var(--bg-2)", borderLeft:"2px solid var(--ink)", boxShadow:"-6px 0 0 var(--ink)",
+        zIndex:61, display:"flex", flexDirection:"column", animation:"slide .2s ease",
+      }}>
+        <div style={{padding:"16px 18px", borderBottom:"2px solid var(--ink)", display:"flex", alignItems:"center", gap:10}}>
+          <span className="display-mid" style={{fontSize:16, flex:1}}>Notes &amp; Highlights</span>
+          <button onClick={onClose} className="brut-sm brut-hover brut-press" style={{width:30, height:30, display:"grid", placeItems:"center", background:"var(--bg-2)"}}>
+            <Icon.Close />
+          </button>
+        </div>
+        <div style={{display:"flex", borderBottom:"2px solid var(--ink)"}}>
+          {["track", "all"].map(k => (
+            <button key={k} onClick={() => setTab(k)} style={{
+              flex:1, appearance:"none", cursor:"pointer", fontFamily:"inherit",
+              padding:"10px 6px", border:"none",
+              borderBottom: tab === k ? "2px solid var(--accent)" : "2px solid transparent",
+              background:"none", color: tab === k ? "var(--accent)" : "var(--ink)",
+              fontSize:11, fontWeight:700, textTransform:"uppercase", letterSpacing:".05em",
+            }}>{k === "track" ? "This Track" : "All Tracks"}</button>
+          ))}
+        </div>
+        <div style={{flex:1, overflowY:"auto", padding:16}}>
+          {!list.length && (
+            <p style={{fontSize:12, color:"var(--ink-3)", lineHeight:1.5}}>
+              No notes yet. Select text in an item’s description to highlight or add a note.
+            </p>
+          )}
+          {tab === "all" && groups
+            ? Object.keys(groups).map(p => (
+                <div key={p} style={{marginBottom:16}}>
+                  <div style={{fontSize:10.5, fontWeight:700, textTransform:"uppercase", letterSpacing:".06em", color:"var(--ink-3)", marginBottom:8}}>{groups[p].label}</div>
+                  {groups[p].items.map(n => <NoteItem key={n.id} n={n} onDelete={remove} onJump={onJump} />)}
+                </div>
+              ))
+            : list.map(n => <NoteItem key={n.id} n={n} onDelete={remove} onJump={onJump} />)}
+        </div>
+      </aside>
+      <style>{`
+        @media (max-width: 640px){ .notes-panel-aside{ width:100% !important } }
       `}</style>
     </>
   );
@@ -4409,6 +4611,8 @@ function App() {
   const [view, setView] = useState("grid");
   const [query, setQuery] = useState("");
   const [openItem, setOpenItem] = useState(null);
+  const [notes, setNotes] = useStored("roadmap_notes", []);
+  const [notesOpen, setNotesOpen] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 768px)");
@@ -4459,12 +4663,23 @@ function App() {
   const showPicker = () => { setTrackId(null); setOpenItem(null); setQuery(""); window.scrollTo({top:0}); };
   const choose = (id) => { setTrackId(id); window.scrollTo({top:0}); };
 
+  const trackNotesCount = track ? notes.filter(n => n.page === track.id).length : notes.length;
+  const handleJumpToNote = (n) => {
+    const targetTrack = TRACKS.find(t => t.id === n.page);
+    if (!targetTrack) return;
+    const targetItem = targetTrack.sections.flatMap(s => s.items).find(i => i.id === n.itemId);
+    if (targetTrack.id !== trackId) setTrackId(targetTrack.id);
+    if (targetItem) setOpenItem(targetItem);
+    setNotesOpen(false);
+  };
+
   return (
     <div style={{minHeight:"100vh"}}>
       <Header track={track} onTrackChange={choose} onShowPicker={showPicker}
         query={query} setQuery={setQuery}
         view={view} setView={setView}
-        percent={percent} />
+        percent={percent}
+        notesCount={trackNotesCount} onOpenNotes={() => setNotesOpen(true)} />
 
       {!track && <TrackPicker onChoose={choose} progressByTrack={progressByTrack} />}
 
@@ -4493,9 +4708,18 @@ function App() {
         status={openItem ? statusOf(progress, openItem.id) : "todo"}
         wide={track?.id === "aws-cert" || track?.id === "az-cert"}
         onClose={() => setOpenItem(null)}
-        onMark={onMark} />
+        onMark={onMark}
+        pageKey={track?.id} pageLabel={track?.title}
+        notes={notes} setNotes={setNotes} />
 
-      <Feedback hidden={!!openItem} />
+      <NotesPanel
+        open={notesOpen}
+        onClose={() => setNotesOpen(false)}
+        notes={notes} setNotes={setNotes}
+        track={track}
+        onJump={handleJumpToNote} />
+
+      <Feedback hidden={!!openItem || notesOpen} />
 
       <style>{`
         @media (max-width: 560px){ .board-main{ padding: 14px 14px 56px !important } }
