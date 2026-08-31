@@ -4005,7 +4005,7 @@ function SectionColumn({ section, progress, query, onOpen, headerRef }) {
   const [num, ...rest] = section.title.split(" · ");
   const label = rest.join(" · ");
   return (
-    <div style={{display:"flex", flexDirection:"column", gap:"var(--gap-node)", minWidth:260}}>
+    <div style={{display:"flex", flexDirection:"column", gap:"var(--gap-node)", minWidth:0}}>
       <div ref={headerRef} className="brut" style={{ padding:"14px 16px 12px", background:section.color, color:"var(--ink)", display:"flex", flexDirection:"column", gap:4 }}>
         <div style={{display:"flex", alignItems:"baseline", justifyContent:"space-between", gap:8}}>
           <span className="display-mid" style={{fontSize:13, letterSpacing:".02em", color:"var(--ink-2)"}}>{num}</span>
