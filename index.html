@@ -4474,7 +4474,7 @@ function App() {
 
       {track && (
         <main className="board-main" style={{
-          maxWidth:1320, margin:"0 auto",
+          maxWidth: Math.max(1320, track.sections.length * 270 + 44), margin:"0 auto",
           padding:"16px 22px 60px",
           overflowX: view==="grid" ? "auto" : "visible",
         }}>
