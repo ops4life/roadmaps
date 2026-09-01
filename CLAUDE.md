@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**ops4life Roadmaps** — a single-page React app with interactive roadmaps for DevOps, DevSecOps, MLOps, DevOps→MLOps, and two certification tracks (AWS SAP-C02, Azure AZ-104). No build step: React 18 + Babel Standalone are loaded from CDN and the entire app (data + components) lives inline in `index.html` as a `<script type="text/babel">` block, transpiled in-browser.
+**ops4life Roadmaps** — a single-page React app with interactive roadmaps for DevOps, DevSecOps, MLOps, DevOps→MLOps, and two certification tracks (AWS SAP-C02, Azure AZ-104). No build step: React 18 + Babel Standalone are loaded from CDN. Each track's data lives in its own plain (non-Babel) `<script>` file under `tracks/`; the React components live inline in `index.html` as a `<script type="text/babel">` block, transpiled in-browser.
 
 Live site: [roadmap.ops4life.com](https://roadmap.ops4life.com)
 
@@ -35,11 +35,12 @@ node -e "require('@babel/core').transformSync(require('fs').readFileSync('/tmp/r
 
 ### File Structure
 
-- `index.html` — the entire app: meta/SEO tags, inline CSS (design tokens + component styles), then one large `<script type="text/babel">` with `TRACKS` data + all React components, then `ReactDOM.createRoot(...).render(<App />)`.
+- `index.html` — app shell: meta/SEO tags, inline CSS (design tokens + component styles), `<script>` tags loading each `tracks/*.js` file (in `TRACKS` order), then one `<script type="text/babel">` with `const TRACKS = [TRACK_DEVOPS, ...]` assembled from those globals + all React components, then `ReactDOM.createRoot(...).render(<App />)`.
+- `tracks/*.js` — one file per track (`devops.js`, `devsecops.js`, `mlops.js`, `devops-to-mlops.js`, `aws-cert.js`, `az-cert.js`), each a plain (non-Babel) classic `<script>` defining a single top-level `const TRACK_<NAME> = { ... }` object literal (the same shape documented below). Plain top-level `const`/`let` declared in one classic script are visible to scripts loaded after it on the same page — no bundler or ES modules needed, keeping the no-build-step architecture.
 - `favicon.svg` / `favicon.png` — shared favicon.
 - `robots.txt`, `sitemap.xml` — only `/` is listed; there are no other crawlable routes (see Routing below).
 
-There is no `shared/` directory and no per-track subdirectories — those (`devops/`, `devsecops/`, `mlops/`, `devops-to-mlops/`, `shared/roadmap.js`, `shared/roadmap.css`) were an earlier multi-page implementation and have been deleted. Do not recreate that pattern; all track content lives in the `TRACKS` array in `index.html`.
+Earlier in this project's history there was a different multi-page split (`devops/`, `devsecops/`, `mlops/`, `devops-to-mlops/`, `shared/roadmap.js`, `shared/roadmap.css` — separate pages/routes per track) that was deleted in favor of a single inline `TRACKS` array. The current `tracks/*.js` split is not that pattern: it's still one SPA behind one URL (`/`), just with each track's *data* factored into its own file for editability. Don't recreate the old multi-page/routed version.
 
 ### Routing
 
@@ -107,7 +108,8 @@ chore: update dependencies
 
 ## Adding a New Track
 
-1. Add an entry to the `TRACKS` array in `index.html` (copy an existing track's shape).
-2. Add a `useStored(TRACKS[n].storageKey, ...)` line in `App()` and wire it into `progressByTrack`/`setProgressByTrack` (the array is indexed positionally — keep all six/seven in sync).
-3. If the track has long-form guide content (like the cert tracks), populate `item.content` with pre-rendered HTML and add the track's `id` to the `wide` check in the `<Drawer>` call in `App()`.
-4. No sitemap/robots changes needed — there's only one crawlable URL (`/`).
+1. Create `tracks/<id>.js` defining `const TRACK_<NAME> = { ... }` (copy an existing track file's shape).
+2. Add a `<script src="tracks/<id>.js"></script>` tag in `index.html`, before the `<script type="text/babel">` block, and add `TRACK_<NAME>` to the `const TRACKS = [...]` list inside that block.
+3. Add a `useStored(TRACKS[n].storageKey, ...)` line in `App()` and wire it into `progressByTrack`/`setProgressByTrack` (the array is indexed positionally — keep all in sync).
+4. If the track has long-form guide content (like the cert tracks), populate `item.content` with pre-rendered HTML and add the track's `id` to the `wide` check in the `<Drawer>` call in `App()`.
+5. No sitemap/robots changes needed — there's only one crawlable URL (`/`).
