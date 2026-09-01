@@ -1,0 +1,151 @@
+<svg width="800" height="400" viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Neo-Brutalist Drop Shadows -->
+    <filter id="brut-shadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="3" dy="3" stdDeviation="0" flood-color="#1A1714" flood-opacity="1" />
+    </filter>
+    <filter id="brut-shadow-lg" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="5" dy="5" stdDeviation="0" flood-color="#1A1714" flood-opacity="1" />
+    </filter>
+
+    <style>
+      .bg { fill: #EFE9D6; }
+      .ink { fill: #1A1714; }
+      
+      /* Interconnected Roadmap Connector Lines (Straight segments with rounded 90° corners) */
+      .connector { stroke: #1A1714; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+      .connector-sub { stroke: #1A1714; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+      .connector-dash { stroke: #1A1714; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 4 4; fill: none; }
+      
+      .text-title { font-family: 'Archivo', 'Helvetica Neue', Arial, sans-serif; font-weight: 900; fill: #1A1714; }
+      .text-sub { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 10px; letter-spacing: 0.12em; fill: #1A1714; }
+      .text-chip { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 11px; fill: #1A1714; }
+      
+      .chip { stroke: #1A1714; stroke-width: 2; filter: url(#brut-shadow); }
+      
+      /* Color tokens matching index.html */
+      .c-teal { fill: #80E5FF; }
+      .c-purple { fill: #D8B4FE; }
+      .c-yellow { fill: #FDE047; }
+      .c-orange { fill: #FFB07C; }
+      .c-lime { fill: #A3E635; }
+      .c-pink { fill: #F9A8D4; }
+    </style>
+  </defs>
+
+  <!-- Canvas Background -->
+  <rect width="800" height="400" class="bg"/>
+  
+  <!-- Outer Frame -->
+  <rect x="10" y="10" width="780" height="380" fill="none" stroke="#1A1714" stroke-width="3"/>
+
+  <!-- ================================================================= -->
+  <!-- LAYER 1: FULLY INTERCONNECTED CONNECTOR NETWORK                  -->
+  <!-- Connecting Top Items to Bottom Items & Hero Card                 -->
+  <!-- ================================================================= -->
+
+  <!-- Top Horizontal Connector Spine: DevOps(90,50) -> DevSecOps(275,50) -> MLOps(515,50) -> Azure(680,50) -->
+  <path d="M 90 50 L 680 50" class="connector"/>
+
+  <!-- Bottom Horizontal Connector Spine: DevOps(90,350) -> MLOps(220,350) -> DevSecOps(372,350) -> AWS(535,350) -> Azure(680,350) -->
+  <path d="M 90 350 L 680 350" class="connector"/>
+
+  <!-- VERTICAL & CURVED INTERCONNECTING PATHS (Connecting top and bottom tracks directly to each other) -->
+
+  <!-- Left Interconnect: Top DevOps (90,50) down to Bottom DevOps (90,350) -->
+  <path d="M 90 50 L 90 350" class="connector"/>
+
+  <!-- Mid-Left Interconnect: DevSecOps (275,50) down & right with rounded corner to Bottom DevSecOps (372.5,350) -->
+  <path d="M 275 50 L 275 90 Q 275 100 285 100 L 362.5 100 Q 372.5 100 372.5 110 L 372.5 350" class="connector"/>
+
+  <!-- Mid-Right Interconnect: Top MLOps (515,50) down with rounded corner towards Hero Card and Bottom AWS (535,350) -->
+  <path d="M 515 50 L 515 300 Q 515 310 525 310 L 525 310 Q 535 310 535 320 L 535 350" class="connector"/>
+
+  <!-- Right Interconnect: Top Azure (680,50) straight down to Bottom Azure (680,350) -->
+  <path d="M 680 50 L 680 350" class="connector"/>
+
+  <!-- Hero Card Background Connectors (Entering Hero Card from left & right sides) -->
+  <path d="M 90 200 L 160 200" class="connector-dash"/>
+  <path d="M 640 200 L 680 200" class="connector-dash"/>
+
+  <!-- JUNCTION DOTS (Where interconnected paths join) -->
+  <circle cx="90" cy="50" r="5" class="c-teal" stroke="#1A1714" stroke-width="1.5"/>
+  <circle cx="275" cy="50" r="5" class="c-purple" stroke="#1A1714" stroke-width="1.5"/>
+  <circle cx="515" cy="50" r="5" class="c-orange" stroke="#1A1714" stroke-width="1.5"/>
+  <circle cx="680" cy="50" r="5" class="c-lime" stroke="#1A1714" stroke-width="1.5"/>
+
+  <circle cx="90" cy="350" r="5" class="c-teal" stroke="#1A1714" stroke-width="1.5"/>
+  <circle cx="220" cy="350" r="5" class="c-yellow" stroke="#1A1714" stroke-width="1.5"/>
+  <circle cx="372.5" cy="350" r="5" class="c-orange" stroke="#1A1714" stroke-width="1.5"/>
+  <circle cx="535" cy="350" r="5" class="c-yellow" stroke="#1A1714" stroke-width="1.5"/>
+  <circle cx="680" cy="350" r="5" class="c-lime" stroke="#1A1714" stroke-width="1.5"/>
+
+  <circle cx="90" cy="200" r="4" class="node-dot"/>
+  <circle cx="680" cy="200" r="4" class="node-dot"/>
+
+
+  <!-- ================================================================= -->
+  <!-- LAYER 2: ITEM CARDS PLACED DIRECTLY ON THE INTERCONNECTED NETWORK  -->
+  <!-- ================================================================= -->
+
+  <!-- TOP ITEM CARDS -->
+  <g class="chip c-teal">
+    <rect x="45" y="32" width="90" height="36" rx="18"/>
+  </g>
+  <text x="90" y="55" text-anchor="middle" class="text-chip">DevOps</text>
+
+  <g class="chip c-purple">
+    <rect x="220" y="32" width="110" height="36" rx="18"/>
+  </g>
+  <text x="275" y="55" text-anchor="middle" class="text-chip">DevSecOps</text>
+
+  <g class="chip c-orange">
+    <rect x="460" y="32" width="110" height="36" rx="18"/>
+  </g>
+  <text x="515" y="55" text-anchor="middle" class="text-chip">MLOps</text>
+
+  <g class="chip c-lime">
+    <rect x="630" y="32" width="100" height="36" rx="18"/>
+  </g>
+  <text x="680" y="55" text-anchor="middle" class="text-chip">Azure</text>
+
+
+  <!-- CENTRAL HERO BRANDING CARD -->
+  <g filter="url(#brut-shadow-lg)">
+    <rect x="160" y="125" width="480" height="150" rx="12" fill="#FAF5E3" stroke="#1A1714" stroke-width="3.5"/>
+
+    <rect x="290" y="140" width="220" height="22" rx="11" class="c-yellow" stroke="#1A1714" stroke-width="1.5"/>
+    <text x="400" y="155" text-anchor="middle" class="text-sub">INTERACTIVE ROADMAPS</text>
+
+    <text x="400" y="212" text-anchor="middle" class="text-title" font-size="64" letter-spacing="-2">ops4life</text>
+    <text x="400" y="252" text-anchor="middle" class="text-title" font-size="34" letter-spacing="6">ROADMAPS</text>
+  </g>
+
+
+  <!-- BOTTOM ITEM CARDS -->
+  <g class="chip c-teal">
+    <rect x="45" y="332" width="90" height="36" rx="18"/>
+  </g>
+  <text x="90" y="355" text-anchor="middle" class="text-chip">DevOps</text>
+
+  <g class="chip c-yellow">
+    <rect x="170" y="332" width="100" height="36" rx="18"/>
+  </g>
+  <text x="220" y="355" text-anchor="middle" class="text-chip">MLOps</text>
+
+  <g class="chip c-orange">
+    <rect x="310" y="332" width="125" height="36" rx="18"/>
+  </g>
+  <text x="372.5" y="355" text-anchor="middle" class="text-chip">DevSecOps</text>
+
+  <g class="chip c-yellow">
+    <rect x="485" y="332" width="100" height="36" rx="18"/>
+  </g>
+  <text x="535" y="355" text-anchor="middle" class="text-chip">AWS</text>
+
+  <g class="chip c-lime">
+    <rect x="630" y="332" width="100" height="36" rx="18"/>
+  </g>
+  <text x="680" y="355" text-anchor="middle" class="text-chip">Azure</text>
+
+</svg>
