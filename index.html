@@ -745,7 +745,7 @@ function HighlightableText({ text, pageKey, pageLabel, itemId, itemLabel, notes,
       {tip && (
         <div ref={tipRef} className="brut" style={{
           position:"fixed", zIndex:9100,
-          top: Math.max(8, tip.rect.top - (noteMode ? 150 : 54)),
+          ...tooltipVerticalPos(tip.rect, noteMode ? 150 : 54),
           left: Math.min(Math.max(8, tip.rect.left), window.innerWidth - 248),
           background:"var(--bg-2)", padding:8, width:240,
           display:"flex", flexDirection:"column", gap:6,
@@ -768,6 +768,15 @@ function HighlightableText({ text, pageKey, pageLabel, itemId, itemLabel, notes,
       )}
     </div>
   );
+}
+
+// Anchors the selection tooltip above the selected text; flips it below
+// instead when there isn't enough room above, so it never covers the
+// selection (clamping the top offset alone pushes the box down over it).
+function tooltipVerticalPos(rect, estHeight) {
+  const gap = 8;
+  if (rect.top - gap >= estHeight) return { top: rect.top - estHeight };
+  return { top: Math.min(rect.bottom + gap, window.innerHeight - estHeight - gap) };
 }
 
 // ── HIGHLIGHTABLE GUIDE CONTENT (rich HTML — DOM-based mark injection) ──
@@ -914,7 +923,7 @@ function GuideContent({ html, pageKey, pageLabel, itemId, itemLabel, notes, setN
       {tip && (
         <div ref={tipRef} className="brut" style={{
           position:"fixed", zIndex:9100,
-          top: Math.max(8, tip.rect.top - (noteMode ? 150 : 54)),
+          ...tooltipVerticalPos(tip.rect, noteMode ? 150 : 54),
           left: Math.min(Math.max(8, tip.rect.left), window.innerWidth - 248),
           background:"var(--bg-2)", padding:8, width:240,
           display:"flex", flexDirection:"column", gap:6,
