@@ -758,9 +758,10 @@ function HighlightableText({ text, pageKey, pageLabel, itemId, itemLabel, notes,
 // landing on top of the selected text it's opening below/above.
 function SelectionTip({ tipRef, tip, noteMode, setNoteMode, draft, setDraft, onHighlight, onSave, onAISearch }) {
   const [pos, setPos] = useState(null);
+  const [entered, setEntered] = useState(false);
 
   useLayoutEffect(() => {
-    if (!tip) { setPos(null); return; }
+    if (!tip) { setPos(null); setEntered(false); return; }
     const el = tipRef.current;
     if (!el) return;
     const gap = 8;
@@ -772,12 +773,24 @@ function SelectionTip({ tipRef, tip, noteMode, setNoteMode, draft, setDraft, onH
     setPos({ top, left });
   }, [tip, noteMode, draft]);
 
+  // Fade/slide in only after `pos` is committed and painted once, otherwise
+  // the transition would be skipped (position and opacity would land in the
+  // same frame, so the browser has nothing to animate from).
+  useEffect(() => {
+    if (!pos) return;
+    const id = requestAnimationFrame(() => setEntered(true));
+    return () => cancelAnimationFrame(id);
+  }, [pos]);
+
   if (!tip) return null;
   return (
     <div ref={tipRef} className="brut" style={{
       position:"fixed", zIndex:9100,
       top: pos ? pos.top : -9999, left: pos ? pos.left : -9999,
       visibility: pos ? "visible" : "hidden",
+      opacity: entered ? 1 : 0,
+      transform: entered ? "translateY(0)" : "translateY(4px)",
+      transition: "opacity .12s ease, transform .12s ease",
       background:"var(--bg-2)", padding:8, width:240,
       display:"flex", flexDirection:"column", gap:6,
     }}>
