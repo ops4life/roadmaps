@@ -691,8 +691,16 @@ function HighlightableText({ text, pageKey, pageLabel, itemId, itemLabel, notes,
       setNoteMode(false);
       setDraft("");
     };
+    // Mobile doesn't fire mouseup for touch-based text selection, and the
+    // selection itself isn't finalized until just after touchend fires — the
+    // setTimeout(0) lets it settle before we read window.getSelection().
+    const onTouchEnd = (e) => setTimeout(() => onMouseUp(e), 0);
     document.addEventListener("mouseup", onMouseUp);
-    return () => document.removeEventListener("mouseup", onMouseUp);
+    document.addEventListener("touchend", onTouchEnd);
+    return () => {
+      document.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener("touchend", onTouchEnd);
+    };
   }, []);
 
   function commit(noteText) {
@@ -916,8 +924,16 @@ function GuideContent({ html, pageKey, pageLabel, itemId, itemLabel, notes, setN
       setNoteMode(false);
       setDraft("");
     };
+    // Mobile doesn't fire mouseup for touch-based text selection, and the
+    // selection itself isn't finalized until just after touchend fires — the
+    // setTimeout(0) lets it settle before we read window.getSelection().
+    const onTouchEnd = (e) => setTimeout(() => onMouseUp(e), 0);
     document.addEventListener("mouseup", onMouseUp);
-    return () => document.removeEventListener("mouseup", onMouseUp);
+    document.addEventListener("touchend", onTouchEnd);
+    return () => {
+      document.removeEventListener("mouseup", onMouseUp);
+      document.removeEventListener("touchend", onTouchEnd);
+    };
   }, []);
 
   function commit(noteText) {
