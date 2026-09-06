@@ -1262,12 +1262,11 @@ function Newsletter() {
 }
 
 // ── FEEDBACK ──────────────────────────────────────────────────────────
-function Feedback({ hidden }) {
-  const [open, setOpen] = useState(false);
+function Feedback({ hidden, open, onOpen, onClose }) {
   return (
     <>
       {!hidden && (
-        <button onClick={() => setOpen(true)} style={{
+        <button onClick={onOpen} style={{
           position:"fixed", bottom:"1.25rem", right:"1.25rem", zIndex:900,
           background:"var(--bg-2)", border:"2px solid var(--ink)",
           fontFamily:"'Space Mono','Courier New',monospace", fontSize:"0.7rem",
@@ -1279,7 +1278,7 @@ function Feedback({ hidden }) {
 
       {open && (
         <>
-          <div onClick={() => setOpen(false)} style={{position:"fixed", inset:0, background:"rgba(0,0,0,.45)", zIndex:1000}} />
+          <div onClick={onClose} style={{position:"fixed", inset:0, background:"rgba(0,0,0,.45)", zIndex:1000}} />
           <div style={{
             position:"fixed", inset:0, zIndex:1001, display:"flex",
             alignItems:"center", justifyContent:"center",
@@ -1291,7 +1290,7 @@ function Feedback({ hidden }) {
             }}>
               <div style={{display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:"0.35rem"}}>
                 <span style={{fontSize:"1.1rem", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.06em"}}>Send Feedback</span>
-                <button onClick={() => setOpen(false)} style={{background:"none", border:"none", fontSize:"1.2rem", cursor:"pointer", padding:0, lineHeight:1}}>✕</button>
+                <button onClick={onClose} style={{background:"none", border:"none", fontSize:"1.2rem", cursor:"pointer", padding:0, lineHeight:1}}>✕</button>
               </div>
               <p style={{fontSize:"0.68rem", color:"var(--ink-3)", marginBottom:"1rem"}}>Pick a type — GitHub will open in a new tab.</p>
               <div style={{display:"grid", gridTemplateColumns:"repeat(2, 1fr)", gap:"0.65rem"}}>
@@ -1322,7 +1321,7 @@ function Feedback({ hidden }) {
 }
 
 // ── FOOTER ────────────────────────────────────────────────────────────
-function Footer() {
+function Footer({ onFeedbackClick }) {
   return (
     <footer style={{borderTop:"2px solid var(--ink)", background:"var(--bg-2)"}}>
       <Newsletter />
@@ -1339,6 +1338,11 @@ function Footer() {
         <div style={{display:"flex", gap:14, fontSize:10.5, fontWeight:700, textTransform:"uppercase", letterSpacing:".08em", color:"var(--ink-3)"}}>
           <a href="https://ops4life.com">home</a>
           <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener">github</a>
+          <button onClick={onFeedbackClick} style={{
+            background:"none", border:"none", padding:0, margin:0, cursor:"pointer",
+            font:"inherit", fontWeight:700, textTransform:"uppercase", letterSpacing:".08em",
+            color:"var(--ink-3)",
+          }}>feedback</button>
         </div>
       </div>
       <style>{`@media (max-width: 480px){ .footer-inner{ padding: 14px 16px !important } }`}</style>
@@ -1354,6 +1358,7 @@ function App() {
   const [openItem, setOpenItem] = useState(null);
   const [notes, setNotes] = useStored("roadmap_notes", []);
   const [notesOpen, setNotesOpen] = useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 768px)");
@@ -1444,7 +1449,7 @@ function App() {
         </main>
       )}
 
-      <Footer />
+      <Footer onFeedbackClick={() => setFeedbackOpen(true)} />
 
       <Drawer
         open={!!openItem}
@@ -1466,7 +1471,7 @@ function App() {
         track={track}
         onJump={handleJumpToNote} />
 
-      <Feedback hidden={!!openItem || notesOpen} />
+      <Feedback hidden={!!openItem || notesOpen} open={feedbackOpen} onOpen={() => setFeedbackOpen(true)} onClose={() => setFeedbackOpen(false)} />
 
       <style>{`
         @media (max-width: 560px){ .board-main{ padding: 14px 14px 56px !important } }
