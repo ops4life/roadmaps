@@ -101,8 +101,11 @@ button{font:inherit;color:inherit}
 .guide-embed li ul,.guide-embed li ol{ margin-top:4px; }
 .guide-embed strong{ color:var(--ink); }
 .guide-embed code{ background:var(--bg-3); border:1px solid var(--ink); padding:1px 5px; font-family:"Space Mono",monospace; font-size:11.5px; }
-.guide-embed pre{ background:var(--bg-3); border:1.5px solid var(--ink); padding:10px 12px; overflow-x:auto; margin:0 0 12px; }
+.guide-embed pre{ position:relative; background:var(--bg-3); border:1.5px solid var(--ink); padding:10px 12px; overflow-x:auto; margin:0 0 12px; }
 .guide-embed pre code{ background:none; border:none; padding:0; font-size:11.5px; line-height:1.5; }
+.guide-embed pre .rm-copy-btn{ position:absolute; top:6px; right:6px; appearance:none; cursor:pointer; border:1.5px solid var(--ink); background:var(--bg-2); color:var(--ink); font-family:"Space Mono",monospace; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; padding:3px 7px; line-height:1.4; }
+.guide-embed pre .rm-copy-btn:hover{ background:var(--c-yellow); }
+.guide-embed pre .rm-copy-btn.copied{ background:var(--done, var(--c-lime)); }
 .guide-embed .table-wrap{ overflow-x:auto; margin:0 0 12px; }
 .guide-embed table{ width:100%; border-collapse:collapse; font-size:11.5px; }
 .guide-embed th,.guide-embed td{ border:1.5px solid var(--ink); padding:6px 8px; text-align:left; vertical-align:top; }
@@ -834,6 +837,28 @@ function GuideContent({ html, pageKey, pageLabel, itemId, itemLabel, notes, setN
     const textNodes = collectHighlightableTextNodes(root);
     itemNotes.forEach(n => applyStoredHighlight(textNodes, n));
   }, [html, itemNotes]);
+
+  // Inject a copy button into every <pre> code block in the guide content.
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+    root.querySelectorAll("pre").forEach(pre => {
+      if (pre.querySelector(".rm-copy-btn")) return;
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "rm-copy-btn";
+      btn.textContent = "Copy";
+      btn.addEventListener("click", () => {
+        const code = pre.querySelector("code") || pre;
+        navigator.clipboard.writeText(code.textContent).then(() => {
+          btn.textContent = "Copied!";
+          btn.classList.add("copied");
+          setTimeout(() => { btn.textContent = "Copy"; btn.classList.remove("copied"); }, 1500);
+        });
+      });
+      pre.appendChild(btn);
+    });
+  }, [html]);
 
   useEffect(() => {
     const onMouseUp = (e) => {
