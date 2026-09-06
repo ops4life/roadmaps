@@ -1262,20 +1262,9 @@ function Newsletter() {
 }
 
 // ── FEEDBACK ──────────────────────────────────────────────────────────
-function Feedback({ hidden, open, onOpen, onClose }) {
+function Feedback({ open, onClose }) {
   return (
     <>
-      {!hidden && (
-        <button onClick={onOpen} style={{
-          position:"fixed", bottom:"1.25rem", right:"1.25rem", zIndex:900,
-          background:"var(--bg-2)", border:"2px solid var(--ink)",
-          fontFamily:"'Space Mono','Courier New',monospace", fontSize:"0.7rem",
-          fontWeight:700, textTransform:"uppercase", letterSpacing:"0.06em",
-          padding:"0.45rem 0.85rem", cursor:"pointer",
-          transition:"transform .12s, box-shadow .12s",
-        }} className="brut-hover">Feedback</button>
-      )}
-
       {open && (
         <>
           <div onClick={onClose} style={{position:"fixed", inset:0, background:"rgba(0,0,0,.45)", zIndex:1000}} />
@@ -1471,7 +1460,7 @@ function App() {
         track={track}
         onJump={handleJumpToNote} />
 
-      <Feedback hidden={!!openItem || notesOpen} open={feedbackOpen} onOpen={() => setFeedbackOpen(true)} onClose={() => setFeedbackOpen(false)} />
+      <Feedback open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
 
       <style>{`
         @media (max-width: 560px){ .board-main{ padding: 14px 14px 56px !important } }
