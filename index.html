@@ -117,6 +117,77 @@ button{font:inherit;color:inherit}
 .guide-embed .callout-body p{ margin:4px 0 0; color:var(--ink); }
 .guide-embed .callout-body strong{ text-transform:uppercase; letter-spacing:.04em; font-size:11px; }
 .rm-guide-highlight{ background:var(--c-yellow); padding:0 2px; }
+
+/* ---------- Otto Guide Bot ---------- */
+@keyframes otto-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes otto-blink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.12)}}
+@keyframes otto-pulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
+@keyframes otto-bubble-in{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes otto-dot{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+
+#otto-bot{ position:fixed; right:20px; bottom:20px; z-index:1001; }
+#otto-floater{ animation:otto-float 4s ease-in-out infinite; }
+#otto-bot button,#otto-bubble button,#otto-tour button{ outline:none !important; }
+#otto-btn{ padding:9px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+#otto-btn:focus,#otto-btn:focus-visible{ outline:none; }
+#otto-head{ position:relative; width:52px; height:58px; }
+#otto-antenna-line{ position:absolute; left:50%; top:0; transform:translateX(-50%); width:2px; height:9px; background:var(--ink-3); }
+#otto-antenna-dot{ position:absolute; left:50%; top:-6px; width:8px; height:8px; border-radius:50%; background:var(--c-lime); box-shadow:0 0 8px var(--c-lime); animation:otto-pulse 1.7s ease-in-out infinite; transform:translateX(-50%); }
+#otto-body{ position:absolute; left:0; right:0; top:8px; height:50px; border-radius:11px; background:var(--ink); }
+.otto-ear{ position:absolute; top:19px; width:4px; height:12px; border-radius:3px; background:var(--ink); }
+#otto-screen{ position:absolute; left:6px; right:6px; top:8px; height:34px; border-radius:8px; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; overflow:hidden; }
+#otto-eyes{ display:flex; gap:8px; animation:otto-blink 4.4s infinite; transform-origin:center; }
+.otto-eye-wrap{ display:flex; align-items:center; justify-content:center; }
+.otto-eye{ width:8px; height:9px; border-radius:50%; background:var(--c-lime); }
+#otto-mouth{ width:12px; height:5px; border:1.5px solid var(--c-lime); border-top:0; border-radius:0 0 12px 12px; opacity:.85; }
+
+#otto-greet{ position:fixed; right:90px; bottom:26px; z-index:1000; max-width:190px; background:var(--bg-2); border:var(--border-1); box-shadow:var(--shadow-sm); border-radius:0 12px 12px 12px; padding:9px 12px; font-size:12.5px; line-height:1.45; color:var(--ink); opacity:0; transform:translateX(8px) scale(.96); transition:opacity .25s ease,transform .25s ease; pointer-events:none; }
+#otto-greet.show{ opacity:1; transform:none; pointer-events:auto; }
+
+#otto-bubble{ position:fixed; right:20px; bottom:92px; z-index:1000; width:322px; max-width:calc(100vw - 40px); background:var(--bg-2); border:var(--border); box-shadow:var(--shadow-lg); border-radius:16px; overflow:hidden; color:var(--ink); animation:otto-bubble-in .3s cubic-bezier(.2,.8,.2,1); display:none; }
+#otto-bubble.otto-open{ display:block; }
+.otto-bubble-header{ display:flex; align-items:center; gap:10px; padding:12px 13px; border-bottom:var(--border-1); background:var(--c-yellow); }
+.otto-avatar-sm{ width:30px; height:30px; border-radius:8px; background:var(--ink); display:flex; align-items:center; justify-content:center; gap:4px; flex-shrink:0; }
+.otto-avatar-sm span{ width:5px; height:7px; border-radius:50%; background:var(--c-lime); box-shadow:0 0 5px var(--c-lime); }
+.otto-bubble-close{ width:26px; height:26px; border-radius:7px; background:transparent; border:1.5px solid var(--ink); color:var(--ink); cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; }
+#otto-msgs{ padding:14px 13px 4px; max-height:280px; overflow-y:auto; }
+.otto-msg-row{ display:flex; margin-bottom:8px; }
+.otto-msg-row.bot{ justify-content:flex-start; }
+.otto-msg-row.user{ justify-content:flex-end; }
+.otto-msg-bubble{ max-width:84%; padding:9px 12px; font-size:12.5px; line-height:1.46; white-space:pre-wrap; }
+.otto-msg-bubble.bot{ border-radius:0 12px 12px 12px; background:var(--bg-3); border:1.5px solid var(--ink); color:var(--ink); }
+.otto-msg-bubble.user{ border-radius:12px 0 12px 12px; background:var(--c-yellow); border:1.5px solid var(--ink); color:var(--ink); font-weight:700; }
+#otto-thinking{ display:none; justify-content:flex-start; margin-bottom:8px; }
+#otto-thinking.show{ display:flex; }
+.otto-dots{ padding:11px 13px; border-radius:0 12px 12px 12px; background:var(--bg-3); border:1.5px solid var(--ink); display:flex; gap:5px; align-items:center; }
+.otto-dots span{ width:5px; height:5px; border-radius:50%; background:var(--ink); }
+.otto-dots span:nth-child(1){ animation:otto-dot 1s infinite; }
+.otto-dots span:nth-child(2){ animation:otto-dot 1s infinite .18s; }
+.otto-dots span:nth-child(3){ animation:otto-dot 1s infinite .36s; }
+#otto-chips{ display:flex; flex-wrap:wrap; gap:6px; padding:8px 13px 14px; border-top:1.5px solid var(--ink); }
+.otto-chip{ font:inherit; font-size:11.5px; font-weight:700; padding:6px 11px; border-radius:980px; background:var(--bg); border:1.5px solid var(--ink); color:var(--ink); cursor:pointer; white-space:nowrap; flex-shrink:0; }
+.otto-chip:hover{ background:var(--c-yellow); }
+
+#otto-tour{ position:fixed; inset:0; z-index:1200; display:none; pointer-events:none; }
+#otto-tour.active{ display:block; }
+#otto-spotlight{ position:fixed; border-radius:10px; box-shadow:0 0 0 9999px rgba(26,23,20,.68); border:2px solid var(--c-lime); transition:all .35s cubic-bezier(.2,.8,.2,1); pointer-events:none; }
+#otto-tooltip{ position:fixed; width:280px; transition:all .35s cubic-bezier(.2,.8,.2,1); pointer-events:auto; }
+.otto-tooltip-inner{ background:var(--bg-2); border:var(--border); box-shadow:var(--shadow-lg); border-radius:14px; padding:14px 14px 12px; color:var(--ink); }
+.otto-tip-head{ display:flex; align-items:center; gap:9px; margin-bottom:8px; }
+.otto-avatar-tip{ width:26px; height:26px; border-radius:7px; background:var(--ink); display:flex; align-items:center; justify-content:center; gap:4px; flex-shrink:0; }
+.otto-avatar-tip span{ width:4px; height:6px; border-radius:50%; background:var(--c-lime); box-shadow:0 0 5px var(--c-lime); }
+#otto-step-title{ font-family:"Archivo","Helvetica Neue",Arial,sans-serif; font-size:14px; font-weight:800; letter-spacing:-.01em; flex:1; }
+#otto-step-label{ font-size:10px; color:var(--ink-3); font-family:"Space Mono",monospace; }
+#otto-step-text{ font-size:12.5px; line-height:1.5; color:var(--ink-2); margin:0 0 13px; }
+.otto-tip-actions{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+#otto-tour-skip{ font:inherit; font-size:12px; color:var(--ink-3); background:none; border:0; cursor:pointer; padding:6px 4px; }
+#otto-tour-next{ font:inherit; font-size:12.5px; font-weight:700; color:var(--ink); background:var(--c-lime); border:1.5px solid var(--ink); cursor:pointer; padding:7px 16px; border-radius:980px; }
+
+@media (max-width: 560px){
+  #otto-bot{ right:14px; bottom:14px; }
+  #otto-bubble{ right:14px; bottom:82px; }
+  #otto-greet{ right:78px; bottom:22px; }
+}
 </style>
 </head>
 <body>
@@ -330,7 +401,7 @@ function Header({ track, onTrackChange, onShowPicker, query, setQuery, view, set
               ))}
             </div>
 
-            <button onClick={onOpenNotes} className="brut-sm brut-hover brut-press" style={{
+            <button id="rm-notes-btn" onClick={onOpenNotes} className="brut-sm brut-hover brut-press" style={{
               appearance:"none", cursor:"pointer", fontFamily:"inherit",
               display:"flex", alignItems:"center", gap:6,
               height:36, padding:"0 10px",
@@ -1489,6 +1560,308 @@ ReactDOM.createRoot(document.getElementById("root")).render(<App />);
   if(!localStorage.getItem('cookie-consent')){b.style.display='flex';}
   document.getElementById('cookie-accept').onclick=function(){localStorage.setItem('cookie-consent','accepted');b.style.display='none';};
   document.getElementById('cookie-decline').onclick=function(){localStorage.setItem('cookie-consent','declined');b.style.display='none';};
+})();
+</script>
+
+<!-- ==================== OTTO GUIDE BOT ==================== -->
+<!-- Tour overlay -->
+<div id="otto-tour" aria-hidden="true">
+  <div id="otto-spotlight"></div>
+  <div id="otto-tooltip">
+    <div class="otto-tooltip-inner">
+      <div class="otto-tip-head">
+        <div class="otto-avatar-tip"><span></span><span></span></div>
+        <div id="otto-step-title"></div>
+        <div id="otto-step-label"></div>
+      </div>
+      <p id="otto-step-text"></p>
+      <div class="otto-tip-actions">
+        <button id="otto-tour-skip">Skip tour</button>
+        <button id="otto-tour-next">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Idle greeting bubble -->
+<div id="otto-greet"></div>
+
+<!-- Chat bubble -->
+<div id="otto-bubble" role="dialog" aria-label="Otto Guide Bot">
+  <div class="otto-bubble-header">
+    <div class="otto-avatar-sm"><span></span><span></span></div>
+    <div style="flex:1">
+      <div style="font-family:'Archivo','Helvetica Neue',Arial,sans-serif;font-size:13.5px;font-weight:800;letter-spacing:-.01em" id="otto-bubble-name">Otto</div>
+      <div style="font-size:10.5px;color:var(--ink-2);display:flex;align-items:center;gap:5px">
+        <span style="width:5px;height:5px;border-radius:50%;background:var(--c-lime);box-shadow:0 0 5px var(--c-lime)"></span>your guide &middot; online
+      </div>
+    </div>
+    <button class="otto-bubble-close" id="otto-close" aria-label="Close">&#10005;</button>
+  </div>
+  <div id="otto-msgs"></div>
+  <div id="otto-thinking">
+    <div class="otto-dots"><span></span><span></span><span></span></div>
+  </div>
+  <div id="otto-chips">
+    <button class="otto-chip" data-key="tour">🧭 Take the Tour</button>
+    <button class="otto-chip" data-key="about">❓ What is this?</button>
+    <button class="otto-chip" data-key="tracks">🗺️ How tracks work</button>
+    <button class="otto-chip" data-key="progress">📊 Progress tracking</button>
+    <button class="otto-chip" data-key="notes">📝 Notes &amp; Highlights</button>
+    <button class="otto-chip" data-key="aisearch">🔍 AI Search</button>
+    <button class="otto-chip" data-key="feedback">💬 Feedback</button>
+  </div>
+</div>
+
+<!-- Otto bot widget -->
+<div id="otto-bot">
+  <div id="otto-floater">
+    <button id="otto-btn" aria-label="Open guide">
+      <div id="otto-tilt">
+        <div id="otto-head">
+          <div id="otto-antenna-line"></div>
+          <div id="otto-antenna-dot"></div>
+          <div id="otto-body">
+            <div class="otto-ear" style="left:-4px"></div>
+            <div class="otto-ear" style="right:-4px"></div>
+            <div id="otto-screen">
+              <div id="otto-eyes">
+                <div class="otto-eye-wrap"><div class="otto-eye" id="otto-eye-l"></div></div>
+                <div class="otto-eye-wrap"><div class="otto-eye" id="otto-eye-r"></div></div>
+              </div>
+              <div id="otto-mouth"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </button>
+  </div>
+</div>
+
+<script>
+(() => {
+  const BOT_NAME = "Otto";
+
+  const ALL_STEPS = [
+    { sel: ".picker-grid", title: "Pick a track", text: "Six learning tracks — DevOps, DevSecOps, MLOps, and AWS/Azure cert prep. Click any card to dive in." },
+    { sel: ".header-progress", title: "Track your progress", text: "This badge shows how far you've gotten. Mark items Learning or Done inside a guide to fill it up." },
+    { sel: "#rm-notes-btn", title: "Notes & highlights", text: "Select text in any guide to save a highlight or note. Open this panel anytime to review or jump back to them." },
+    { sel: ".board-main", title: "Explore the board", text: "Click any node for its full guide — description, concepts, tools, resources, and an AI search shortcut." },
+  ];
+
+  const CHIP_GROUPS = {
+    default: [
+      { key: "tour", label: "🧭 Take the Tour" },
+      { key: "about", label: "❓ What is this?" },
+      { key: "tracks", label: "🗺️ How tracks work" },
+      { key: "progress", label: "📊 Progress tracking" },
+      { key: "notes", label: "📝 Notes & Highlights" },
+      { key: "aisearch", label: "🔍 AI Search" },
+      { key: "feedback", label: "💬 Feedback" },
+    ],
+  };
+
+  const ANSWERS = {
+    about: "Roadmap is ops4life's free interactive learning tracker — six tracks (DevOps, DevSecOps, MLOps, DevOps→MLOps, AWS SAP-C02, Azure AZ-104) with guided topics, resources, and progress tracking, all in your browser.",
+    tracks: "Pick a track to open its board — topics organized into sections. Click any node to open its guide: description, concepts, tools, and resources. Mark items Learning or Done as you go.",
+    progress: "Your % complete shows in the header and updates as you mark items Learning/Done. Progress is saved per-track in your browser's local storage — no account needed, but it won't follow you to another device.",
+    notes: "Select any text in a guide to Highlight it or add a Note. Open the Notes panel from the header button to review everything you've saved, jump back to it, or filter by This Track / All Tracks.",
+    aisearch: "Every concept and tool chip links to Google's AI-mode search, so you can dig deeper on any topic in one click without leaving your flow.",
+    feedback: "Spot something wrong or have a suggestion? Use the feedback link in the footer to open a GitHub issue or discussion directly.",
+  };
+
+  const IDLE_GREETINGS = [
+    "Hi! I'm Otto. Want a 20-second tour of Roadmap?",
+    "Psst — not sure where to start? I can help.",
+    "New here? I can walk you through the tracks.",
+    "Curious how progress tracking works? Ask me.",
+    "Hey! Click me if you want a quick tour.",
+  ];
+
+  let bubbleOpen = false, greeted = false;
+  let tourActive = false, stepIndex = 0, steps = [];
+  let botRef = null, mouse = null, rafId = null;
+
+  const $ = (id) => document.getElementById(id);
+  const greetEl = $("otto-greet");
+  const bubble = $("otto-bubble");
+  const tour = $("otto-tour");
+  const bot = $("otto-bot");
+  const msgs = $("otto-msgs");
+  const thinkEl = $("otto-thinking");
+  const tiltEl = $("otto-tilt");
+  const eyeL = $("otto-eye-l");
+  const eyeR = $("otto-eye-r");
+
+  function openBubble() { bubble.classList.add("otto-open"); bubbleOpen = true; scrollMsgsToBottom(); }
+  function closeBubble() { bubble.classList.remove("otto-open"); bubbleOpen = false; }
+  function toggleBubble() {
+    hideIdleGreeting();
+    if (!greeted) { greet(); return; }
+    bubbleOpen ? closeBubble() : openBubble();
+  }
+
+  let idleGreetTimer = null;
+  function showIdleGreeting() {
+    if (greeted) return;
+    greetEl.textContent = IDLE_GREETINGS[Math.floor(Math.random() * IDLE_GREETINGS.length)];
+    greetEl.classList.add("show");
+    idleGreetTimer = setTimeout(hideIdleGreeting, 6000);
+  }
+  function hideIdleGreeting() { clearTimeout(idleGreetTimer); greetEl.classList.remove("show"); }
+
+  function pushMsg(from, text) {
+    const row = document.createElement("div");
+    row.className = "otto-msg-row " + from;
+    const b = document.createElement("div");
+    b.className = "otto-msg-bubble " + from;
+    b.textContent = text;
+    row.appendChild(b);
+    msgs.appendChild(row);
+    scrollMsgsToBottom();
+  }
+  function typeMsg(text, onDone) {
+    const row = document.createElement("div");
+    row.className = "otto-msg-row bot";
+    const b = document.createElement("div");
+    b.className = "otto-msg-bubble bot";
+    row.appendChild(b);
+    msgs.appendChild(row);
+    scrollMsgsToBottom();
+    let i = 0;
+    const speed = 18;
+    function tick() {
+      if (i < text.length) {
+        b.textContent += text[i++];
+        scrollMsgsToBottom();
+        setTimeout(tick, speed);
+      } else if (onDone) onDone();
+    }
+    tick();
+  }
+  function scrollMsgsToBottom() { msgs.scrollTop = msgs.scrollHeight; }
+
+  function getChipLabel(key) {
+    const found = CHIP_GROUPS.default.find((c) => c.key === key);
+    return found ? found.label : key;
+  }
+
+  function greet() {
+    if (greeted) return;
+    greeted = true;
+    typeMsg(`Hi! I'm ${BOT_NAME}, your guide here. Want the 20-second tour?`);
+    openBubble();
+  }
+
+  function handleChip(key) {
+    if (key === "tour") { startTour(); return; }
+    const label = getChipLabel(key);
+    pushMsg("user", label);
+    thinkEl.classList.add("show");
+    scrollMsgsToBottom();
+    setTimeout(() => {
+      thinkEl.classList.remove("show");
+      typeMsg(ANSWERS[key] || "Hmm, I don't have that one yet!");
+    }, 680);
+  }
+
+  // Tour — only include steps whose target exists in the current view
+  function startTour() {
+    closeBubble();
+    steps = ALL_STEPS.filter((s) => document.querySelector(s.sel));
+    if (!steps.length) return;
+    tourActive = true;
+    stepIndex = 0;
+    tour.classList.add("active");
+    tour.style.pointerEvents = "auto";
+    goToStep(0);
+  }
+  function goToStep(i) {
+    const step = steps[i];
+    const el = document.querySelector(step.sel);
+    if (el) {
+      const r = el.getBoundingClientRect();
+      const targetTop = window.scrollY + r.top - 150;
+      window.scrollTo({ top: Math.max(0, targetTop), behavior: "smooth" });
+    }
+    setTimeout(() => measureStep(), 480);
+  }
+  function measureStep() {
+    const step = steps[stepIndex];
+    if (!step) return;
+    const el = document.querySelector(step.sel);
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const pad = 8;
+    const spotlight = $("otto-spotlight");
+    const tooltip = $("otto-tooltip");
+    spotlight.style.cssText = `top:${r.top - pad}px;left:${r.left - pad}px;width:${r.width + pad * 2}px;height:${r.height + pad * 2}px;`;
+    $("otto-step-title").textContent = step.title;
+    $("otto-step-text").textContent = step.text;
+    $("otto-step-label").textContent = `${stepIndex + 1} / ${steps.length}`;
+    $("otto-tour-next").textContent = stepIndex >= steps.length - 1 ? "Done" : "Next";
+    const tipW = 280;
+    const below = r.top + r.height + 200 < window.innerHeight;
+    const top = below ? r.top + r.height + 14 : Math.max(14, r.top - 14 - 170);
+    const left = Math.min(Math.max(12, r.left), window.innerWidth - tipW - 12);
+    tooltip.style.cssText = `top:${top}px;left:${left}px;width:${tipW}px;`;
+  }
+  function nextStep() {
+    const ni = stepIndex + 1;
+    if (ni >= steps.length) { endTour(); return; }
+    stepIndex = ni;
+    goToStep(ni);
+  }
+  function endTour() {
+    tourActive = false;
+    tour.classList.remove("active");
+    tour.style.pointerEvents = "none";
+    openBubble();
+    setTimeout(() => pushMsg("bot", "That's the grand tour! Ping me whenever you need a hand. 👋"), 60);
+  }
+
+  // Mouse tracking eyes
+  botRef = bot;
+  window.addEventListener("mousemove", (e) => {
+    if (rafId) return;
+    rafId = requestAnimationFrame(() => {
+      rafId = null;
+      mouse = { x: e.clientX, y: e.clientY };
+      updateEyes();
+    });
+  });
+  function updateEyes() {
+    if (!mouse || !botRef) return;
+    const r = botRef.getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height * 0.42;
+    const dx = mouse.x - cx, dy = mouse.y - cy;
+    const dist = Math.hypot(dx, dy) || 1;
+    const ox = (dx / dist) * Math.min(2, dist / 30);
+    const oy = (dy / dist) * Math.min(2, dist / 30);
+    const eyeXform = `translate(${ox.toFixed(2)}px, ${oy.toFixed(2)}px)`;
+    eyeL.style.transform = eyeXform;
+    eyeR.style.transform = eyeXform;
+    eyeL.style.transition = eyeR.style.transition = "transform .1s ease";
+    const t = Math.max(-4, Math.min(4, dx / 50));
+    tiltEl.style.transform = `rotate(${t.toFixed(2)}deg)`;
+    tiltEl.style.transition = "transform .25s ease";
+  }
+
+  const onScrollResize = () => { if (tourActive) measureStep(); };
+  window.addEventListener("scroll", onScrollResize, true);
+  window.addEventListener("resize", onScrollResize);
+
+  $("otto-btn").addEventListener("click", toggleBubble);
+  $("otto-close").addEventListener("click", closeBubble);
+  $("otto-chips").addEventListener("click", (e) => {
+    const chip = e.target.closest(".otto-chip");
+    if (chip) handleChip(chip.dataset.key);
+  });
+  $("otto-tour-next").addEventListener("click", nextStep);
+  $("otto-tour-skip").addEventListener("click", endTour);
+
+  setTimeout(showIdleGreeting, 950);
 })();
 </script>
 </body>
