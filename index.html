@@ -214,23 +214,24 @@ function TrackSwitcher({ track, onTrackChange, onShowPicker }) {
   }, [open]);
 
   return (
-    <div ref={ref} style={{position:"relative"}}>
-      <button onClick={() => setOpen(o => !o)} className="brut-sm brut-hover brut-press" style={{
+    <div ref={ref} className="track-switcher" style={{position:"relative", minWidth:0}}>
+      <button onClick={() => setOpen(o => !o)} className="brut-sm brut-hover brut-press track-switcher-btn" style={{
         appearance:"none", cursor:"pointer", fontFamily:"inherit",
         display:"inline-flex", alignItems:"center", gap:9,
-        height:36, padding:"0 11px",
+        height:36, padding:"0 11px", maxWidth:"100%",
         background:"var(--bg-2)", color:"var(--ink)", borderWidth:"1.5px",
         fontSize:12, fontWeight:700, letterSpacing:".05em", textTransform:"uppercase",
       }}>
-        <span style={{ width:10, height:10, background:track.accent, border:"1.5px solid var(--ink)" }} />
-        <span>{track.title}</span>
-        <Icon.Chevron style={{transform: open ? "rotate(180deg)" : "none", transition:"transform .12s ease"}} />
+        <span style={{ width:10, height:10, flex:"none", background:track.accent, border:"1.5px solid var(--ink)" }} />
+        <span style={{ overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap", minWidth:0 }}>{track.title}</span>
+        <Icon.Chevron style={{flex:"none", transform: open ? "rotate(180deg)" : "none", transition:"transform .12s ease"}} />
       </button>
 
       {open && (
-        <div className="brut" style={{
+        <div className="brut track-switcher-panel" style={{
           position:"absolute", top:"calc(100% + 8px)", right:0, zIndex:40,
-          minWidth:240, background:"var(--bg-2)", padding:6,
+          width:"max(240px, 100%)", maxWidth:"min(320px, calc(100vw - 32px))",
+          background:"var(--bg-2)", padding:6,
           display:"flex", flexDirection:"column", gap:2,
         }}>
           {TRACKS.map(t => {
@@ -362,6 +363,7 @@ function Header({ track, onTrackChange, onShowPicker, query, setQuery, view, set
         @media (max-width: 768px){
           .header-inner{ padding: 10px 16px !important; gap:8px !important }
           .header-search input{ width: 90px !important }
+          .track-switcher-btn{ max-width: 160px }
         }
         @media (max-width: 560px){
           .header-controls{ width:100%; justify-content: space-between }
@@ -369,6 +371,8 @@ function Header({ track, onTrackChange, onShowPicker, query, setQuery, view, set
           .header-search input{ width:100% !important }
           .header-progress{ display:none !important }
           .header-view{ display:none !important }
+          .track-switcher-btn{ max-width: 120px }
+          .track-switcher-panel{ right:auto !important; left:0 !important }
         }
       `}</style>
     </header>
