@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**ops4life Roadmaps** — a single-page React app with interactive roadmaps for DevOps, DevSecOps, MLOps, DevOps→MLOps, and two certification tracks (AWS SAP-C02, Azure AZ-104). No build step: React 18 + Babel Standalone are loaded from CDN. Each track's data lives in its own plain (non-Babel) `<script>` file under `tracks/`; the React components live inline in `index.html` as a `<script type="text/babel">` block, transpiled in-browser.
+**ops4life Roadmap** — a single-page React app with interactive roadmaps for DevOps, DevSecOps, MLOps, DevOps→MLOps, and two certification tracks (AWS SAP-C02, Azure AZ-104). No build step: React 18 + Babel Standalone are loaded from CDN. Each track's data lives in its own plain (non-Babel) `<script>` file under `tracks/`; the React components live inline in `index.html` as a `<script type="text/babel">` block, transpiled in-browser.
 
 Live site: [roadmap.ops4life.com](https://roadmap.ops4life.com)
 

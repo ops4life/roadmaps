@@ -115,10 +115,10 @@
     <rect x="160" y="125" width="480" height="150" rx="12" fill="#FAF5E3" stroke="#1A1714" stroke-width="3.5"/>
 
     <rect x="290" y="140" width="220" height="22" rx="11" class="c-yellow" stroke="#1A1714" stroke-width="1.5"/>
-    <text x="400" y="155" text-anchor="middle" class="text-sub">INTERACTIVE ROADMAPS</text>
+    <text x="400" y="155" text-anchor="middle" class="text-sub">INTERACTIVE ROADMAP</text>
 
     <text x="400" y="212" text-anchor="middle" class="text-title" font-size="64" letter-spacing="-2">ops4life</text>
-    <text x="400" y="252" text-anchor="middle" class="text-title" font-size="34" letter-spacing="6">ROADMAPS</text>
+    <text x="400" y="252" text-anchor="middle" class="text-title" font-size="34" letter-spacing="6">ROADMAP</text>
   </g>
 
 

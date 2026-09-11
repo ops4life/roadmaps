@@ -1,6 +1,6 @@
-# ops4life Roadmaps
+# ops4life Roadmap
 
-![ops4life Roadmaps Banner](banner.svg)
+![ops4life Roadmap Banner](banner.svg)
 
 Interactive roadmaps for modern engineering practices.
 
