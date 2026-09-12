@@ -1271,7 +1271,7 @@ function NotesPanel({ open, onClose, notes, setNotes, track, onJump }) {
 // ── NEWSLETTER ────────────────────────────────────────────────────────
 const LIST_UUID = "00a8f2c1-3ad4-422d-9ac4-fc70b1f26fc8";
 
-function Newsletter() {
+function NewsletterModal({ open, onClose }) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -1307,35 +1307,53 @@ function Newsletter() {
   };
 
   return (
-    <div style={{borderTop:"2px solid var(--ink)", padding:"28px 22px", background:"var(--bg-2)"}}>
-      <div style={{maxWidth:560}}>
-        <div className="display-mid" style={{fontSize:22, marginBottom:6}}>Stay in the loop</div>
-        <p style={{fontSize:12, color:"var(--ink-3)", marginBottom:16}}>Get notified when new roadmaps and updates drop.</p>
-        <div className="nl-row" style={{display:"flex", gap:8}}>
-          <input
-            type="email" value={email}
-            onChange={e => setEmail(e.target.value)}
-            onKeyDown={e => { if (e.key === "Enter") subscribe(); }}
-            placeholder="your@email.com"
-            className="brut-sm"
-            style={{
-              flex:1, minWidth:0,
-              fontFamily:"inherit", fontSize:12, color:"var(--ink)",
-              background:"var(--bg)", padding:"0 12px", height:38,
-              border:"1.5px solid var(--ink)", outline:"none",
-            }} />
-          <Btn onClick={subscribe} disabled={loading} size="md">
-            {loading ? "..." : "Subscribe"}
-          </Btn>
-        </div>
-        {status && (
-          <div style={{ marginTop:10, fontSize:12, color: status.ok ? "oklch(0.55 0.16 145)" : "oklch(0.55 0.20 25)" }}>
-            {status.msg}
+    <>
+      {open && (
+        <>
+          <div onClick={onClose} style={{position:"fixed", inset:0, background:"rgba(0,0,0,.45)", zIndex:1000}} />
+          <div style={{
+            position:"fixed", inset:0, zIndex:1001, display:"flex",
+            alignItems:"center", justifyContent:"center",
+          }}>
+            <div style={{
+              background:"var(--bg-2)", border:"2px solid var(--ink)",
+              width:"min(420px, 92vw)", padding:"1.5rem",
+              fontFamily:"'Space Mono','Courier New',monospace",
+            }}>
+              <div style={{display:"flex", alignItems:"baseline", justifyContent:"space-between", marginBottom:"0.35rem"}}>
+                <span style={{fontSize:"1.1rem", fontWeight:700, textTransform:"uppercase", letterSpacing:"0.06em"}}>Stay in the loop</span>
+                <button onClick={onClose} style={{background:"none", border:"none", fontSize:"1.2rem", cursor:"pointer", padding:0, lineHeight:1}}>✕</button>
+              </div>
+              <p style={{fontSize:"0.68rem", color:"var(--ink-3)", marginBottom:"1rem"}}>Get notified when new roadmaps and updates drop.</p>
+              <div className="nl-row" style={{display:"flex", gap:8}}>
+                <input
+                  type="email" value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  onKeyDown={e => { if (e.key === "Enter") subscribe(); }}
+                  placeholder="your@email.com"
+                  autoFocus
+                  className="brut-sm"
+                  style={{
+                    flex:1, minWidth:0,
+                    fontFamily:"inherit", fontSize:12, color:"var(--ink)",
+                    background:"var(--bg)", padding:"0 12px", height:38,
+                    border:"1.5px solid var(--ink)", outline:"none",
+                  }} />
+                <Btn onClick={subscribe} disabled={loading} size="md">
+                  {loading ? "..." : "Subscribe"}
+                </Btn>
+              </div>
+              {status && (
+                <div style={{ marginTop:10, fontSize:12, color: status.ok ? "oklch(0.55 0.16 145)" : "oklch(0.55 0.20 25)" }}>
+                  {status.msg}
+                </div>
+              )}
+              <style>{`@media (max-width: 480px){ .nl-row{ flex-direction: column } }`}</style>
+            </div>
           </div>
-        )}
-      </div>
-      <style>{`@media (max-width: 480px){ .nl-row{ flex-direction: column } }`}</style>
-    </div>
+        </>
+      )}
+    </>
   );
 }
 
@@ -1388,13 +1406,11 @@ function Feedback({ open, onClose }) {
 }
 
 // ── FOOTER ────────────────────────────────────────────────────────────
-function Footer({ onFeedbackClick }) {
+function Footer({ onFeedbackClick, onNewsletterClick }) {
   return (
     <footer style={{borderTop:"2px solid var(--ink)", background:"var(--bg-2)"}}>
-      <Newsletter />
       <div className="footer-inner" style={{
-        maxWidth:1320, margin:"0 auto", padding:"18px 22px",
-        borderTop:"1.5px solid var(--ink)",
+        maxWidth:1320, margin:"0 auto", padding:"18px 104px 18px 22px",
         display:"flex", alignItems:"center", justifyContent:"space-between", gap:18, flexWrap:"wrap",
       }}>
         <div style={{display:"flex", alignItems:"center", gap:9}}>
@@ -1405,6 +1421,11 @@ function Footer({ onFeedbackClick }) {
         <div style={{display:"flex", gap:14, fontSize:10.5, fontWeight:700, textTransform:"uppercase", letterSpacing:".08em", color:"var(--ink-3)"}}>
           <a href="https://ops4life.com">home</a>
           <a href="https://github.com/ops4life/roadmaps" target="_blank" rel="noopener">github</a>
+          <button onClick={onNewsletterClick} style={{
+            background:"none", border:"none", padding:0, margin:0, cursor:"pointer",
+            font:"inherit", fontWeight:700, textTransform:"uppercase", letterSpacing:".08em",
+            color:"var(--ink-3)",
+          }}>newsletter</button>
           <button onClick={onFeedbackClick} style={{
             background:"none", border:"none", padding:0, margin:0, cursor:"pointer",
             font:"inherit", fontWeight:700, textTransform:"uppercase", letterSpacing:".08em",
@@ -1412,7 +1433,7 @@ function Footer({ onFeedbackClick }) {
           }}>feedback</button>
         </div>
       </div>
-      <style>{`@media (max-width: 480px){ .footer-inner{ padding: 14px 16px !important } }`}</style>
+      <style>{`@media (max-width: 560px){ .footer-inner{ padding: 14px 96px 14px 16px !important } }`}</style>
     </footer>
   );
 }
@@ -1426,6 +1447,7 @@ function App() {
   const [notes, setNotes] = useStored("roadmap_notes", []);
   const [notesOpen, setNotesOpen] = useState(false);
   const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [newsletterOpen, setNewsletterOpen] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 768px)");
@@ -1516,7 +1538,7 @@ function App() {
         </main>
       )}
 
-      <Footer onFeedbackClick={() => setFeedbackOpen(true)} />
+      <Footer onFeedbackClick={() => setFeedbackOpen(true)} onNewsletterClick={() => setNewsletterOpen(true)} />
 
       <Drawer
         open={!!openItem}
@@ -1539,6 +1561,7 @@ function App() {
         onJump={handleJumpToNote} />
 
       <Feedback open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
+      <NewsletterModal open={newsletterOpen} onClose={() => setNewsletterOpen(false)} />
 
       <style>{`
         @media (max-width: 560px){ .board-main{ padding: 14px 14px 56px !important } }
