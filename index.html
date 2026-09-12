@@ -1846,7 +1846,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(<App />);
     eyeL.style.transform = eyeXform;
     eyeR.style.transform = eyeXform;
     eyeL.style.transition = eyeR.style.transition = "transform .1s ease";
-    const t = Math.max(-4, Math.min(4, dx / 50));
+    const t = Math.max(-2, Math.min(2, dx / 80));
     tiltEl.style.transform = `rotate(${t.toFixed(2)}deg)`;
     tiltEl.style.transition = "transform .25s ease";
   }
