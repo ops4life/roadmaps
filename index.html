@@ -119,10 +119,10 @@ button{font:inherit;color:inherit}
 .rm-guide-highlight{ background:var(--c-yellow); padding:0 2px; }
 
 /* ---------- Otto Guide Bot ---------- */
-@keyframes otto-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes otto-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 @keyframes otto-blink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.12)}}
-@keyframes otto-pulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
-@keyframes otto-bubble-in{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes otto-pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.25)}}
+@keyframes otto-bubble-in{from{opacity:0;transform:translate(4px,10px)}to{opacity:1;transform:none}}
 @keyframes otto-dot{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
 
 #otto-bot{ position:fixed; right:20px; bottom:20px; z-index:1001; }
@@ -130,63 +130,65 @@ button{font:inherit;color:inherit}
 #otto-bot button,#otto-bubble button,#otto-tour button{ outline:none !important; }
 #otto-btn{ background:none; border:0; padding:9px; cursor:pointer; display:block; -webkit-tap-highlight-color:transparent; }
 #otto-btn:focus,#otto-btn:focus-visible{ outline:none; }
-#otto-head{ position:relative; width:52px; height:58px; }
-#otto-antenna-line{ position:absolute; left:50%; top:0; transform:translateX(-50%); width:2px; height:9px; background:var(--ink-3); }
-#otto-antenna-dot{ position:absolute; left:50%; top:-6px; width:8px; height:8px; border-radius:50%; background:var(--c-lime); box-shadow:0 0 8px var(--c-lime); animation:otto-pulse 1.7s ease-in-out infinite; transform:translateX(-50%); }
-#otto-body{ position:absolute; left:0; right:0; top:8px; height:50px; border-radius:11px; background:var(--ink); }
-.otto-ear{ position:absolute; top:19px; width:4px; height:12px; border-radius:3px; background:var(--ink); }
-#otto-screen{ position:absolute; left:6px; right:6px; top:8px; height:34px; border-radius:8px; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; overflow:hidden; }
+#otto-head{ position:relative; width:54px; height:60px; }
+#otto-antenna-line{ position:absolute; left:50%; top:0; transform:translateX(-50%); width:2px; height:10px; background:var(--ink); }
+#otto-antenna-dot{ position:absolute; left:50%; top:-7px; width:7px; height:7px; border-radius:1px; background:var(--c-lime); border:1.5px solid var(--ink); animation:otto-pulse 1.7s ease-in-out infinite; transform:translateX(-50%) rotate(45deg); }
+#otto-body{ position:absolute; left:0; right:0; top:9px; height:51px; border-radius:4px; background:var(--c-lime); border:2px solid var(--ink); box-shadow:var(--shadow-sm); }
+.otto-ear{ position:absolute; top:20px; width:5px; height:13px; border-radius:2px; background:var(--ink); }
+#otto-screen{ position:absolute; left:6px; right:6px; top:7px; height:35px; border-radius:2px; background:var(--ink); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; overflow:hidden; }
 #otto-eyes{ display:flex; gap:8px; animation:otto-blink 4.4s infinite; transform-origin:center; }
 .otto-eye-wrap{ display:flex; align-items:center; justify-content:center; }
-.otto-eye{ width:8px; height:9px; border-radius:50%; background:var(--c-lime); }
-#otto-mouth{ width:12px; height:5px; border:1.5px solid var(--c-lime); border-top:0; border-radius:0 0 12px 12px; opacity:.85; }
+.otto-eye{ width:7px; height:8px; border-radius:2px; background:var(--c-lime); }
+#otto-mouth{ width:13px; height:4px; background:var(--c-lime); border-radius:1px; opacity:.9; }
 
-#otto-greet{ position:fixed; right:90px; bottom:26px; z-index:1000; max-width:190px; background:var(--bg-2); border:var(--border-1); box-shadow:var(--shadow-sm); border-radius:0 12px 12px 12px; padding:9px 12px; font-size:12.5px; line-height:1.45; color:var(--ink); opacity:0; transform:translateX(8px) scale(.96); transition:opacity .25s ease,transform .25s ease; pointer-events:none; }
+#otto-greet{ position:fixed; right:92px; bottom:28px; z-index:1000; max-width:190px; background:var(--bg-2); border:var(--border); box-shadow:var(--shadow-sm); border-radius:3px 3px 3px 0; padding:9px 12px; font-size:12.5px; line-height:1.45; color:var(--ink); opacity:0; transform:translate(6px,4px); transition:opacity .2s ease,transform .2s ease; pointer-events:none; }
 #otto-greet.show{ opacity:1; transform:none; pointer-events:auto; }
 
-#otto-bubble{ position:fixed; right:20px; bottom:92px; z-index:1000; width:322px; max-width:calc(100vw - 40px); background:var(--bg-2); border:var(--border); box-shadow:var(--shadow-lg); border-radius:16px; overflow:hidden; color:var(--ink); animation:otto-bubble-in .3s cubic-bezier(.2,.8,.2,1); display:none; }
+#otto-bubble{ position:fixed; right:20px; bottom:92px; z-index:1000; width:322px; max-width:calc(100vw - 40px); background:var(--bg-2); border:var(--border); box-shadow:var(--shadow-lg); border-radius:5px 5px 5px 0; overflow:hidden; color:var(--ink); animation:otto-bubble-in .18s ease-out; display:none; }
 #otto-bubble.otto-open{ display:block; }
-.otto-bubble-header{ display:flex; align-items:center; gap:10px; padding:12px 13px; border-bottom:var(--border-1); background:var(--c-yellow); }
-.otto-avatar-sm{ width:30px; height:30px; border-radius:8px; background:var(--ink); display:flex; align-items:center; justify-content:center; gap:4px; flex-shrink:0; }
-.otto-avatar-sm span{ width:5px; height:7px; border-radius:50%; background:var(--c-lime); box-shadow:0 0 5px var(--c-lime); }
-.otto-bubble-close{ width:26px; height:26px; border-radius:7px; background:transparent; border:1.5px solid var(--ink); color:var(--ink); cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; }
+.otto-bubble-header{ display:flex; align-items:center; gap:10px; padding:12px 13px; border-bottom:var(--border); background:var(--c-yellow); }
+.otto-avatar-sm{ width:30px; height:30px; border-radius:3px; background:var(--ink); border:2px solid var(--ink); display:flex; align-items:center; justify-content:center; gap:4px; flex-shrink:0; }
+.otto-avatar-sm span{ width:5px; height:6px; border-radius:1px; background:var(--c-lime); }
+.otto-bubble-close{ width:26px; height:26px; border-radius:3px; background:var(--bg-2); border:2px solid var(--ink); color:var(--ink); cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; }
+.otto-bubble-close:hover{ background:var(--ink); color:var(--bg-2); }
 #otto-msgs{ padding:14px 13px 4px; max-height:280px; overflow-y:auto; }
 .otto-msg-row{ display:flex; margin-bottom:8px; }
 .otto-msg-row.bot{ justify-content:flex-start; }
 .otto-msg-row.user{ justify-content:flex-end; }
 .otto-msg-bubble{ max-width:84%; padding:9px 12px; font-size:12.5px; line-height:1.46; white-space:pre-wrap; }
-.otto-msg-bubble.bot{ border-radius:0 12px 12px 12px; background:var(--bg-3); border:1.5px solid var(--ink); color:var(--ink); }
-.otto-msg-bubble.user{ border-radius:12px 0 12px 12px; background:var(--c-yellow); border:1.5px solid var(--ink); color:var(--ink); font-weight:700; }
+.otto-msg-bubble.bot{ border-radius:3px 3px 3px 0; background:var(--bg-3); border:2px solid var(--ink); color:var(--ink); }
+.otto-msg-bubble.user{ border-radius:3px 3px 0 3px; background:var(--c-yellow); border:2px solid var(--ink); color:var(--ink); font-weight:700; }
 #otto-thinking{ display:none; justify-content:flex-start; margin-bottom:8px; }
 #otto-thinking.show{ display:flex; }
-.otto-dots{ padding:11px 13px; border-radius:0 12px 12px 12px; background:var(--bg-3); border:1.5px solid var(--ink); display:flex; gap:5px; align-items:center; }
+.otto-dots{ padding:11px 13px; border-radius:3px 3px 3px 0; background:var(--bg-3); border:2px solid var(--ink); display:flex; gap:5px; align-items:center; }
 .otto-dots span{ width:5px; height:5px; border-radius:50%; background:var(--ink); }
 .otto-dots span:nth-child(1){ animation:otto-dot 1s infinite; }
 .otto-dots span:nth-child(2){ animation:otto-dot 1s infinite .18s; }
 .otto-dots span:nth-child(3){ animation:otto-dot 1s infinite .36s; }
-#otto-chips{ display:flex; flex-wrap:wrap; gap:6px; padding:8px 13px 14px; border-top:1.5px solid var(--ink); }
-.otto-chip{ font:inherit; font-size:11.5px; font-weight:700; padding:6px 11px; border-radius:980px; background:var(--bg); border:1.5px solid var(--ink); color:var(--ink); cursor:pointer; white-space:nowrap; flex-shrink:0; }
-.otto-chip:hover{ background:var(--c-yellow); }
+#otto-chips{ display:flex; flex-wrap:wrap; gap:6px; padding:8px 13px 14px; border-top:var(--border); }
+.otto-chip{ font:inherit; font-size:11.5px; font-weight:700; padding:6px 11px; border-radius:980px; background:var(--bg); border:2px solid var(--ink); color:var(--ink); cursor:pointer; white-space:nowrap; flex-shrink:0; transition:transform .1s ease,box-shadow .1s ease; }
+.otto-chip:hover{ background:var(--c-yellow); transform:translate(-1px,-1px); box-shadow:var(--shadow-sm); }
 
 #otto-tour{ position:fixed; inset:0; z-index:1200; display:none; pointer-events:none; }
 #otto-tour.active{ display:block; }
-#otto-spotlight{ position:fixed; border-radius:10px; box-shadow:0 0 0 9999px rgba(26,23,20,.68); border:2px solid var(--c-lime); transition:all .35s cubic-bezier(.2,.8,.2,1); pointer-events:none; }
+#otto-spotlight{ position:fixed; border-radius:4px; box-shadow:0 0 0 9999px rgba(26,23,20,.68); border:2px solid var(--c-lime); transition:all .35s cubic-bezier(.2,.8,.2,1); pointer-events:none; }
 #otto-tooltip{ position:fixed; width:280px; transition:all .35s cubic-bezier(.2,.8,.2,1); pointer-events:auto; }
-.otto-tooltip-inner{ background:var(--bg-2); border:var(--border); box-shadow:var(--shadow-lg); border-radius:14px; padding:14px 14px 12px; color:var(--ink); }
+.otto-tooltip-inner{ background:var(--bg-2); border:var(--border); box-shadow:var(--shadow-lg); border-radius:5px; padding:14px 14px 12px; color:var(--ink); }
 .otto-tip-head{ display:flex; align-items:center; gap:9px; margin-bottom:8px; }
-.otto-avatar-tip{ width:26px; height:26px; border-radius:7px; background:var(--ink); display:flex; align-items:center; justify-content:center; gap:4px; flex-shrink:0; }
-.otto-avatar-tip span{ width:4px; height:6px; border-radius:50%; background:var(--c-lime); box-shadow:0 0 5px var(--c-lime); }
+.otto-avatar-tip{ width:26px; height:26px; border-radius:3px; background:var(--ink); border:2px solid var(--ink); display:flex; align-items:center; justify-content:center; gap:4px; flex-shrink:0; }
+.otto-avatar-tip span{ width:4px; height:5px; border-radius:1px; background:var(--c-lime); }
 #otto-step-title{ font-family:"Archivo","Helvetica Neue",Arial,sans-serif; font-size:14px; font-weight:800; letter-spacing:-.01em; flex:1; }
 #otto-step-label{ font-size:10px; color:var(--ink-3); font-family:"Space Mono",monospace; }
 #otto-step-text{ font-size:12.5px; line-height:1.5; color:var(--ink-2); margin:0 0 13px; }
 .otto-tip-actions{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
 #otto-tour-skip{ font:inherit; font-size:12px; color:var(--ink-3); background:none; border:0; cursor:pointer; padding:6px 4px; }
-#otto-tour-next{ font:inherit; font-size:12.5px; font-weight:700; color:var(--ink); background:var(--c-lime); border:1.5px solid var(--ink); cursor:pointer; padding:7px 16px; border-radius:980px; }
+#otto-tour-next{ font:inherit; font-size:12.5px; font-weight:700; color:var(--ink); background:var(--c-lime); border:2px solid var(--ink); cursor:pointer; padding:7px 16px; border-radius:980px; transition:transform .1s ease,box-shadow .1s ease; }
+#otto-tour-next:hover{ transform:translate(-1px,-1px); box-shadow:var(--shadow-sm); }
 
 @media (max-width: 560px){
   #otto-bot{ right:14px; bottom:14px; }
   #otto-bubble{ right:14px; bottom:82px; }
-  #otto-greet{ right:78px; bottom:22px; }
+  #otto-greet{ right:80px; bottom:24px; }
 }
 </style>
 </head>
