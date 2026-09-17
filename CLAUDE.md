@@ -89,6 +89,14 @@ const TRACKS = [
 - **Border/shadow utility classes:** `.brut`, `.brut-sm` (2px/1.5px border + offset box-shadow), `.brut-hover` (lift on hover), `.brut-press` (press-down on active).
 - **Breakpoints:** `<768px` auto-switches Board to ListView; `<640px` the Drawer becomes a bottom sheet.
 
+### Cert Track Guide Content Conventions (`content` field)
+
+The `aws-cert`/`az-cert` tracks' `item.content` HTML (rendered via `dangerouslySetInnerHTML` inside `.guide-embed`, see Design System below) follows two conventions:
+
+- **No inline fact-check/correction callouts.** Don't add a `<div class="callout note">` block that cites "source material," corrects a stale figure, or verifies a claim against docs — that reads as an editorial aside to readers. Instead, when a service/fact needs a citation, add or extend a **References** section: `<h3 id="references">References</h3><ul><li><a href="..." target="_blank" rel="noopener">Service Name – Doc Title</a></li>...</ul>` as the last block in that item's `content` string, one `id="references"` per item.
+- **References list is comprehensive, not just correction-driven.** Every distinct AWS/Amazon service actually discussed in the guide (named in a `<strong>` tag, explained as a concept — not a generic phrase or a DR/pattern name like "Warm Standby") should get one deduplicated link in that guide's References list, capped around 8–12 for guides that mention many services. Use only real `docs.aws.amazon.com` deep-guide URLs you're confident of, or fall back to the stable `aws.amazon.com/<slug>/` overview page rather than guessing a docs path — verify new links resolve (200) before shipping.
+- Styling for `<h3 id="references">` + its `<ul>` (dashed top divider, ↗ marker, accent-colored underlined links) lives in `index.html`'s `.guide-embed` CSS block — don't restyle inline.
+
 ### Progress & Notes Persistence
 
 - Per-track learning/done status: `localStorage[track.storageKey]` (e.g. `ops4life:devops`), shape `{ learning: {itemId: true}, done: {itemId: true} }`.
