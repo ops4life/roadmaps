@@ -919,31 +919,63 @@ function collectHighlightableTextNodes(root) {
   return nodes;
 }
 
+// Counts occurrences of `needle` across `nodes` (in document order, never
+// crossing node boundaries) that start strictly before (targetNode, targetOffset).
+// Used both to record which specific occurrence a highlight was made on, and
+// to relocate that same occurrence later — the two must walk matches in
+// exactly the same order or a highlight can attach to the wrong occurrence
+// of a repeated word/phrase.
+function countOccurrencesBeforeOffset(nodes, needle, targetNode, targetOffset) {
+  let count = 0;
+  for (const node of nodes) {
+    const val = node.nodeValue;
+    let searchFrom = 0;
+    while (true) {
+      const idx = val.indexOf(needle, searchFrom);
+      if (idx === -1) break;
+      if (node === targetNode && idx >= targetOffset) return count;
+      count++;
+      searchFrom = idx + 1;
+    }
+    if (node === targetNode) return count;
+  }
+  return count;
+}
+
 function applyStoredHighlight(textNodes, note) {
   const needle = note.text;
   if (!needle) return;
+  const targetIndex = note.matchIndex || 0;
+  let seen = 0;
   for (let i = 0; i < textNodes.length; i++) {
     const node = textNodes[i];
     const val = node.nodeValue;
-    const idx = val.indexOf(needle);
-    if (idx === -1) continue;
-    const mark = document.createElement("mark");
-    mark.className = "rm-guide-highlight";
-    mark.dataset.noteId = note.id;
-    mark.textContent = needle;
-    const parent = node.parentNode;
-    if (idx > 0) parent.insertBefore(document.createTextNode(val.slice(0, idx)), node);
-    parent.insertBefore(mark, node);
-    const rest = val.slice(idx + needle.length);
-    if (rest) {
-      const tail = document.createTextNode(rest);
-      parent.insertBefore(tail, node);
-      textNodes[i] = tail;
-    } else {
-      textNodes.splice(i, 1);
+    let searchFrom = 0;
+    let idx;
+    while ((idx = val.indexOf(needle, searchFrom)) !== -1) {
+      if (seen !== targetIndex) {
+        seen++;
+        searchFrom = idx + 1;
+        continue;
+      }
+      const mark = document.createElement("mark");
+      mark.className = "rm-guide-highlight";
+      mark.dataset.noteId = note.id;
+      mark.textContent = needle;
+      const parent = node.parentNode;
+      if (idx > 0) parent.insertBefore(document.createTextNode(val.slice(0, idx)), node);
+      parent.insertBefore(mark, node);
+      const rest = val.slice(idx + needle.length);
+      if (rest) {
+        const tail = document.createTextNode(rest);
+        parent.insertBefore(tail, node);
+        textNodes[i] = tail;
+      } else {
+        textNodes.splice(i, 1);
+      }
+      parent.removeChild(node);
+      return;
     }
-    parent.removeChild(node);
-    return;
   }
 }
 
@@ -965,8 +997,14 @@ function GuideContent({ html, pageKey, pageLabel, itemId, itemLabel, notes, setN
   useEffect(() => {
     const root = ref.current;
     if (!root || !itemNotes.length) return;
+    // Skip notes already marked in the DOM (e.g. commit() just inlined one via
+    // Range.surroundContents) — reapplying them here would exclude their own
+    // now-marked occurrence from the walk and shift every matchIndex after it,
+    // landing the "reapplied" mark on a different occurrence of the same text.
+    const pending = itemNotes.filter(n => !root.querySelector(`mark[data-note-id="${CSS.escape(n.id)}"]`));
+    if (!pending.length) return;
     const textNodes = collectHighlightableTextNodes(root);
-    itemNotes.forEach(n => applyStoredHighlight(textNodes, n));
+    pending.forEach(n => applyStoredHighlight(textNodes, n));
   }, [html, itemNotes]);
 
   // Inject a copy button into every <pre> code block in the guide content.
@@ -1019,9 +1057,20 @@ function GuideContent({ html, pageKey, pageLabel, itemId, itemLabel, notes, setN
 
   function commit(noteText) {
     if (!tip) return;
+    // Record which occurrence of tip.text this selection actually is, so a
+    // repeated word/phrase elsewhere in the guide isn't highlighted instead
+    // when this note is later re-applied (see applyStoredHighlight).
+    let matchIndex = 0;
+    const root = ref.current;
+    if (root) {
+      const nodes = collectHighlightableTextNodes(root);
+      matchIndex = countOccurrencesBeforeOffset(nodes, tip.text, tip.range.startContainer, tip.range.startOffset);
+    }
+    const id = "n" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
     try {
       const mark = document.createElement("mark");
       mark.className = "rm-guide-highlight";
+      mark.dataset.noteId = id;
       tip.range.surroundContents(mark);
     } catch (e) {
       // Selection crossed element boundaries (e.g. spans a bold run) — the
@@ -1029,9 +1078,8 @@ function GuideContent({ html, pageKey, pageLabel, itemId, itemLabel, notes, setN
       // note-list update as a best-effort fallback.
     }
     setNotes(list => [...list, {
-      id: "n" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
-      page: pageKey, pageLabel, itemId, itemLabel, scope: "content",
-      text: tip.text, note: noteText || "", createdAt: Date.now(),
+      id, page: pageKey, pageLabel, itemId, itemLabel, scope: "content",
+      text: tip.text, note: noteText || "", createdAt: Date.now(), matchIndex,
     }]);
     window.getSelection().removeAllRanges();
     setTip(null);
@@ -1061,11 +1109,17 @@ function GuideContent({ html, pageKey, pageLabel, itemId, itemLabel, notes, setN
 
 // ── DRAWER ────────────────────────────────────────────────────────────
 function Drawer({ open, item, section, status, onClose, onMark, onPrev, onNext, wide, pageKey, pageLabel, notes, setNotes }) {
+  const bodyRef = useRef(null);
+
   useEffect(() => {
     const onKey = (e) => { if (e.key === "Escape") onClose(); };
     if (open) document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [open, onClose]);
+
+  useEffect(() => {
+    if (bodyRef.current) bodyRef.current.scrollTop = 0;
+  }, [item?.id]);
 
   if (!open || !item) return null;
   return (
@@ -1095,7 +1149,7 @@ function Drawer({ open, item, section, status, onClose, onMark, onPrev, onNext, 
           </button>
         </div>
 
-        <div style={{padding:"22px 22px 28px", overflowY:"auto", flex:1}}>
+        <div ref={bodyRef} style={{padding:"22px 22px 28px", overflowY:"auto", flex:1}}>
           <h3 className="display" style={{margin:"0 0 14px", fontSize:42, lineHeight:.92, letterSpacing:"-.02em"}}>
             {item.label}<span style={{color:"var(--accent)"}}>.</span>
           </h3>
