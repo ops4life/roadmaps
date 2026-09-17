@@ -39,13 +39,7 @@ az ad group create --display-name "Marketing Users" --mail-nickname "marketing" 
 <li>Group-based licensing automatically assigns licenses to group members</li>
 </ul><pre><code># Assign license to user (current: Microsoft Entra PowerShell)
 Connect-Entra -Scopes 'User.ReadWrite.All'
-Set-EntraUserLicense -UserId &lt;user-id&gt; -AssignedLicenses &lt;license-object&gt;</code></pre><div class="callout warn">
-<span class="callout-icon">⚠️</span>
-<div class="callout-body">
-<strong>Correction: Deprecated Cmdlet</strong>
-<p>The legacy <strong>AzureAD PowerShell module</strong> (and its <code>Set-AzureADUserLicense</code> cmdlet) has been retired by Microsoft. The current equivalent is <code>Set-EntraUserLicense</code> from the <strong>Microsoft Entra PowerShell</strong> module (or <code>Update-MgUserLicense</code> via Microsoft Graph PowerShell). Know the <em>concept</em> for the exam — group-based vs. direct license assignment — the exact cmdlet name is less likely to be tested than the underlying behavior.</p>
-</div>
-</div><h3 id="manage-external-users">1.3 Manage External Users</h3><h4>Microsoft Entra B2B Collaboration</h4><ul>
+Set-EntraUserLicense -UserId &lt;user-id&gt; -AssignedLicenses &lt;license-object&gt;</code></pre><h3 id="manage-external-users">1.3 Manage External Users</h3><h4>Microsoft Entra B2B Collaboration</h4><ul>
 <li>Invite external users as guests</li>
 <li>External users authenticate with their home organization</li>
 <li>Control guest access with external collaboration settings</li>
@@ -56,14 +50,8 @@ az ad user create --display-name "External User" --user-principal-name externalu
 <li>Guest user permissions (restricted or same as members)</li>
 </ul><h3 id="configure-sspr">1.4 Configure Self-Service Password Reset (SSPR)</h3><h4>Requirements</h4><ul>
 <li><strong>Microsoft Entra ID P1 or P2</strong> license required for <strong>on-premises password writeback</strong> (SSPR itself is available on lower tiers, but writeback to on-prem AD needs P1/P2 or Microsoft 365 Business Premium)</li>
-<li>Configure authentication methods — admins choose whether <strong>one or two</strong> methods are required to reset/unlock</li>
-</ul><div class="callout note">
-<span class="callout-icon">💡</span>
-<div class="callout-body">
-<strong>Correction: Required Method Count Is Configurable</strong>
-<p>Some source material states SSPR requires "2 methods" as a fixed rule. That's not accurate — the number of authentication methods a user must register to reset/unlock (one or two) is an <strong>admin-configurable setting</strong>, not a hardcoded platform requirement.</p>
-</div>
-</div><h4>Authentication Methods</h4><ul>
+<li>Configure authentication methods — admins choose whether <strong>one or two</strong> methods are required to reset/unlock (an admin-configurable setting, not a fixed platform rule)</li>
+</ul><h4>Authentication Methods</h4><ul>
 <li>Mobile app notification</li>
 <li>Mobile app code</li>
 <li>Email</li>
@@ -77,7 +65,13 @@ az ad user create --display-name "External User" --user-principal-name externalu
 <li>Configure password writeback (for hybrid)</li>
 <li>Customize notifications</li>
 </ol><pre><code># Users register at: https://aka.ms/ssprsetup
-# Users reset password at: https://aka.ms/sspr</code></pre>` },
+# Users reset password at: https://aka.ms/sspr</code></pre><h3 id="references">References</h3><ul>
+<li><a href="https://learn.microsoft.com/en-us/entra/fundamentals/whatis" target="_blank" rel="noopener">Microsoft Entra ID – What Is Microsoft Entra ID?</a></li>
+<li><a href="https://learn.microsoft.com/en-us/entra/identity/hybrid/connect/whatis-azure-ad-connect" target="_blank" rel="noopener">Microsoft Entra Connect – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/entra/external-id/what-is-b2b" target="_blank" rel="noopener">Microsoft Entra B2B Collaboration – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/entra/identity/authentication/concept-sspr-howitworks" target="_blank" rel="noopener">Self-Service Password Reset (SSPR) – How It Works</a></li>
+<li><a href="https://learn.microsoft.com/en-us/powershell/entra-powershell/overview" target="_blank" rel="noopener">Microsoft Entra PowerShell – Overview</a></li>
+</ul>` },
         { id: "ig-manage-access", label: "Manage Access to Azure Resources", type: "recommended",
           content: `<h3 id="built-in-azure-roles">2.1 Built-in Azure Roles</h3><h4>Key Built-in Roles</h4><div class="table-wrap">
 <table>
@@ -117,6 +111,11 @@ az role assignment create --assignee user@contoso.com --role "Reader" --scope /s
 <li><strong>Check Access</strong>: see what permissions a user has</li>
 <li><strong>Role Assignments</strong>: view all role assignments</li>
 <li><strong>Deny Assignments</strong>: view deny rules (override allow)</li>
+</ul><h3 id="references">References</h3><ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/role-based-access-control/overview" target="_blank" rel="noopener">Azure RBAC – What Is Azure Role-Based Access Control?</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles" target="_blank" rel="noopener">Azure Built-in Roles – Reference</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/role-based-access-control/scope-overview" target="_blank" rel="noopener">Azure RBAC – Understand Scope</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/role-based-access-control/check-access" target="_blank" rel="noopener">Azure RBAC – Check Access for a User</a></li>
 </ul>` },
         { id: "ig-subscriptions-governance", label: "Manage Azure Subscriptions and Governance",
           content: `<h3 id="configure-azure-policy">3.1 Configure Azure Policy</h3><h4>Azure Policy Concepts</h4><ul>
@@ -234,6 +233,15 @@ az consumption budget create --budget-name MyBudget --amount 1000 --category Cos
 <li>Unprovisioned ExpressRoute circuits</li>
 <li>Idle virtual network gateways</li>
 <li>Optimize costs with reserved instances</li>
+</ul><h3 id="references">References</h3><ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/governance/policy/overview" target="_blank" rel="noopener">Azure Policy – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/lock-resources" target="_blank" rel="noopener">Azure Resource Manager – Lock Resources</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/tag-resources" target="_blank" rel="noopener">Azure Resource Manager – Tag Resources</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resource-groups-portal" target="_blank" rel="noopener">Azure Resource Manager – Manage Resource Groups</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/create-subscription" target="_blank" rel="noopener">Azure Subscriptions – Create an Additional Subscription</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/governance/management-groups/overview" target="_blank" rel="noopener">Azure Management Groups – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/overview-cost-management" target="_blank" rel="noopener">Azure Cost Management – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/advisor/advisor-overview" target="_blank" rel="noopener">Azure Advisor – Overview</a></li>
 </ul>` },
       ]},
       { id: "storage", title: "02 · Storage (15-20%)", color: "var(--c-orange)", items: [
@@ -368,7 +376,14 @@ az vm identity assign --name myVM --resource-group myResourceGroup
 az role assignment create \\
   --assignee &lt;vm-managed-identity-principal-id&gt; \\
   --role "Storage Blob Data Contributor" \\
-  --scope /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.Storage/storageAccounts/&lt;account&gt;</code></pre>` },
+  --scope /subscriptions/&lt;sub-id&gt;/resourceGroups/&lt;rg&gt;/providers/Microsoft.Storage/storageAccounts/&lt;account&gt;</code></pre><h3 id="references">References</h3><ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/storage/common/storage-network-security" target="_blank" rel="noopener">Azure Storage – Configure Network Security</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview" target="_blank" rel="noopener">Azure Storage – Shared Access Signatures (SAS) Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/rest/api/storageservices/define-stored-access-policy" target="_blank" rel="noopener">Azure Storage – Define a Stored Access Policy</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage" target="_blank" rel="noopener">Azure Storage – Manage Storage Account Access Keys</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/storage/blobs/authorize-access-azure-active-directory" target="_blank" rel="noopener">Azure Storage – Authorize Access with Microsoft Entra ID</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/storage" target="_blank" rel="noopener">Azure RBAC – Built-in Storage Roles</a></li>
+</ul>` },
         { id: "st-manage-accounts", label: "Configure and Manage Storage Accounts", type: "recommended",
           content: `<h3 id="create-configure-storage-accounts">2.1 Create and Configure Storage Accounts</h3><h4>Storage Account Types</h4><div class="table-wrap">
 <table>
@@ -510,7 +525,14 @@ azcopy copy "C:\\local\\path\\*" "https://mystorageaccount.blob.core.windows.net
 <strong>Exam Trap</strong>
 <p><strong>AzCopy</strong> is the command-line tool; <strong>Azure Storage Explorer</strong> is the GUI. Storage Explorer actually calls AzCopy under the hood for large transfers — know which tool a scenario is describing based on whether it mentions a script/pipeline (AzCopy) or interactive browsing (Storage Explorer).</p>
 </div>
-</div>` },
+</div><h3 id="references">References</h3><ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview" target="_blank" rel="noopener">Azure Storage Accounts – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy" target="_blank" rel="noopener">Azure Storage – Redundancy (LRS/ZRS/GRS/GZRS)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/storage/blobs/object-replication-overview" target="_blank" rel="noopener">Azure Blob Storage – Object Replication Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/storage/common/storage-service-encryption" target="_blank" rel="noopener">Azure Storage – Encryption for Data at Rest</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/vs-azure-tools-storage-manage-with-storage-explorer" target="_blank" rel="noopener">Azure Storage Explorer – Manage Storage Resources</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10" target="_blank" rel="noopener">AzCopy – Get Started</a></li>
+</ul>` },
         { id: "st-files-blob", label: "Configure Azure Files and Azure Blob Storage",
           content: `<h3 id="create-configure-file-shares">3.1 Create and Configure File Shares</h3><h4>Azure Files Features</h4><ul>
 <li>SMB and NFS protocol support</li>
@@ -719,6 +741,14 @@ az storage account management-policy create \\
 <li>Delete temporary data after a certain period</li>
 <li>Move infrequently accessed data to Cool tier</li>
 <li>Optimize storage costs automatically</li>
+</ul><h3 id="references">References</h3><ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/storage/files/storage-files-introduction" target="_blank" rel="noopener">Azure Files – Introduction</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction" target="_blank" rel="noopener">Azure Blob Storage – Introduction</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview" target="_blank" rel="noopener">Azure Blob Storage – Access Tiers Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/storage/blobs/snapshots-overview" target="_blank" rel="noopener">Azure Blob Storage – Blob Snapshots Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-blob-overview" target="_blank" rel="noopener">Azure Blob Storage – Soft Delete Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/storage/blobs/versioning-overview" target="_blank" rel="noopener">Azure Blob Storage – Versioning Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/storage/blobs/lifecycle-management-overview" target="_blank" rel="noopener">Azure Blob Storage – Lifecycle Management Overview</a></li>
 </ul>` },
       ]},
       { id: "compute", title: "03 · Compute (20-25%)", color: "var(--c-purple)", items: [
@@ -911,7 +941,12 @@ az bicep decompile --file template.json</code></pre><div class="callout tip">
 <strong>Exam Tip</strong>
 <p><strong>Bicep</strong> is a domain-specific language that compiles down to ARM JSON — there's no functional difference in what gets deployed, only in authoring experience. If a scenario emphasizes readability, IntelliSense, or modules, the answer is usually Bicep.</p>
 </div>
-</div>` },
+</div><h3 id="references">References</h3><ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/overview" target="_blank" rel="noopener">ARM Templates – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-what-if" target="_blank" rel="noopener">ARM Templates – What-If Deployment</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview" target="_blank" rel="noopener">Bicep – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/modules" target="_blank" rel="noopener">Bicep – Modules</a></li>
+</ul>` },
         { id: "cp-vms", label: "Create and Configure Virtual Machines", type: "recommended",
           content: `<h3 id="create-virtual-machines">2.1 Create Virtual Machines</h3><h4>VM Creation Options</h4><ul>
 <li>Azure Portal</li>
@@ -941,7 +976,7 @@ az vm create \\
   --admin-password &lt;password&gt;</code></pre><h4>VM Images</h4><ul>
 <li><strong>Marketplace Images</strong>: Pre-configured by Microsoft/partners</li>
 <li><strong>Custom Images</strong>: Your own generalized VMs</li>
-<li><strong>Azure Compute Gallery</strong>: Centralized image management, version management, replication (formerly named Shared Image Gallery — see the callout above)</li>
+<li><strong>Azure Compute Gallery</strong>: Centralized image management, version management, replication (formerly named Shared Image Gallery)</li>
 </ul><h3 id="configure-disk-encryption">2.2 Configure Azure Disk Encryption</h3><h4>Encryption Options</h4><ol>
 <li><strong>Server-Side Encryption (SSE)</strong>: Default, automatic</li>
 <li><strong>Azure Disk Encryption (ADE)</strong>: BitLocker (Windows) / dm-crypt (Linux)</li>
@@ -1108,6 +1143,14 @@ az monitor autoscale rule create \\
 <li><strong>Automatic</strong>: Instances updated immediately</li>
 <li><strong>Rolling</strong>: Instances updated in batches</li>
 <li><strong>Manual</strong>: You control when instances are updated</li>
+</ul><h3 id="references">References</h3><ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-machines/overview" target="_blank" rel="noopener">Azure Virtual Machines – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-machines/disk-encryption-overview" target="_blank" rel="noopener">Azure Disk Encryption – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-machines/sizes" target="_blank" rel="noopener">Azure VM Sizes – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-machines/azure-compute-gallery" target="_blank" rel="noopener">Azure Compute Gallery – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/reliability/availability-zones-overview" target="_blank" rel="noopener">Azure Availability Zones – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-machines/availability-set-overview" target="_blank" rel="noopener">Azure Availability Sets – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-machine-scale-sets/overview" target="_blank" rel="noopener">Virtual Machine Scale Sets – Overview</a></li>
 </ul>` },
         { id: "cp-containers", label: "Provision and Manage Containers",
           content: `<h3 id="manage-acr">3.1 Manage Azure Container Registry (ACR)</h3><h4>ACR Features</h4><ul>
@@ -1286,7 +1329,12 @@ az containerapp update \\
 <strong>Exam Tip</strong>
 <p><strong>ACI vs. ACA vs. AKS</strong>: use ACI for simple, single/few-container workloads with no orchestration; ACA (Container Apps) for microservices needing scale-to-zero and traffic splitting without managing Kubernetes; AKS for full Kubernetes control. If a scenario mentions "no orchestration needed" or "fastest way to run a container," the answer is ACI.</p>
 </div>
-</div>` },
+</div><h3 id="references">References</h3><ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-intro" target="_blank" rel="noopener">Azure Container Registry – Introduction</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-overview" target="_blank" rel="noopener">Azure Container Instances – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/container-apps/overview" target="_blank" rel="noopener">Azure Container Apps – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/aks/what-is-aks" target="_blank" rel="noopener">Azure Kubernetes Service (AKS) – Overview</a></li>
+</ul>` },
         { id: "cp-app-service", label: "Create and Configure Azure App Service",
           content: `<h3 id="provision-app-service-plans">4.1 Provision App Service Plans</h3><h4>App Service Plan Tiers</h4><div class="table-wrap">
 <table>
@@ -1525,7 +1573,15 @@ az webapp config appsettings set \\
 <strong>Exam Trap</strong>
 <p>Deployment slots require <strong>Standard tier or higher</strong> — Basic and below don't support them. If a scenario asks for zero-downtime deployment with quick rollback and the plan is Free/Shared/Basic, the first step is scaling up the plan before slots can be configured.</p>
 </div>
-</div>` },
+</div><h3 id="references">References</h3><ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans" target="_blank" rel="noopener">Azure App Service – Hosting Plans (SKUs)</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/app-service/overview" target="_blank" rel="noopener">Azure App Service – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/app-service/configure-ssl-bindings" target="_blank" rel="noopener">Azure App Service – Secure a Custom DNS Name with a TLS/SSL Binding</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/app-service/configure-common" target="_blank" rel="noopener">Azure App Service – Configure App Settings</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/app-service/manage-backup" target="_blank" rel="noopener">Azure App Service – Back Up an App</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/app-service/overview-vnet-integration" target="_blank" rel="noopener">Azure App Service – VNet Integration</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/app-service/deploy-staging-slots" target="_blank" rel="noopener">Azure App Service – Set Up Staging (Deployment) Slots</a></li>
+</ul>` },
       ]},
       { id: "networking", title: "04 · Networking (15-20%)", color: "var(--c-lime)", items: [
         { id: "nw-vnets", label: "Configure and Manage Virtual Networks", type: "recommended",
@@ -1841,7 +1897,15 @@ az network nic show-effective-route-table \\
 # Effective NSG rules
 az network nic list-effective-nsg \\
   --resource-group myResourceGroup \\
-  --name myNIC</code></pre>` },
+  --name myNIC</code></pre><h3 id="references">References</h3><ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-overview" target="_blank" rel="noopener">Azure Virtual Network – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-peering-overview" target="_blank" rel="noopener">Azure Virtual Network Peering – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/public-ip-addresses" target="_blank" rel="noopener">Azure Public IP Addresses – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-udr-overview" target="_blank" rel="noopener">Azure Virtual Network – User-Defined Routes Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-overview" target="_blank" rel="noopener">Azure Private Endpoint – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview" target="_blank" rel="noopener">Azure Virtual Network Service Endpoints – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/network-watcher/network-watcher-overview" target="_blank" rel="noopener">Azure Network Watcher – Overview</a></li>
+</ul>` },
         { id: "nw-secure-access", label: "Configure Secure Access to Virtual Networks", type: "recommended",
           content: `<h3 id="create-configure-nsg">2.1 Create and Configure Network Security Groups (NSG)</h3><h4>NSG Concepts</h4><ul>
 <li>Filter traffic to/from Azure resources</li>
@@ -1976,13 +2040,9 @@ az network bastion create \\
 # Portal &gt; Virtual Machine &gt; Connect &gt; Bastion</code></pre><h4>Bastion SKUs</h4><ul>
 <li><strong>Basic</strong>: Standard features, 25 concurrent sessions</li>
 <li><strong>Standard</strong>: File upload/download, more concurrent sessions, shareable links</li>
-</ul><div class="callout note">
-<span class="callout-icon">💡</span>
-<div class="callout-body">
-<strong>Note: Bastion now offers four SKUs</strong>
-<p>Source material lists only Basic and Standard, which matches the AZ-104 exam's Bastion scope. Since this content was written, Microsoft added two more tiers: <strong>Developer</strong> (free, shared infrastructure, single-VM support, dev/test only) below Basic, and <strong>Premium</strong> (adds session recording and private-only deployment) above Standard. This is additive, not a correction to what's listed — the Basic/Standard facts above remain accurate.</p>
-</div>
-</div><h3 id="configure-service-endpoints-azure-services">2.3 Configure Service Endpoints for Azure Services</h3><h4>Commonly Used Service Endpoints</h4><ul>
+<li><strong>Premium</strong>: Adds session recording and private-only deployment</li>
+<li><strong>Developer</strong>: Free, shared infrastructure, single-VM support — dev/test only</li>
+</ul><h3 id="configure-service-endpoints-azure-services">2.3 Configure Service Endpoints for Azure Services</h3><h4>Commonly Used Service Endpoints</h4><ul>
 <li>Microsoft.Storage</li>
 <li>Microsoft.Sql</li>
 <li>Microsoft.KeyVault</li>
@@ -2006,7 +2066,12 @@ az sql server vnet-rule create \\
   --server myserver \\
   --name AllowSubnet \\
   --vnet-name myVNet \\
-  --subnet mySubnet</code></pre>` },
+  --subnet mySubnet</code></pre><h3 id="references">References</h3><ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-network/network-security-groups-overview" target="_blank" rel="noopener">Azure Network Security Groups – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-network/application-security-groups" target="_blank" rel="noopener">Azure Application Security Groups – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/bastion/bastion-overview" target="_blank" rel="noopener">Azure Bastion – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-service-endpoints-overview" target="_blank" rel="noopener">Azure Virtual Network Service Endpoints – Overview</a></li>
+</ul>` },
         { id: "nw-name-resolution-lb", label: "Configure Name Resolution and Load Balancing",
           content: `<h3 id="configure-azure-dns">3.1 Configure Azure DNS</h3><h4>Azure DNS Features</h4><ul>
 <li>Host DNS domains in Azure</li>
@@ -2165,6 +2230,11 @@ az network watcher test-connectivity \\
 <li>Check probe interval and unhealthy threshold</li>
 <li>Ensure NSG allows health probe traffic (AzureLoadBalancer service tag)</li>
 <li>Verify application is listening on probe port</li>
+</ul><h3 id="references">References</h3><ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/dns/dns-overview" target="_blank" rel="noopener">Azure DNS – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/dns/private-dns-overview" target="_blank" rel="noopener">Azure Private DNS – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/load-balancer/load-balancer-overview" target="_blank" rel="noopener">Azure Load Balancer – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/network-watcher/network-watcher-overview" target="_blank" rel="noopener">Azure Network Watcher – Overview</a></li>
 </ul>` },
       ]},
       { id: "monitoring", title: "05 · Monitoring (10-15%)", color: "var(--c-pink)", items: [
@@ -2434,6 +2504,15 @@ az network watcher connection-monitor create \\
 <li>Geo-location mapping</li>
 <li>Security threat detection</li>
 <li>Requires NSG flow logs</li>
+</ul><h3 id="references">References</h3><ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/azure-monitor/overview" target="_blank" rel="noopener">Azure Monitor – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/data-platform-metrics" target="_blank" rel="noopener">Azure Monitor – Metrics Platform</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/azure-monitor/logs/log-analytics-workspace-overview" target="_blank" rel="noopener">Azure Monitor – Log Analytics Workspace Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/" target="_blank" rel="noopener">Kusto Query Language (KQL) – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/azure-monitor/alerts/alerts-overview" target="_blank" rel="noopener">Azure Monitor – Alerts Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-insights-overview" target="_blank" rel="noopener">Application Insights – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/azure-monitor/vm/vminsights-overview" target="_blank" rel="noopener">VM Insights – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/network-watcher/network-watcher-overview" target="_blank" rel="noopener">Azure Network Watcher – Overview</a></li>
 </ul>` },
         { id: "mo-backup-recovery", label: "Implement Backup and Recovery", type: "recommended",
           content: `<h3 id="create-recovery-services-vault">2.1 Create Recovery Services Vault</h3><h4>Recovery Services Vault</h4><ul>
@@ -2684,6 +2763,14 @@ az monitor metrics alert create \\
 <li>Job success/failure rates</li>
 <li>Storage consumption trends</li>
 <li>Policy compliance</li>
+</ul><h3 id="references">References</h3><ul>
+<li><a href="https://learn.microsoft.com/en-us/azure/backup/backup-azure-recovery-services-vault-overview" target="_blank" rel="noopener">Recovery Services Vault – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/backup/backup-vault-overview" target="_blank" rel="noopener">Azure Backup Vault – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/backup/backup-overview" target="_blank" rel="noopener">Azure Backup – Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/backup/backup-azure-vms-introduction" target="_blank" rel="noopener">Azure Backup – Back Up Azure VMs</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/backup/backup-afs" target="_blank" rel="noopener">Azure Backup – Back Up Azure Files</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/backup/blob-backup-overview" target="_blank" rel="noopener">Azure Backup – Blob Backup (Operational Backup) Overview</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/site-recovery/site-recovery-overview" target="_blank" rel="noopener">Azure Site Recovery – Overview</a></li>
 </ul>` },
       ]},
     ],
