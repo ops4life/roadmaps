@@ -1,7 +1,8 @@
 const TRACK_AZ_CERT = {
     id: "az-cert", code: "AZ-CERT", title: "AZ-104",
     tagline: "AZ-104 — Azure Administrator Associate.",
-    blurb: "Your day-to-day Azure toolkit, exam-ready — identity, storage, compute, networking, and monitoring, covering everything an Azure admin actually touches.",
+    blurb: "A condensed cheatsheet, not a full study guide — identity, storage, compute, networking, and monitoring for quick review, not deep-dive teaching.",
+    examGuideUrl: "https://aka.ms/AZ104-StudyGuide",
     storageKey: "ops4life:az-cert", accent: "var(--c-teal)",
     sections: [
       { id: "identities-governance", title: "01 · Identities and Governance (20-25%)", color: "var(--c-teal)", items: [

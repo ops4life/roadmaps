@@ -53,6 +53,7 @@ const TRACKS = [
   {
     id: "devops", code: "DEVOPS", title: "DevOps",
     tagline: "...", blurb: "...",
+    examGuideUrl: "...",             // optional: official cert exam-guide link, rendered under the blurb in Hero (cert tracks only)
     storageKey: "ops4life:devops",   // localStorage key for this track's progress
     accent: "var(--c-teal)",
     sections: [

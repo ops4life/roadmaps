@@ -1,7 +1,8 @@
 const TRACK_AWS_CERT = {
     id: "aws-cert", code: "AWS-CERT", title: "SAP-C02",
     tagline: "SAP-C02 — Solutions Architect Professional.",
-    blurb: "The senior-architect exam, broken into its four official domains — organizational complexity, new solutions, continuous improvement, and migration & modernization.",
+    blurb: "A condensed cheatsheet, not a full study guide — broken into the exam's four official domains (organizational complexity, new solutions, continuous improvement, migration & modernization) for quick review, not deep-dive teaching.",
+    examGuideUrl: "https://docs.aws.amazon.com/aws-certification/latest/solutions-architect-professional-02/",
     storageKey: "ops4life:aws-cert", accent: "var(--c-orange)",
     sections: [
       { id: "organizational-complexity", title: "01 · Organizational Complexity (26%)", color: "var(--c-orange)", items: [

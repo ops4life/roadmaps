@@ -479,6 +479,11 @@ function Hero({ track, percent, doneCount, totalCount }) {
           </h1>
           <div className="display-mid" style={{ fontSize:"clamp(17px, 2vw, 24px)", color:"var(--ink-2)", margin:"0 0 12px", maxWidth:640, letterSpacing:"-.005em", lineHeight:1.15 }}>{track.tagline}</div>
           <p style={{ margin:0, fontSize:13, lineHeight:1.6, color:"var(--ink-3)", maxWidth:580 }}>{track.blurb}</p>
+          {track.examGuideUrl && (
+            <a href={track.examGuideUrl} target="_blank" rel="noopener" style={{ display:"inline-flex", alignItems:"center", gap:5, marginTop:10, fontSize:11.5, fontWeight:700, textTransform:"uppercase", letterSpacing:".04em", color:"var(--ink-2)", textDecoration:"underline", textUnderlineOffset:3 }}>
+              Official exam guide ↗
+            </a>
+          )}
         </div>
 
         <div className="brut hero-progress-card" style={{ padding:"16px 18px 14px", background:"var(--c-yellow)" }}>
@@ -1480,7 +1485,7 @@ function Footer({ onFeedbackClick, onNewsletterClick }) {
         <div style={{display:"flex", alignItems:"center", gap:9}}>
           <Icon.Logo />
           <span className="display-mid" style={{fontSize:16, letterSpacing:"-.01em"}}>OPS4LIFE</span>
-          <span style={{fontSize:11, color:"var(--ink-3)"}}>· progress lives in your browser</span>
+          <span style={{fontSize:11, color:"var(--ink-3)"}}>· Mindset builds the path, Toolset paves the way</span>
         </div>
         <div style={{display:"flex", gap:14, fontSize:10.5, fontWeight:700, textTransform:"uppercase", letterSpacing:".08em", color:"var(--ink-3)"}}>
           <a href="https://ops4life.com">home</a>
