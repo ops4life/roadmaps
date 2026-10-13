@@ -1,0 +1,19 @@
+name: CI
+
+# Static site: every track is a JS data file that index.html loads, so a syntax error breaks the page.
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Syntax-check the track data
+        run: |
+          set -e
+          for f in tracks/*.js; do node --check "$f"; done
+          test -s index.html
