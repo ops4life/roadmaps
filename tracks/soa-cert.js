@@ -2,7 +2,7 @@ const TRACK_SOA_CERT = {
     id: "soa-cert", code: "SOA-CERT", title: "SOA-C03",
     tagline: "SOA-C03 — CloudOps Engineer Associate.",
     blurb: "A condensed cheatsheet, not a full study guide — the exam's five domains (monitoring & performance, reliability, automation, security, networking) for quick review of day-to-day AWS operations, not deep-dive teaching.",
-    examGuideUrl: "https://docs.aws.amazon.com/aws-certification/latest/sysops-administrator-associate-03/",
+    examGuideUrl: "https://docs.aws.amazon.com/aws-certification/latest/cloudops-engineer-associate-03/",
     storageKey: "ops4life:soa-cert", accent: "var(--c-purple)",
     sections: [
       { id: "monitoring-logging", title: "01 · Monitoring, Logging, Analysis, Remediation and Performance Optimization (22%)", color: "var(--c-purple)", items: [
@@ -49,7 +49,7 @@ const TRACK_SOA_CERT = {
 <li><strong>Amazon Managed Service for Prometheus</strong> stores Prometheus metrics for containers and <strong>Amazon Managed Grafana</strong> visualises them; scrape EKS with an AWS managed collector or ADOT</li>
 <li><strong>AWS X-Ray</strong> traces requests across services to find latency and error hotspots</li>
 </ul><h3 id="sns">1.4 Notifications with SNS</h3><ul>
-<li>Topic types: <strong>Standard</strong> (best-effort ordering, at-least-once) and <strong>FIFO</strong> (ordered, deduplicated, SQS FIFO subscribers only)</li>
+<li>Topic types: <strong>Standard</strong> (best-effort ordering, at-least-once) and <strong>FIFO</strong> (ordered, deduplicated; subscribers are SQS queues, FIFO for ordering or standard when order is not needed)</li>
 <li>Subscribers: email, SMS, HTTP(S), Lambda, SQS, Firehose, mobile push</li>
 <li>A service publishing to SNS needs permission in the <strong>topic access policy</strong> (e.g. <code>events.amazonaws.com</code>, <code>cloudwatch.amazonaws.com</code>, <code>s3.amazonaws.com</code>)</li>
 <li>SNS encrypted with a KMS CMK: the publisher also needs <code>kms:GenerateDataKey</code>/<code>kms:Decrypt</code>, and the AWS managed <code>aws/sns</code> key cannot be used by CloudWatch/EventBridge</li>
@@ -96,8 +96,8 @@ const TRACK_SOA_CERT = {
 <p><strong>Run Command</strong> runs a script on instances; <strong>Automation</strong> orchestrates multi-step workflows on AWS resources (including approvals). Pick Automation when the scenario mentions steps, approvals, or non-instance resources.</p>
 </div>
 </div><h3 id="ai-ops">2.3 AI-Assisted Operations (new in SOA-C03)</h3><ul>
-<li><strong>AWS DevOps Agent</strong>: an agentic ops assistant that investigates incidents by correlating telemetry, deployments and topology, then recommends or helps drive mitigation</li>
-<li><strong>Kiro</strong>: AWS agentic developer tool used to analyse, script and automate operational tasks</li>
+<li><strong>AWS DevOps Agent</strong>: an always-available agent for production operations. Starts investigating when an alert fires, triages incidents, and gives root cause analysis and mitigation steps; also reviews past incidents to recommend observability, infrastructure and pipeline improvements, and answers natural-language questions about resource health. Integrates with CloudWatch and third-party observability tools, GitHub/GitLab/Azure DevOps, and ServiceNow/PagerDuty/Slack, and reaches custom tools through MCP servers or A2A</li>
+<li><strong>Kiro</strong>: AWS agentic development tool (spec-driven coding with AI agents); on the exam guide it appears among tools for analysing metrics and automating remediation</li>
 <li><strong>Amazon Bedrock</strong> appears in scope for monitoring AI workloads (invocation logging, CloudWatch metrics for model usage)</li>
 <li>Exam focus is the <em>operational pattern</em> (detect &rarr; analyse &rarr; remediate through approved runbooks and least-privilege roles), not model internals</li>
 </ul><h3 id="references">References</h3><ul>
@@ -144,7 +144,7 @@ const TRACK_SOA_CERT = {
 </ul><h3 id="shared-storage">3.4 Shared Storage: EFS, FSx, S3 Files</h3><ul>
 <li><strong>EFS</strong>: managed NFS for Linux, multi-AZ. Modes: <em>General Purpose</em> vs <em>Max I/O</em>; throughput: <em>Elastic</em> (default recommendation), <em>Provisioned</em>, <em>Bursting</em>. <strong>Lifecycle management</strong> moves cold files to IA/Archive; <strong>EFS Replication</strong> for DR</li>
 <li><strong>FSx for Windows File Server</strong>: SMB, Active Directory, DFS. <strong>FSx for Lustre</strong>: HPC/ML, S3 integration. <strong>FSx for NetApp ONTAP</strong>: multi-protocol (NFS/SMB/iSCSI). <strong>FSx for OpenZFS</strong>: NFS, low latency</li>
-<li><strong>Amazon S3 Files</strong> gives file-system access to S3 data for workloads that expect POSIX-style file semantics</li>
+<li><strong>Amazon S3 Files</strong>: a shared file system built on EFS that exposes an S3 bucket (or prefix) as files over NFS 4.1/4.2. Mount it through a <em>mount target</em> (one per AZ) on EC2, ECS, EKS or Lambda. Only the active working set (small files, default &lt;128 KiB) is copied to high-performance storage; large reads (&ge;1 MiB) stream straight from S3. Changes sync automatically in both directions and S3 stays the authoritative copy. Supports file locking, POSIX permissions and KMS encryption; no SMB</li>
 <li><strong>Storage Gateway</strong> (File/Volume/Tape) bridges on-premises apps to S3/EBS snapshots</li>
 </ul><div class="callout tip">
 <span class="callout-icon">✅</span>
@@ -173,6 +173,7 @@ const TRACK_SOA_CERT = {
 <li><a href="https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html" target="_blank" rel="noopener">AWS DataSync – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html" target="_blank" rel="noopener">Amazon EFS – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/fsx/" target="_blank" rel="noopener">Amazon FSx</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-files.html" target="_blank" rel="noopener">Amazon S3 Files</a></li>
 <li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_PerfInsights.html" target="_blank" rel="noopener">RDS – Performance Insights</a></li>
 <li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.html" target="_blank" rel="noopener">Amazon RDS Proxy</a></li>
 </ul>` },
@@ -211,7 +212,7 @@ const TRACK_SOA_CERT = {
 <p>Read-heavy relational workload &rarr; ElastiCache in front of RDS. Read-heavy DynamoDB &rarr; <strong>DAX</strong>. Global static assets &rarr; <strong>CloudFront</strong>.</p>
 </div>
 </div><h3 id="scaling-db">1.3 Scaling Databases</h3><ul>
-<li><strong>RDS</strong>: vertical scaling (change instance class, brief outage unless Multi-AZ), <strong>read replicas</strong> (async, up to 15 for Aurora / 5 for most engines), <strong>storage autoscaling</strong></li>
+<li><strong>RDS</strong>: vertical scaling (change instance class, brief outage unless Multi-AZ), <strong>read replicas</strong> (async; RDS MySQL/MariaDB/PostgreSQL support up to 15, Aurora up to 15 with low lag), <strong>storage autoscaling</strong></li>
 <li><strong>Aurora</strong>: shared distributed storage grows automatically to 128 TiB; up to 15 low-lag replicas with auto scaling; <strong>Aurora Serverless v2</strong> scales ACUs in fine increments; <strong>Global Database</strong> for cross-Region reads and fast DR</li>
 <li><strong>DynamoDB</strong>: <em>on-demand</em> (unpredictable traffic) vs <em>provisioned</em> with Application Auto Scaling; throttling = <code>ProvisionedThroughputExceededException</code>. Fix hot partitions with better keys; <strong>global tables</strong> for multi-Region active-active</li>
 <li>RDS read replicas are not a failover target for Multi-AZ (standard) &mdash; they serve read scaling and can be manually promoted</li>
@@ -480,9 +481,9 @@ const TRACK_SOA_CERT = {
 <p>Need full control, audit, rotation schedule or cross-account sharing &rarr; <strong>customer managed key</strong>. AWS managed keys cannot be shared across accounts.</p>
 </div>
 </div><h3 id="acm">2.3 Encryption in Transit (ACM)</h3><ul>
-<li><strong>AWS Certificate Manager (ACM)</strong> provisions, manages and auto-renews public TLS certificates (DNS validation preferred; email validation as alternative) for ELB, CloudFront, API Gateway. Public ACM certs cannot be exported for use on EC2; use <strong>ACM Private CA</strong> or import your own</li>
+<li><strong>AWS Certificate Manager (ACM)</strong> provisions, manages and auto-renews public TLS certificates (DNS validation preferred; email validation as alternative) for ELB, CloudFront, API Gateway. Standard public ACM certs cannot be exported (they only attach to integrated services like ELB, CloudFront, API Gateway). To use a cert on EC2, containers or on-premises, request an <strong>exportable public certificate</strong> (extra charge, DNS validation, 198-day validity, renewed 45 days before expiry), or use <strong>ACM Private CA</strong> or import your own</li>
 <li><strong>CloudFront requires certificates in us-east-1</strong>; ELB/API Gateway regional endpoints need the cert in the same Region</li>
-<li>Renewal fails if the DNS validation CNAME was removed; imported certificates are <em>not</em> auto-renewed (use EventBridge <code>ACM Certificate Approaching Expiration</code>)</li>
+<li>Renewal fails if the DNS validation CNAME was removed; imported certificates are <em>not</em> auto-renewed (exportable certs do renew, but you must redeploy them) (use EventBridge <code>ACM Certificate Approaching Expiration</code>)</li>
 <li>Enforce HTTPS: ALB HTTP&rarr;HTTPS redirect, CloudFront viewer protocol policy, S3 bucket policy denying <code>aws:SecureTransport = false</code>, RDS <code>require_ssl</code> parameter, minimum TLS versions in security policies</li>
 </ul><h3 id="secrets">2.4 Secrets</h3><ul>
 <li><strong>Secrets Manager</strong>: stores secrets with KMS encryption, <strong>automatic rotation</strong> (Lambda; built-in templates for RDS/Aurora, Redshift, DocumentDB), cross-Region replication, resource policies</li>
@@ -498,7 +499,7 @@ const TRACK_SOA_CERT = {
 <li><strong>GuardDuty</strong>: threat detection using CloudTrail, VPC Flow Logs, DNS logs (plus S3, EKS, Lambda, malware protection); findings are not preventive &mdash; route to EventBridge for automated response (isolate instance, revoke keys)</li>
 <li><strong>Inspector</strong>: continual vulnerability scanning for EC2 (via SSM agent), ECR images, and Lambda functions; <strong>Macie</strong>: sensitive data in S3</li>
 <li><strong>Security Hub</strong>: aggregates and prioritises findings from GuardDuty, Inspector, Macie, Config, IAM Access Analyzer, and checks against standards (AWS Foundational Security Best Practices, CIS, PCI DSS). Use a delegated admin and cross-Region aggregation</li>
-<li><strong>AWS Security Agent</strong> (in scope for SOA-C03) automates security review and penetration-test style assessment of applications</li>
+<li><strong>AWS Security Agent</strong> (in scope for SOA-C03; AWS now brands it <em>Continuum for penetration testing</em>): an AI agent that tests applications and source code from design docs, user stories and IaC context, builds threat models, and reports validated vulnerabilities with reproducible proof and fix guidance</li>
 <li><strong>AWS Config</strong> non-compliance + <strong>Trusted Advisor</strong> security checks + <strong>AWS Artifact</strong> compliance reports complete the picture</li>
 </ul><div class="callout tip">
 <span class="callout-icon">✅</span>
@@ -510,12 +511,13 @@ const TRACK_SOA_CERT = {
 <li><a href="https://docs.aws.amazon.com/kms/latest/developerguide/overview.html" target="_blank" rel="noopener">AWS KMS – Developer Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html" target="_blank" rel="noopener">KMS – Key policies</a></li>
 <li><a href="https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html" target="_blank" rel="noopener">AWS Certificate Manager – User Guide</a></li>
+<li><a href="https://docs.aws.amazon.com/acm/latest/userguide/acm-exportable-certificates.html" target="_blank" rel="noopener">ACM – Exportable public certificates</a></li>
 <li><a href="https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html" target="_blank" rel="noopener">AWS Secrets Manager – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html" target="_blank" rel="noopener">Amazon Macie – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html" target="_blank" rel="noopener">Amazon GuardDuty – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/inspector/latest/user/what-is-inspector.html" target="_blank" rel="noopener">Amazon Inspector – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html" target="_blank" rel="noopener">AWS Security Hub – User Guide</a></li>
-<li><a href="https://aws.amazon.com/security-agent/" target="_blank" rel="noopener">AWS Security Agent</a></li>
+<li><a href="https://aws.amazon.com/security-agent/" target="_blank" rel="noopener">AWS Security Agent (Continuum for penetration testing)</a></li>
 </ul>` },
       ]},
       { id: "networking-delivery", title: "05 · Networking and Content Delivery (18%)", color: "var(--c-lime)", items: [
