@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**ops4life Roadmap** — a single-page React app with interactive roadmaps for DevOps, DevSecOps, MLOps, DevOps→MLOps, and two certification tracks (AWS SAP-C02, Azure AZ-104). No build step: React 18 + Babel Standalone are loaded from CDN. Each track's data lives in its own plain (non-Babel) `<script>` file under `tracks/`; the React components live inline in `index.html` as a `<script type="text/babel">` block, transpiled in-browser.
+**ops4life Roadmap** — a single-page React app with interactive roadmaps for DevOps, DevSecOps, MLOps, DevOps→MLOps, and three certification tracks (AWS SAP-C02, Azure AZ-104, AWS SOA-C03). No build step: React 18 + Babel Standalone are loaded from CDN. Each track's data lives in its own plain (non-Babel) `<script>` file under `tracks/`; the React components live inline in `index.html` as a `<script type="text/babel">` block, transpiled in-browser.
 
 Live site: [roadmap.ops4life.com](https://roadmap.ops4life.com)
 
@@ -36,7 +36,7 @@ node -e "require('@babel/core').transformSync(require('fs').readFileSync('/tmp/r
 ### File Structure
 
 - `index.html` — app shell: meta/SEO tags, inline CSS (design tokens + component styles), `<script>` tags loading each `tracks/*.js` file (in `TRACKS` order), then one `<script type="text/babel">` with `const TRACKS = [TRACK_DEVOPS, ...]` assembled from those globals + all React components, then `ReactDOM.createRoot(...).render(<App />)`.
-- `tracks/*.js` — one file per track (`devops.js`, `devsecops.js`, `mlops.js`, `devops-to-mlops.js`, `aws-cert.js`, `az-cert.js`), each a plain (non-Babel) classic `<script>` defining a single top-level `const TRACK_<NAME> = { ... }` object literal (the same shape documented below). Plain top-level `const`/`let` declared in one classic script are visible to scripts loaded after it on the same page — no bundler or ES modules needed, keeping the no-build-step architecture.
+- `tracks/*.js` — one file per track (`devops.js`, `devsecops.js`, `mlops.js`, `devops-to-mlops.js`, `aws-cert.js`, `az-cert.js`, `soa-cert.js`), each a plain (non-Babel) classic `<script>` defining a single top-level `const TRACK_<NAME> = { ... }` object literal (the same shape documented below). Plain top-level `const`/`let` declared in one classic script are visible to scripts loaded after it on the same page — no bundler or ES modules needed, keeping the no-build-step architecture.
 - `favicon.svg` / `favicon.png` — shared favicon.
 - `robots.txt`, `sitemap.xml` — only `/` is listed; there are no other crawlable routes (see Routing below).
 
@@ -74,9 +74,9 @@ const TRACKS = [
 ### Key Components (all in the `<script type="text/babel">` block)
 
 - `App()` — top-level state: active track, view (grid/list), search query, open drawer item, notes (see below). Computes per-track progress/percent and renders `Header`, `TrackPicker` (when no track chosen) or `Hero`+`Board`/`ListView`, `Drawer`, `NotesPanel`, `Feedback`, `Footer`.
-- `TrackPicker` — the "no track selected" landing view (cards for all six tracks).
+- `TrackPicker` — the "no track selected" landing view (cards for all seven tracks).
 - `Board` / `ListView` / `SectionColumn` / `NodeCard` — grid (columns + SVG bezier connectors) vs. mobile list rendering of a track's sections/items.
-- `Drawer` — right-side (bottom-sheet on mobile) detail panel for a clicked item: description, concepts/tools (chips linking to `google.com/search?...&udm=50`, Google's AI-mode search), optional `content` guide embed, resources, tip, mark-as-learning/done buttons. `wide` prop (`75vw` instead of `440px`) is set for the two cert tracks, which have much longer guide content.
+- `Drawer` — right-side (bottom-sheet on mobile) detail panel for a clicked item: description, concepts/tools (chips linking to `google.com/search?...&udm=50`, Google's AI-mode search), optional `content` guide embed, resources, tip, mark-as-learning/done buttons. `wide` prop (`75vw` instead of `440px`) is set for the three cert tracks, which have much longer guide content.
 - `HighlightableText` — renders `item.description` with text-selection support: selecting text shows a floating tooltip (Highlight / Note / AI Search). Highlight and Note both persist to the shared notes store; AI Search opens the same `udm=50` Google AI-mode popup as the concept/tool chips, prefixed with the track title.
 - `NotesPanel` / `NoteItem` — slide-in panel (toggled from the `Notes` header button) listing saved highlights/notes, with "This Track" / "All Tracks" tabs and a delete action. Clicking a note's quote jumps to that item's drawer (switching tracks first if needed).
 - `useStored(key, init)` — the shared `localStorage`-backed `useState` hook; used for per-track progress, the active track id, and the notes array.
@@ -92,7 +92,7 @@ const TRACKS = [
 
 ### Cert Track Guide Content Conventions (`content` field)
 
-The `aws-cert`/`az-cert` tracks' `item.content` HTML (rendered via `dangerouslySetInnerHTML` inside `.guide-embed`, see Design System below) follows two conventions:
+The `aws-cert`/`az-cert`/`soa-cert` tracks' `item.content` HTML (rendered via `dangerouslySetInnerHTML` inside `.guide-embed`, see Design System below) follows two conventions:
 
 - **No inline fact-check/correction callouts.** Don't add a `<div class="callout note">` block that cites "source material," corrects a stale figure, or verifies a claim against docs — that reads as an editorial aside to readers. Instead, when a service/fact needs a citation, add or extend a **References** section: `<h3 id="references">References</h3><ul><li><a href="..." target="_blank" rel="noopener">Service Name – Doc Title</a></li>...</ul>` as the last block in that item's `content` string, one `id="references"` per item.
 - **References list is comprehensive, not just correction-driven.** Every distinct AWS/Amazon service actually discussed in the guide (named in a `<strong>` tag, explained as a concept — not a generic phrase or a DR/pattern name like "Warm Standby") should get one deduplicated link in that guide's References list, capped around 8–12 for guides that mention many services. Use only real `docs.aws.amazon.com` deep-guide URLs you're confident of, or fall back to the stable `aws.amazon.com/<slug>/` overview page rather than guessing a docs path — verify new links resolve (200) before shipping.

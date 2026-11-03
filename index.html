@@ -214,6 +214,7 @@ button{font:inherit;color:inherit}
 <script src="tracks/devops-to-mlops.js"></script>
 <script src="tracks/aws-cert.js"></script>
 <script src="tracks/az-cert.js"></script>
+<script src="tracks/soa-cert.js"></script>
 <script type="text/babel">
 const { useState, useEffect, useLayoutEffect, useRef, useMemo, useCallback } = React;
 
@@ -228,7 +229,7 @@ function useStored(key, init) {
 }
 
 // ── DATA ──────────────────────────────────────────────────────────────
-const TRACKS = [TRACK_DEVOPS, TRACK_DEVSECOPS, TRACK_MLOPS, TRACK_DEVOPS_TO_MLOPS, TRACK_AWS_CERT, TRACK_AZ_CERT];
+const TRACKS = [TRACK_DEVOPS, TRACK_DEVSECOPS, TRACK_MLOPS, TRACK_DEVOPS_TO_MLOPS, TRACK_AWS_CERT, TRACK_AZ_CERT, TRACK_SOA_CERT];
 
 // ── ICONS ─────────────────────────────────────────────────────────────
 const Icon = {
@@ -1532,13 +1533,14 @@ function App() {
   const p3 = useStored(TRACKS[3].storageKey, { learning:{}, done:{} });
   const p4 = useStored(TRACKS[4].storageKey, { learning:{}, done:{} });
   const p5 = useStored(TRACKS[5].storageKey, { learning:{}, done:{} });
+  const p6 = useStored(TRACKS[6].storageKey, { learning:{}, done:{} });
   const progressByTrack = {
     [TRACKS[0].id]: p0[0], [TRACKS[1].id]: p1[0], [TRACKS[2].id]: p2[0], [TRACKS[3].id]: p3[0],
-    [TRACKS[4].id]: p4[0], [TRACKS[5].id]: p5[0],
+    [TRACKS[4].id]: p4[0], [TRACKS[5].id]: p5[0], [TRACKS[6].id]: p6[0],
   };
   const setProgressByTrack = {
     [TRACKS[0].id]: p0[1], [TRACKS[1].id]: p1[1], [TRACKS[2].id]: p2[1], [TRACKS[3].id]: p3[1],
-    [TRACKS[4].id]: p4[1], [TRACKS[5].id]: p5[1],
+    [TRACKS[4].id]: p4[1], [TRACKS[5].id]: p5[1], [TRACKS[6].id]: p6[1],
   };
 
   const track = useMemo(() => trackId ? TRACKS.find(tr => tr.id === trackId) : null, [trackId]);
@@ -1614,7 +1616,7 @@ function App() {
         item={openItem}
         section={openItem ? sectionOf(openItem) : null}
         status={openItem ? statusOf(progress, openItem.id) : "todo"}
-        wide={track?.id === "aws-cert" || track?.id === "az-cert"}
+        wide={track?.id === "aws-cert" || track?.id === "az-cert" || track?.id === "soa-cert"}
         onClose={() => setOpenItem(null)}
         onMark={onMark}
         onPrev={prevItem ? () => setOpenItem(prevItem) : null}
@@ -1738,7 +1740,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(<App />);
   const BOT_NAME = "Otto";
 
   const ALL_STEPS = [
-    { sel: ".picker-grid", title: "Pick a track", text: "Six learning tracks — DevOps, DevSecOps, MLOps, and AWS/Azure cert prep. Click any card to dive in." },
+    { sel: ".picker-grid", title: "Pick a track", text: "Seven learning tracks — DevOps, DevSecOps, MLOps, and AWS/Azure cert prep. Click any card to dive in." },
     { sel: ".header-progress", title: "Track your progress", text: "This badge shows how far you've gotten. Mark items Learning or Done inside a guide to fill it up." },
     { sel: "#rm-notes-btn", title: "Notes & highlights", text: "Select text in any guide to save a highlight or note. Open this panel anytime to review or jump back to them." },
     { sel: ".board-main", title: "Explore the board", text: "Click any node for its full guide — description, concepts, tools, resources, and an AI search shortcut." },
@@ -1757,7 +1759,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(<App />);
   };
 
   const ANSWERS = {
-    about: "Roadmap is ops4life's free interactive learning tracker — six tracks (DevOps, DevSecOps, MLOps, DevOps→MLOps, AWS SAP-C02, Azure AZ-104) with guided topics, resources, and progress tracking, all in your browser.",
+    about: "Roadmap is ops4life's free interactive learning tracker — seven tracks (DevOps, DevSecOps, MLOps, DevOps→MLOps, AWS SAP-C02, Azure AZ-104, AWS SOA-C03) with guided topics, resources, and progress tracking, all in your browser.",
     tracks: "Pick a track to open its board — topics organized into sections. Click any node to open its guide: description, concepts, tools, and resources. Mark items Learning or Done as you go.",
     progress: "Your % complete shows in the header and updates as you mark items Learning/Done. Progress is saved per-track in your browser's local storage — no account needed, but it won't follow you to another device.",
     notes: "Select any text in a guide to Highlight it or add a Note. Open the Notes panel from the header button to review everything you've saved, jump back to it, or filter by This Track / All Tracks.",
