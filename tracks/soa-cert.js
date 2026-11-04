@@ -243,7 +243,7 @@ const TRACK_SOA_CERT = {
 <span class="callout-icon">✅</span>
 <div class="callout-body">
 <strong>Exam Tip</strong>
-<p>Need a <strong>static IP</strong> or TCP/UDP at millions of requests/s &rarr; <strong>NLB</strong>. Need content-based routing, redirects or WAF &rarr; <strong>ALB</strong>. 502 = bad response from target; 503 = no healthy targets; 504 = target timeout.</p>
+<p>Need a <strong>static IP</strong> or TCP/UDP at millions of requests/s &rarr; <strong>NLB</strong>. Need content-based routing, redirects or WAF &rarr; <strong>ALB</strong>. ALB 502 = target closed the connection or sent a malformed response (or a Lambda target errored); 503 = no registered targets; 504 = connection or idle timeout to the target (check NACL ephemeral ports); 460 = client closed the connection before the idle timeout.</p>
 </div>
 </div><h3 id="route53">2.2 Route 53 Health Checks and Failover</h3><ul>
 <li>Health check types: endpoint (HTTP/HTTPS/TCP), <strong>calculated</strong> (combine other checks), and <strong>CloudWatch alarm</strong> based (needed for private resources, since checkers are on the internet)</li>
@@ -334,9 +334,9 @@ const TRACK_SOA_CERT = {
 <li><strong>Nested stacks</strong> reuse templates; <strong>cross-stack references</strong> use exports; <strong>helper scripts</strong> (<code>cfn-init</code>, <code>cfn-signal</code>) with <code>CreationPolicy</code> and <code>WaitCondition</code> make CloudFormation wait for instance bootstrap</li>
 <li><strong>AWS CDK</strong>: define infrastructure in TypeScript/Python/Java/etc.; <code>cdk synth</code> produces CloudFormation, <code>cdk diff</code> previews, <code>cdk deploy</code> deploys; needs a one-time <code>cdk bootstrap</code> per account/Region. L1 = raw resources, L2 = curated constructs, L3 = patterns</li>
 </ul><h4>Stack Failure States</h4><ul>
-<li><code>CREATE_FAILED</code> &rarr; stack rolls back to <code>ROLLBACK_COMPLETE</code> (must be deleted before re-create); disable rollback to debug</li>
+<li><code>CREATE_FAILED</code> &rarr; a failed first create rolls back to <code>ROLLBACK_COMPLETE</code>, which cannot be updated &mdash; delete the (empty) stack and create it again, or use a new name. To debug instead, pick <em>Preserve successfully provisioned resources</em> (disable rollback) so the stack stays in <code>CREATE_FAILED</code> and you can retry or update. <code>UPDATE_ROLLBACK_COMPLETE</code> is different: the stack can be updated again</li>
 <li><code>UPDATE_ROLLBACK_FAILED</code> &rarr; fix the cause (or skip the resource) then <strong>Continue update rollback</strong></li>
-<li><code>DELETE_FAILED</code> typically a non-empty S3 bucket, ENI still attached, or dependency in another stack</li>
+<li><code>DELETE_FAILED</code> typically a non-empty S3 bucket, a security group or ENI still in use, missing delete permissions, or stack termination protection; retry the delete with <code>RetainResources</code> (or <code>FORCE_DELETE_STACK</code>) to skip the stuck resource</li>
 <li>Read the <strong>Events</strong> tab: first failed event holds the root cause (quota, invalid parameter, missing IAM permission, name already exists)</li>
 </ul><div class="callout tip">
 <span class="callout-icon">✅</span>
@@ -350,7 +350,7 @@ const TRACK_SOA_CERT = {
 <li><strong>Permissions</strong>: caller or CloudFormation service role lacks <code>iam:PassRole</code> or resource actions; check CloudTrail for <code>AccessDenied</code></li>
 <li>Resource name collisions, circular dependencies, and wrong parameter types are frequent template errors; validate with <code>cfn-lint</code> / <code>aws cloudformation validate-template</code></li>
 </ul><h3 id="multi-account">1.4 Multi-Region and Multi-Account Provisioning</h3><ul>
-<li><strong>CloudFormation StackSets</strong>: deploy one template to many accounts/Regions; <em>service-managed</em> permissions integrate with Organizations (auto-deploy to new accounts), <em>self-managed</em> uses admin/execution roles</li>
+<li><strong>CloudFormation StackSets</strong>: deploy one template to many accounts/Regions; <em>service-managed</em> permissions integrate with Organizations (auto-deploy to new accounts), <em>self-managed</em> needs IAM administrator and execution roles you create in the administrator and target accounts (works for any account you can create a role in). Service-managed runs from the Organizations management account or a delegated administrator. A StackSet is a Regional resource; control rollout with <em>maximum concurrent accounts</em>, <em>failure tolerance</em> (per Region) and sequential vs parallel Region order, and use <em>retain stacks</em> to delete instances without deleting the stacks</li>
 <li><strong>AWS RAM</strong> shares resources (subnets, Transit Gateway, Route 53 Resolver rules, License Manager configs) without copying them; enable sharing with Organizations</li>
 <li><strong>Control Tower</strong> sets up a landing zone with guardrails; <strong>Service Catalog</strong> offers pre-approved products to teams; both build on Organizations</li>
 </ul><h3 id="strategies">1.5 Deployment Strategies and Third-Party Tools</h3><ul>
@@ -373,10 +373,10 @@ const TRACK_SOA_CERT = {
           concepts: ["Systems Manager", "Patch Manager", "State Manager", "Maintenance Windows", "Parameter Store", "Session Manager", "Lambda triggers", "S3 Event Notifications"], tools: ["Systems Manager", "Lambda", "EventBridge", "S3 Event Notifications", "Step Functions"],
           description: "Systems Manager capabilities for patching and fleet operations, plus event-driven automation with Lambda, S3 events and EventBridge.",
           content: `<h3 id="ssm">2.1 Systems Manager Operational Capabilities</h3><ul>
-<li><strong>Prerequisites</strong>: SSM Agent installed, instance profile with <code>AmazonSSMManagedInstanceCore</code>, outbound HTTPS to SSM endpoints (or VPC endpoints <code>ssm</code>, <code>ssmmessages</code>, <code>ec2messages</code>)</li>
+<li><strong>Prerequisites</strong>: SSM Agent installed, instance profile with <code>AmazonSSMManagedInstanceCore</code>, outbound HTTPS to SSM endpoints (or interface VPC endpoints <code>ssm</code>, <code>ssmmessages</code> and <code>ec2messages</code>, plus an S3 gateway endpoint for agent updates; optional <code>kms</code>, <code>logs</code>, <code>ec2</code> for VSS snapshots). Endpoint security groups must allow 443 from the instances</li>
 <li><strong>Fleet Manager / inventory</strong>: view and collect software and config data; <strong>Hybrid activations</strong> add on-premises servers</li>
 <li><strong>Run Command</strong>: ad-hoc commands across tags/resource groups with rate control. <strong>State Manager</strong>: enforce desired state on a schedule (associations). <strong>Maintenance Windows</strong>: schedule disruptive tasks</li>
-<li><strong>Patch Manager</strong>: patch baselines (approval rules, auto-approval delay), patch groups via tag <code>Patch Group</code>, scan vs scan-and-install, compliance reporting; run in Maintenance Windows</li>
+<li><strong>Patch Manager</strong>: patch baselines (approval rules, auto-approval delay), patch groups via tag <code>Patch Group</code> (or <code>PatchGroup</code>, required if instance tags are exposed in IMDS; one group and one baseline per OS per node; not used with newer patch policies), scan vs scan-and-install, compliance reporting; run in Maintenance Windows</li>
 <li><strong>Session Manager</strong>: browser/CLI shell with no inbound ports, no bastion or SSH keys, IAM-controlled, logged to S3/CloudWatch Logs</li>
 <li><strong>Parameter Store</strong> (plain/SecureString config, free standard tier) and <strong>Secrets Manager</strong> (rotation) for configuration; <strong>OpsCenter</strong> and <strong>Incident Manager</strong> track and respond to issues; <strong>Change Manager</strong> adds approvals</li>
 </ul><div class="callout tip">
@@ -386,7 +386,7 @@ const TRACK_SOA_CERT = {
 <p>Patch a fleet on a schedule with approvals and reports &rarr; <strong>Patch Manager + Maintenance Window</strong>. Keep a setting enforced continuously &rarr; <strong>State Manager</strong>. SSH-less access &rarr; <strong>Session Manager</strong>.</p>
 </div>
 </div><h3 id="event-driven">2.2 Event-Driven Automation</h3><ul>
-<li><strong>Lambda</strong> triggers: S3, SNS, SQS, DynamoDB Streams, Kinesis, EventBridge, API Gateway. Sync vs async invocation: async retries twice by default and supports <strong>DLQ/destinations</strong>; stream/queue triggers retry until data expires unless bisect/on-failure destinations are set</li>
+<li><strong>Lambda</strong> triggers: S3, SNS, SQS, DynamoDB Streams, Kinesis, EventBridge, API Gateway. Sync vs async invocation: async invocation retries a function error twice by default (waits of 1 then 2 minutes), while throttles (429) and 5xx system errors are retried for up to 6 hours; after that Lambda discards the event unless you set a <strong>DLQ or on-failure destination</strong>; events can arrive more than once, so make handlers idempotent; stream/queue triggers retry until data expires unless bisect/on-failure destinations are set</li>
 <li><strong>S3 Event Notifications</strong> send object events (created, removed, restore, replication) to Lambda, SNS, SQS, or EventBridge (richer filtering and more targets). Resource policy on the target must allow S3</li>
 <li>Typical patterns: tag non-compliant resources, snapshot before change, stop idle dev instances on a schedule, quarantine an instance flagged by GuardDuty, remediate Config non-compliance via SSM Automation</li>
 <li><strong>Step Functions</strong> coordinates multi-step workflows with retries, branching and human approval; <strong>SQS</strong> decouples producers and consumers to absorb bursts</li>
@@ -439,7 +439,7 @@ const TRACK_SOA_CERT = {
 <li>Delegated administrator accounts for security services (GuardDuty, Security Hub, Config, Backup) keep the management account clean</li>
 </ul><h3 id="trusted-config">1.4 Trusted Advisor and Compliance Monitoring</h3><ul>
 <li><strong>Trusted Advisor</strong> checks cost, performance, security, fault tolerance, service limits, and operational excellence. Full set of checks needs Business/Enterprise Support; security checks flag open security groups, public S3 buckets, missing MFA on root, exposed access keys. Automate via EventBridge</li>
-<li><strong>AWS Config</strong>: records configuration history and evaluates it against <strong>rules</strong> (managed or custom Lambda/Guard); <strong>conformance packs</strong> bundle rules and remediation for frameworks; <strong>aggregators</strong> give multi-account/Region views; <strong>remediation actions</strong> run SSM Automation documents</li>
+<li><strong>AWS Config</strong>: records configuration history and evaluates it against <strong>rules</strong> (managed or custom Lambda/Guard); <strong>conformance packs</strong> are YAML templates bundling managed/custom rules and remediation actions, deployed as one unit to an account and Region or across an organization (from the management or delegated administrator account), with sample templates for frameworks; <strong>aggregators</strong> give multi-account/Region views; <strong>remediation actions</strong> run SSM Automation documents</li>
 <li>Config is evaluation of <em>state</em> (detective); SCPs and IAM conditions are <em>preventive</em>. Region and service selections are enforced with SCPs and checked with Config</li>
 </ul><div class="callout tip">
 <span class="callout-icon">✅</span>
@@ -496,9 +496,9 @@ const TRACK_SOA_CERT = {
 <p>'Rotate database credentials automatically' &rarr; <strong>Secrets Manager</strong>. 'Simple, low-cost configuration values' &rarr; <strong>Parameter Store</strong>.</p>
 </div>
 </div><h3 id="findings">2.5 Findings and Reports</h3><ul>
-<li><strong>GuardDuty</strong>: threat detection using CloudTrail, VPC Flow Logs, DNS logs (plus S3, EKS, Lambda, malware protection); findings are not preventive &mdash; route to EventBridge for automated response (isolate instance, revoke keys)</li>
-<li><strong>Inspector</strong>: continual vulnerability scanning for EC2 (via SSM agent), ECR images, and Lambda functions; <strong>Macie</strong>: sensitive data in S3</li>
-<li><strong>Security Hub</strong>: aggregates and prioritises findings from GuardDuty, Inspector, Macie, Config, IAM Access Analyzer, and checks against standards (AWS Foundational Security Best Practices, CIS, PCI DSS). Use a delegated admin and cross-Region aggregation</li>
+<li><strong>GuardDuty</strong>: threat detection using CloudTrail, VPC Flow Logs, DNS logs by default, plus optional protection plans (S3, EKS audit logs, RDS login activity, Lambda network activity, Runtime Monitoring, Malware Protection) and Extended Threat Detection for multi-stage attacks; findings are not preventive &mdash; route to EventBridge for automated response (isolate instance, revoke keys)</li>
+<li><strong>Inspector</strong>: continual vulnerability and network-exposure scanning for EC2 instances, ECR images and Lambda functions, re-scanning automatically when packages or new CVEs change; <strong>Macie</strong>: sensitive data in S3</li>
+<li><strong>Security Hub</strong> (the posture-management service is documented as <em>Security Hub CSPM</em>): aggregates and prioritises findings from GuardDuty, Inspector, Macie, Config, IAM Access Analyzer, and checks against standards (AWS Foundational Security Best Practices, CIS, PCI DSS). Most controls need AWS Config recording enabled; it only sees findings generated after you enable it, in the Region where it is enabled. Use a delegated admin and cross-Region aggregation, plus automation rules or EventBridge for response</li>
 <li><strong>AWS Security Agent</strong> (in scope for SOA-C03; AWS now brands it <em>Continuum for penetration testing</em>): an AI agent that tests applications and source code from design docs, user stories and IaC context, builds threat models, and reports validated vulnerabilities with reproducible proof and fix guidance</li>
 <li><strong>AWS Config</strong> non-compliance + <strong>Trusted Advisor</strong> security checks + <strong>AWS Artifact</strong> compliance reports complete the picture</li>
 </ul><div class="callout tip">
@@ -516,7 +516,7 @@ const TRACK_SOA_CERT = {
 <li><a href="https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html" target="_blank" rel="noopener">Amazon Macie – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html" target="_blank" rel="noopener">Amazon GuardDuty – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/inspector/latest/user/what-is-inspector.html" target="_blank" rel="noopener">Amazon Inspector – User Guide</a></li>
-<li><a href="https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html" target="_blank" rel="noopener">AWS Security Hub – User Guide</a></li>
+<li><a href="https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html" target="_blank" rel="noopener">AWS Security Hub CSPM – User Guide</a></li>
 <li><a href="https://aws.amazon.com/security-agent/" target="_blank" rel="noopener">AWS Security Agent (Continuum for penetration testing)</a></li>
 </ul>` },
       ]},
@@ -571,7 +571,7 @@ const TRACK_SOA_CERT = {
 <li><strong>Alias</strong> records (free, work at the zone apex, point at AWS resources, health aware) vs <strong>CNAME</strong> (cannot be used at the apex)</li>
 <li><strong>Route 53 Resolver</strong>: the VPC DNS at <code>.2</code>. For hybrid DNS use <strong>inbound endpoints</strong> (on-premises &rarr; AWS) and <strong>outbound endpoints</strong> + forwarding rules (AWS &rarr; on-premises); share rules with RAM</li>
 <li>Register domains, enable <strong>DNSSEC</strong> signing, and keep domain transfer lock/auto-renew in check</li>
-</ul><h3 id="routing">2.2 Routing Policies and Query Logging</h3><table><thead><tr><th>Policy</th><th>Use</th></tr></thead><tbody><tr><td>Simple</td><td>Single resource, no health checks</td></tr><tr><td>Weighted</td><td>Split traffic by percentage (canary, A/B, migration)</td></tr><tr><td>Latency</td><td>Send users to the Region with lowest latency</td></tr><tr><td>Failover</td><td>Active-passive with health check</td></tr><tr><td>Geolocation</td><td>Route by user country/continent (compliance, localisation); include a default record</td></tr><tr><td>Geoproximity</td><td>Route by location and shift with a bias (Traffic Flow)</td></tr><tr><td>IP-based</td><td>Route by client CIDR ranges</td></tr><tr><td>Multivalue answer</td><td>Return several healthy IPs (not a load balancer substitute)</td></tr></tbody></table><ul>
+</ul><h3 id="routing">2.2 Routing Policies and Query Logging</h3><table><thead><tr><th>Policy</th><th>Use</th></tr></thead><tbody><tr><td>Simple</td><td>Single resource, no health checks</td></tr><tr><td>Weighted</td><td>Split traffic by percentage (canary, A/B, migration)</td></tr><tr><td>Latency</td><td>Send users to the Region with lowest latency</td></tr><tr><td>Failover</td><td>Active-passive with health check</td></tr><tr><td>Geolocation</td><td>Route by user country/continent (compliance, localisation); include a default record</td></tr><tr><td>Geoproximity</td><td>Route by the location of your resources, shifting traffic between locations with a bias</td></tr><tr><td>IP-based</td><td>Route by client CIDR ranges</td></tr><tr><td>Multivalue answer</td><td>Return several healthy IPs (not a load balancer substitute)</td></tr></tbody></table><ul>
 <li><strong>Public DNS query logging</strong> goes to CloudWatch Logs (us-east-1 log group); <strong>Resolver query logging</strong> captures VPC DNS queries to CloudWatch Logs, S3 or Firehose</li>
 <li>Failed resolution: check record exists in the right zone, private zone associated with the VPC, TTL caching, and Resolver rule/forwarding path</li>
 </ul><div class="callout tip">
