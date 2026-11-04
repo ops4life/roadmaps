@@ -97,7 +97,7 @@ const TRACK_SOA_CERT = {
 </div>
 </div><h3 id="ai-ops">2.3 AI-Assisted Operations (new in SOA-C03)</h3><ul>
 <li><strong>AWS DevOps Agent</strong>: an always-available agent for production operations. Starts investigating when an alert fires, triages incidents, and gives root cause analysis and mitigation steps; also reviews past incidents to recommend observability, infrastructure and pipeline improvements, and answers natural-language questions about resource health. Integrates with CloudWatch and third-party observability tools, GitHub/GitLab/Azure DevOps, and ServiceNow/PagerDuty/Slack, and reaches custom tools through MCP servers or A2A</li>
-<li><strong>Kiro</strong>: AWS agentic development tool (spec-driven coding with AI agents); on the exam guide it appears among tools for analysing metrics and automating remediation</li>
+<li><strong>Kiro</strong>: AWS agentic AI development tool (IDE, CLI and web) built around spec-driven development: prompts become requirements, designs and tasks that agents implement. The exam guide lists it among tools for analysing metrics and automating remediation</li>
 <li><strong>Amazon Bedrock</strong> appears in scope for monitoring AI workloads (invocation logging, CloudWatch metrics for model usage)</li>
 <li>Exam focus is the <em>operational pattern</em> (detect &rarr; analyse &rarr; remediate through approved runbooks and least-privilege roles), not model internals</li>
 </ul><h3 id="references">References</h3><ul>
@@ -114,15 +114,15 @@ const TRACK_SOA_CERT = {
           concepts: ["Compute Optimizer", "EBS volume types", "IOPS vs throughput", "Placement groups", "S3 multipart", "Transfer Acceleration", "RDS Performance Insights", "RDS Proxy"], tools: ["Compute Optimizer", "EBS", "S3", "EFS", "FSx", "RDS Performance Insights", "DataSync"],
           description: "Right-size and tune EC2, EBS, S3, shared file storage (EFS/FSx/S3 Files) and RDS using metrics, Compute Optimizer and Performance Insights.",
           content: `<h3 id="ec2-perf">3.1 EC2 and Compute</h3><ul>
-<li><strong>Compute Optimizer</strong> recommends instance types/sizes (EC2, ASG, EBS, Lambda, ECS on Fargate) from 14 days of metrics; memory-based recommendations need the CloudWatch agent</li>
+<li><strong>Compute Optimizer</strong> gives rightsizing and idle-resource recommendations for EC2, ASG, EBS, Lambda, ECS on Fargate, RDS/Aurora, NAT gateways, DynamoDB, ElastiCache and more, from 14 days of CloudWatch metrics (paid enhanced infrastructure metrics extend this to 93 days); EC2 memory-based recommendations need the CloudWatch agent or an external metrics source. Opt in first</li>
 <li>Burstable <code>T</code> instances run on <strong>CPU credits</strong>: exhausted credits throttle to baseline. Fix with <code>unlimited</code> mode or a larger/non-burstable family</li>
 <li><strong>Placement groups</strong>: <em>cluster</em> (single AZ, lowest latency/high throughput), <em>spread</em> (max 7 instances per AZ, isolates hardware failure), <em>partition</em> (large distributed systems like Kafka/HDFS)</li>
 <li>Enhanced networking (ENA), EBS-optimized instances, and <strong>Nitro</strong> families raise network and storage ceilings; match instance EBS bandwidth to the volume you attach</li>
 <li>Use <strong>tags</strong> + Cost Explorer / resource groups to find over-provisioned fleets by team or environment</li>
 </ul><h3 id="ebs-perf">3.2 EBS</h3><h4>Volume Types</h4><ul>
-<li><strong>gp3</strong>: general purpose, baseline 3,000 IOPS / 125 MiB/s, independently scale up to 16,000 IOPS / 1,000 MiB/s. Cheaper than gp2 &mdash; the standard migration target</li>
-<li><strong>gp2</strong>: IOPS tied to size (3 IOPS/GiB), burst credits for small volumes</li>
-<li><strong>io1 / io2 (Block Express)</strong>: provisioned IOPS for latency-sensitive databases; io2 Block Express up to 256,000 IOPS; supports Multi-Attach (io1/io2, same AZ, Nitro)</li>
+<li><strong>gp3</strong>: general purpose, baseline 3,000 IOPS / 125 MiB/s, IOPS and throughput scale independently of size up to 80,000 IOPS / 2,000 MiB/s (1 GiB&ndash;64 TiB). Cheaper than gp2 &mdash; the standard migration target</li>
+<li><strong>gp2</strong>: IOPS tied to size (3 IOPS/GiB), max 16,000 IOPS / 250 MiB/s, burst credits for small volumes</li>
+<li><strong>io1 / io2 Block Express</strong>: provisioned IOPS for latency-sensitive databases. io1 up to 64,000 IOPS / 1,000 MiB/s; io2 Block Express up to 256,000 IOPS / 4,000 MiB/s with 99.999% durability. Both support Multi-Attach (same AZ, Nitro)</li>
 <li><strong>st1</strong> (throughput-optimised HDD, big sequential workloads) and <strong>sc1</strong> (cold HDD, cheapest). HDD volumes cannot be boot volumes</li>
 </ul><ul>
 <li>Monitor <code>VolumeQueueLength</code>, <code>VolumeReadOps/WriteOps</code>, <code>BurstBalance</code> (gp2/st1/sc1), <code>VolumeIdleTime</code></li>
@@ -132,7 +132,7 @@ const TRACK_SOA_CERT = {
 <span class="callout-icon">✅</span>
 <div class="callout-body">
 <strong>Exam Tip</strong>
-<p>Database needs more than 16,000 IOPS or sub-millisecond consistency &rarr; <strong>io2</strong>. Need cheaper with same baseline &rarr; migrate <strong>gp2 to gp3</strong>.</p>
+<p>Needs more than 80,000 IOPS or 2,000 MiB/s, sub-millisecond latency, or 99.999% durability &rarr; <strong>io2 Block Express</strong>. Multi-Attach also requires io1/io2. Need cheaper with same baseline &rarr; migrate <strong>gp2 to gp3</strong>.</p>
 </div>
 </div><h3 id="s3-perf">3.3 S3 Performance and Cost</h3><ul>
 <li>Request rates scale per prefix (3,500 write / 5,500 read per second per prefix); spread keys across prefixes for higher parallelism</li>
@@ -142,7 +142,7 @@ const TRACK_SOA_CERT = {
 <li><strong>AWS DataSync</strong> automates bulk transfer between on-premises NFS/SMB/HDFS and S3/EFS/FSx, with scheduling, verification and bandwidth throttling</li>
 <li><strong>S3 Storage Lens</strong> and <strong>S3 Inventory</strong> expose usage and access patterns for optimisation</li>
 </ul><h3 id="shared-storage">3.4 Shared Storage: EFS, FSx, S3 Files</h3><ul>
-<li><strong>EFS</strong>: managed NFS for Linux, multi-AZ. Modes: <em>General Purpose</em> vs <em>Max I/O</em>; throughput: <em>Elastic</em> (default recommendation), <em>Provisioned</em>, <em>Bursting</em>. <strong>Lifecycle management</strong> moves cold files to IA/Archive; <strong>EFS Replication</strong> for DR</li>
+<li><strong>EFS</strong>: managed NFS for Linux, multi-AZ. Performance modes: <em>General Purpose</em> (default, lowest latency, recommended for all file systems) vs <em>Max I/O</em> (previous generation; not available with Elastic throughput or One Zone); throughput: <em>Elastic</em> (default recommendation), <em>Provisioned</em>, <em>Bursting</em>. <strong>Lifecycle management</strong> moves cold files to IA/Archive; <strong>EFS Replication</strong> for DR</li>
 <li><strong>FSx for Windows File Server</strong>: SMB, Active Directory, DFS. <strong>FSx for Lustre</strong>: HPC/ML, S3 integration. <strong>FSx for NetApp ONTAP</strong>: multi-protocol (NFS/SMB/iSCSI). <strong>FSx for OpenZFS</strong>: NFS, low latency</li>
 <li><strong>Amazon S3 Files</strong>: a shared file system built on EFS that exposes an S3 bucket (or prefix) as files over NFS 4.1/4.2. Mount it through a <em>mount target</em> (one per AZ) on EC2, ECS, EKS or Lambda. Only the active working set (small files, default &lt;128 KiB) is copied to high-performance storage; large reads (&ge;1 MiB) stream straight from S3. Changes sync automatically in both directions and S3 stays the authoritative copy. Supports file locking, POSIX permissions and KMS encryption; no SMB</li>
 <li><strong>Storage Gateway</strong> (File/Volume/Tape) bridges on-premises apps to S3/EBS snapshots</li>
@@ -212,8 +212,8 @@ const TRACK_SOA_CERT = {
 <p>Read-heavy relational workload &rarr; ElastiCache in front of RDS. Read-heavy DynamoDB &rarr; <strong>DAX</strong>. Global static assets &rarr; <strong>CloudFront</strong>.</p>
 </div>
 </div><h3 id="scaling-db">1.3 Scaling Databases</h3><ul>
-<li><strong>RDS</strong>: vertical scaling (change instance class, brief outage unless Multi-AZ), <strong>read replicas</strong> (async; RDS MySQL/MariaDB/PostgreSQL support up to 15, Aurora up to 15 with low lag), <strong>storage autoscaling</strong></li>
-<li><strong>Aurora</strong>: shared distributed storage grows automatically to 128 TiB; up to 15 low-lag replicas with auto scaling; <strong>Aurora Serverless v2</strong> scales ACUs in fine increments; <strong>Global Database</strong> for cross-Region reads and fast DR</li>
+<li><strong>RDS</strong>: vertical scaling (change instance class, brief outage unless Multi-AZ), <strong>read replicas</strong> (async; RDS for MySQL allows up to 15 per source and Aurora up to 15 Aurora Replicas with typically &lt;100 ms lag; RDS does <em>not</em> autoscale read replicas, only Aurora does through Application Auto Scaling), <strong>storage autoscaling</strong></li>
+<li><strong>Aurora</strong>: shared distributed storage grows automatically (up to 256 TiB on current engine versions, 128 TiB on older ones); up to 15 low-lag replicas with auto scaling; <strong>Aurora Serverless v2</strong> scales ACUs in fine increments; <strong>Global Database</strong> for cross-Region reads and fast DR</li>
 <li><strong>DynamoDB</strong>: <em>on-demand</em> (unpredictable traffic) vs <em>provisioned</em> with Application Auto Scaling; throttling = <code>ProvisionedThroughputExceededException</code>. Fix hot partitions with better keys; <strong>global tables</strong> for multi-Region active-active</li>
 <li>RDS read replicas are not a failover target for Multi-AZ (standard) &mdash; they serve read scaling and can be manually promoted</li>
 </ul><h3 id="references">References</h3><ul>
@@ -253,8 +253,8 @@ const TRACK_SOA_CERT = {
 <li>Lower TTL ahead of a planned cutover so DNS changes propagate faster</li>
 </ul><h3 id="multi-az">2.3 Fault-Tolerant Designs</h3><ul>
 <li>Spread ASG/ELB across at least 2 AZs; keep stateless tiers behind the load balancer and store state in managed services (RDS, DynamoDB, ElastiCache, EFS, S3)</li>
-<li><strong>RDS Multi-AZ instance</strong>: synchronous standby, automatic failover (60&ndash;120 s), same endpoint; not readable. <strong>Multi-AZ DB cluster</strong> (2 readable standbys) and <strong>Aurora</strong> fail over faster</li>
-<li>NAT gateway is AZ-scoped: deploy one per AZ with per-AZ route tables. EFS and S3 are multi-AZ by design; EBS is single-AZ</li>
+<li><strong>RDS Multi-AZ instance</strong>: synchronous standby, automatic failover (typically a minute or two), same endpoint; not readable. <strong>Multi-AZ DB cluster</strong> (2 readable standbys) and <strong>Aurora</strong> fail over faster</li>
+<li>A (zonal) NAT gateway lives in one AZ: deploy one per AZ with per-AZ route tables, or use a <strong>regional NAT gateway</strong> that spreads across AZs for you. EFS and S3 are multi-AZ by design; EBS is single-AZ</li>
 <li><strong>Amazon Application Recovery Controller (ARC)</strong>: routing controls and readiness checks to shift traffic safely between AZs/Regions, plus <strong>zonal shift</strong>/autoshift to move traffic away from an impaired AZ</li>
 <li>Test with <strong>AWS Fault Injection Service</strong> and rehearse failover; resilience you never tested is a hypothesis</li>
 </ul><div class="callout tip">
@@ -466,7 +466,7 @@ const TRACK_SOA_CERT = {
 <li><strong>Amazon Macie</strong> discovers and classifies sensitive data (PII, credentials) in S3 and raises findings; use tags and Config rules (<code>required-tags</code>) to enforce classification labels</li>
 <li>Combine with S3 Block Public Access, bucket policies, Object Lock, and lifecycle rules to implement the policy</li>
 </ul><h3 id="kms">2.2 Encryption at Rest (KMS)</h3><ul>
-<li><strong>Key types</strong>: AWS owned keys, AWS managed keys (<code>aws/s3</code>, rotated yearly automatically, cannot edit policy), <strong>customer managed keys (CMKs)</strong> (you control policy, rotation, grants; optional annual automatic rotation or on-demand rotation), imported key material, and external key store</li>
+<li><strong>Key types</strong>: AWS owned keys, AWS managed keys (<code>aws/s3</code>, rotated yearly automatically, cannot edit policy), <strong>customer managed keys (CMKs)</strong> (you control policy and grants; optional automatic rotation every 365 days by default with a configurable rotation period, plus on-demand rotation; both only for symmetric keys with KMS-generated or imported material), imported key material, and external key store</li>
 <li>Access = <strong>key policy</strong> (required; root account enabling IAM policies) + IAM policy/<strong>grants</strong>. Cross-account use needs both the key policy and the other account's IAM policy</li>
 <li><strong>Envelope encryption</strong>: KMS generates a data key; the data key encrypts data and is stored encrypted next to it. KMS API request limit leads to throttling &rarr; use <strong>S3 Bucket Keys</strong> or cache data keys</li>
 <li>S3 options: SSE-S3, SSE-KMS, SSE-C, DSSE-KMS; default encryption on all new objects. EBS, RDS, EFS, DynamoDB, Redshift encrypt at creation &mdash; to encrypt an existing unencrypted EBS/RDS copy the snapshot with a KMS key and restore</li>
@@ -529,7 +529,7 @@ const TRACK_SOA_CERT = {
 <li><strong>Egress-only internet gateway</strong>: outbound-only IPv6 (NAT equivalent for IPv6). VPC CIDR /16 to /28; AWS reserves 5 IPs per subnet; add secondary CIDRs when you run out</li>
 <li><strong>Security groups</strong>: stateful, allow rules only, evaluated as a whole, attached to ENIs, can reference other security groups. <strong>Network ACLs</strong>: stateless, allow and deny, numbered rules evaluated in order, per subnet; need ephemeral ports (1024&ndash;65535) for return traffic</li>
 <li>DHCP options, DNS resolution (<code>enableDnsSupport</code>, <code>enableDnsHostnames</code>), <strong>IPAM</strong> for planning and tracking IP space across accounts and Regions</li>
-<li>NAT gateway vs <strong>NAT instance</strong>: gateway is managed, scales to 100 Gbps, no security group; instance needs source/dest check disabled and is self-managed</li>
+<li>NAT gateway vs <strong>NAT instance</strong>: gateway is managed, scales automatically, no security group; instance needs source/dest check disabled and is self-managed. NAT gateway types: <em>public</em> (needs an Elastic IP) or <em>private</em> (to other VPCs/on-premises); availability modes: <em>zonal</em> (single AZ in a public subnet) or <em>regional</em> (one NAT ID that expands across AZs automatically, no public subnet needed, no private NAT)</li>
 </ul><div class="callout tip">
 <span class="callout-icon">✅</span>
 <div class="callout-body">
@@ -539,7 +539,7 @@ const TRACK_SOA_CERT = {
 </div><h3 id="private">1.2 Private Connectivity</h3><ul>
 <li><strong>Gateway endpoints</strong> (S3 and DynamoDB): free, route-table entry via prefix list, endpoint policy. <strong>Interface endpoints</strong> (<strong>PrivateLink</strong>): ENI with private IP in your subnet for most other services or your own NLB-fronted service; hourly + data cost; enable private DNS</li>
 <li><strong>VPC peering</strong>: one-to-one, non-transitive, no overlapping CIDRs, needs routes on both sides (cross-Region and cross-account supported)</li>
-<li><strong>Transit Gateway</strong>: hub-and-spoke for many VPCs and on-premises (attachments, route tables, peering between TGWs, RAM sharing). <strong>Site-to-Site VPN</strong> (IPsec, up to 1.25 Gbps per tunnel), <strong>Direct Connect</strong> (dedicated private link), <strong>Client VPN</strong> (remote users)</li>
+<li><strong>Transit Gateway</strong>: hub-and-spoke for many VPCs and on-premises (attachments, route tables, peering between TGWs, RAM sharing). <strong>Site-to-Site VPN</strong> (IPsec, two tunnels per connection, up to 1.25 Gbps per tunnel; Large Bandwidth Tunnels reach 5 Gbps on Transit Gateway/Cloud WAN attachments), <strong>Direct Connect</strong> (dedicated private link), <strong>Client VPN</strong> (remote users)</li>
 <li>S3 traffic from private subnets through a gateway endpoint avoids NAT data processing charges</li>
 </ul><h3 id="protection">1.3 Network Protection Services (Audit)</h3><ul>
 <li><strong>AWS WAF</strong>: L7 web ACLs on CloudFront, ALB, API Gateway, AppSync (managed rule groups, rate-based rules, geo, IP sets, bot control)</li>
