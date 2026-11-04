@@ -2,7 +2,7 @@ const TRACK_SOA_CERT = {
     id: "soa-cert", code: "SOA-CERT", title: "SOA-C03",
     tagline: "SOA-C03 — CloudOps Engineer Associate.",
     blurb: "A condensed cheatsheet, not a full study guide — the exam's five domains (monitoring & performance, reliability, automation, security, networking) for quick review of day-to-day AWS operations, not deep-dive teaching.",
-    examGuideUrl: "https://docs.aws.amazon.com/aws-certification/latest/cloudops-engineer-associate-03/",
+    examGuideUrl: "https://docs.aws.amazon.com/aws-certification/latest/sysops-administrator-associate-03/",
     storageKey: "ops4life:soa-cert", accent: "var(--c-purple)",
     sections: [
       { id: "monitoring-logging", title: "01 · Monitoring, Logging, Analysis, Remediation and Performance Optimization (22%)", color: "var(--c-purple)", items: [
@@ -17,7 +17,7 @@ const TRACK_SOA_CERT = {
 <li><strong>Embedded Metric Format (EMF)</strong>: emit metrics from structured logs (Lambda, containers)</li>
 </ul><h4>Alarm States and Actions</h4><ul>
 <li>States: <code>OK</code>, <code>ALARM</code>, <code>INSUFFICIENT_DATA</code></li>
-<li><strong>Treat missing data</strong> setting: <code>notBreaching</code>, <code>breaching</code>, <code>ignore</code>, <code>missing</code>. Wrong choice is a classic cause of alarms stuck in <code>INSUFFICIENT_DATA</code></li>
+<li><strong>Treat missing data</strong> setting: <code>notBreaching</code>, <code>breaching</code>, <code>ignore</code>, <code>missing</code> (the default: all-missing data &rarr; <code>INSUFFICIENT_DATA</code>). Wrong choice is a classic cause of alarms stuck in <code>INSUFFICIENT_DATA</code></li>
 <li>Actions: SNS topic, Auto Scaling policy, EC2 actions (stop/terminate/reboot/recover), Systems Manager OpsItem/incident, or EventBridge</li>
 <li><strong>Composite alarms</strong>: combine alarms with <code>AND/OR/NOT</code> to cut alarm noise; only the composite notifies</li>
 <li><strong>Anomaly detection</strong> alarms use an ML band instead of a static threshold; <strong>Metric math</strong> combines metrics (e.g. error rate = errors / requests)</li>
@@ -116,7 +116,7 @@ const TRACK_SOA_CERT = {
           content: `<h3 id="ec2-perf">3.1 EC2 and Compute</h3><ul>
 <li><strong>Compute Optimizer</strong> gives rightsizing and idle-resource recommendations for EC2, ASG, EBS, Lambda, ECS on Fargate, RDS/Aurora, NAT gateways, DynamoDB, ElastiCache and more, from 14 days of CloudWatch metrics (paid enhanced infrastructure metrics extend this to 93 days); EC2 memory-based recommendations need the CloudWatch agent or an external metrics source. Opt in first</li>
 <li>Burstable <code>T</code> instances run on <strong>CPU credits</strong>: exhausted credits throttle to baseline. Fix with <code>unlimited</code> mode or a larger/non-burstable family</li>
-<li><strong>Placement groups</strong>: <em>cluster</em> (single AZ, lowest latency/high throughput), <em>spread</em> (max 7 instances per AZ, isolates hardware failure), <em>partition</em> (large distributed systems like Kafka/HDFS)</li>
+<li><strong>Placement groups</strong>: <em>cluster</em> (single AZ, lowest latency/high throughput), <em>spread</em> (max 7 running instances per AZ, isolates hardware failure), <em>partition</em> (max 7 partitions per AZ, separate racks per partition; large distributed systems like Kafka/HDFS)</li>
 <li>Enhanced networking (ENA), EBS-optimized instances, and <strong>Nitro</strong> families raise network and storage ceilings; match instance EBS bandwidth to the volume you attach</li>
 <li>Use <strong>tags</strong> + Cost Explorer / resource groups to find over-provisioned fleets by team or environment</li>
 </ul><h3 id="ebs-perf">3.2 EBS</h3><h4>Volume Types</h4><ul>
@@ -153,7 +153,7 @@ const TRACK_SOA_CERT = {
 <p>Windows + SMB + AD = <strong>FSx for Windows</strong>. Linux shared NFS across AZs = <strong>EFS</strong>. HPC with S3 backing = <strong>FSx for Lustre</strong>.</p>
 </div>
 </div><h3 id="rds-perf">3.5 RDS and Aurora Performance</h3><ul>
-<li><strong>Performance Insights</strong>: DB load (average active sessions) broken down by wait, SQL, host, user. Spot top SQL and waits; proactive recommendations flag likely issues</li>
+<li><strong>CloudWatch Database Insights</strong> (expands RDS Performance Insights): DB load (average active sessions) broken down by wait, SQL, host, user. Spot top SQL and waits; proactive recommendations flag likely issues</li>
 <li><strong>Enhanced Monitoring</strong> gives OS-level metrics at up to 1 s granularity; CloudWatch gives hypervisor-level metrics</li>
 <li>Key metrics: <code>CPUUtilization</code>, <code>FreeableMemory</code>, <code>DatabaseConnections</code>, <code>ReadIOPS/WriteIOPS</code>, <code>ReplicaLag</code>, <code>FreeStorageSpace</code></li>
 <li><strong>RDS Proxy</strong>: pools and shares connections, which stops Lambda and spiky clients exhausting <code>max_connections</code>, and speeds failover</li>
@@ -162,7 +162,7 @@ const TRACK_SOA_CERT = {
 <span class="callout-icon">✅</span>
 <div class="callout-body">
 <strong>Exam Tip</strong>
-<p>'Too many connections' from Lambda or autoscaled web tier &rarr; <strong>RDS Proxy</strong>. 'Which query is slow?' &rarr; <strong>Performance Insights</strong>.</p>
+<p>'Too many connections' from Lambda or autoscaled web tier &rarr; <strong>RDS Proxy</strong>. 'Which query is slow?' &rarr; <strong>Database Insights / Performance Insights</strong>.</p>
 </div>
 </div><h3 id="references">References</h3><ul>
 <li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/what-is-compute-optimizer.html" target="_blank" rel="noopener">AWS Compute Optimizer – User Guide</a></li>
@@ -174,7 +174,7 @@ const TRACK_SOA_CERT = {
 <li><a href="https://docs.aws.amazon.com/efs/latest/ug/whatisefs.html" target="_blank" rel="noopener">Amazon EFS – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/fsx/" target="_blank" rel="noopener">Amazon FSx</a></li>
 <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-files.html" target="_blank" rel="noopener">Amazon S3 Files</a></li>
-<li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_PerfInsights.html" target="_blank" rel="noopener">RDS – Performance Insights</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_PerfInsights.html" target="_blank" rel="noopener">RDS – Database Insights</a></li>
 <li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.html" target="_blank" rel="noopener">Amazon RDS Proxy</a></li>
 </ul>` },
       ]},
@@ -438,7 +438,7 @@ const TRACK_SOA_CERT = {
 <li><strong>Control Tower</strong> automates a multi-account landing zone with preventive (SCP) and detective (Config) guardrails</li>
 <li>Delegated administrator accounts for security services (GuardDuty, Security Hub, Config, Backup) keep the management account clean</li>
 </ul><h3 id="trusted-config">1.4 Trusted Advisor and Compliance Monitoring</h3><ul>
-<li><strong>Trusted Advisor</strong> checks cost, performance, security, fault tolerance, service limits, and operational excellence. Full set of checks needs Business/Enterprise Support; security checks flag open security groups, public S3 buckets, missing MFA on root, exposed access keys. Automate via EventBridge</li>
+<li><strong>Trusted Advisor</strong> checks cost, performance, security, fault tolerance, service limits, and operational excellence. Full set of checks needs Business Support+, Enterprise Support or Unified Operations (Basic Support: service limits plus selected security and fault-tolerance checks; Developer and Business plans are being discontinued 1 Jan 2027); security checks flag open security groups, public S3 buckets, missing MFA on root, exposed access keys. Automate via EventBridge</li>
 <li><strong>AWS Config</strong>: records configuration history and evaluates it against <strong>rules</strong> (managed or custom Lambda/Guard); <strong>conformance packs</strong> are YAML templates bundling managed/custom rules and remediation actions, deployed as one unit to an account and Region or across an organization (from the management or delegated administrator account), with sample templates for frameworks; <strong>aggregators</strong> give multi-account/Region views; <strong>remediation actions</strong> run SSM Automation documents</li>
 <li>Config is evaluation of <em>state</em> (detective); SCPs and IAM conditions are <em>preventive</em>. Region and service selections are enforced with SCPs and checked with Config</li>
 </ul><div class="callout tip">
@@ -600,7 +600,7 @@ const TRACK_SOA_CERT = {
 <li><a href="https://docs.aws.amazon.com/global-accelerator/latest/dg/what-is-global-accelerator.html" target="_blank" rel="noopener">AWS Global Accelerator</a></li>
 </ul>` },
         { id: "d5-troubleshoot", label: "Troubleshoot Network Connectivity (Task 5.3)", type: "recommended",
-          concepts: ["Reachability Analyzer", "VPC Flow Logs", "ELB access logs", "Cache hit ratio", "Site-to-Site VPN", "Direct Connect", "Network Monitor", "Internet Monitor"], tools: ["VPC Reachability Analyzer", "VPC Flow Logs", "CloudWatch Internet Monitor", "Network Monitor", "CloudFront logs"],
+          concepts: ["Reachability Analyzer", "VPC Flow Logs", "ELB access logs", "Cache hit ratio", "Site-to-Site VPN", "Direct Connect", "Network Synthetic Monitor", "Internet Monitor"], tools: ["VPC Reachability Analyzer", "VPC Flow Logs", "CloudWatch Internet Monitor", "Network Monitor", "CloudFront logs"],
           description: "Systematic VPC troubleshooting, reading flow/ELB/WAF/CloudFront logs, CloudFront caching issues, hybrid connectivity, and CloudWatch network monitoring.",
           content: `<h3 id="vpc-ts">3.1 Troubleshoot VPC Configurations</h3><ul>
 <li>Work through the path in order: <strong>source SG outbound</strong> &rarr; <strong>source subnet NACL outbound</strong> &rarr; <strong>route table</strong> (IGW/NAT/TGW/peering/endpoint) &rarr; <strong>destination NACL inbound</strong> &rarr; <strong>destination SG inbound</strong> &rarr; OS firewall / app listening</li>
@@ -634,7 +634,7 @@ const TRACK_SOA_CERT = {
 <li>On-premises name resolution failing &rarr; Route 53 Resolver inbound/outbound endpoints and forwarding rules, plus firewalls allowing UDP/TCP 53</li>
 </ul><h3 id="cw-network">3.5 CloudWatch Network Monitoring</h3><ul>
 <li><strong>CloudWatch Internet Monitor</strong>: user-experience internet health (performance and availability) for your applications by city/ISP</li>
-<li><strong>CloudWatch Network Monitor</strong>: synthetic probes (TCP/ICMP) from your VPC subnets to on-premises endpoints for hybrid-network latency and packet loss</li>
+<li><strong>CloudWatch Network Synthetic Monitor</strong>: fully managed, agentless probes from a VPC subnet to on-premises IPs for hybrid-network latency and packet loss; a network health indicator (0 or 100) shows whether degradation is inside AWS</li>
 <li><strong>Synthetics canaries</strong> test endpoints/APIs on a schedule; <strong>Network Flow Monitor</strong> shows workload network performance between resources; use alarms on the metrics to notify via SNS</li>
 </ul><h3 id="references">References</h3><ul>
 <li><a href="https://docs.aws.amazon.com/vpc/latest/reachability/what-is-reachability-analyzer.html" target="_blank" rel="noopener">VPC Reachability Analyzer</a></li>
@@ -645,7 +645,7 @@ const TRACK_SOA_CERT = {
 <li><a href="https://docs.aws.amazon.com/vpn/latest/s2svpn/Troubleshooting.html" target="_blank" rel="noopener">Site-to-Site VPN – Troubleshooting</a></li>
 <li><a href="https://docs.aws.amazon.com/directconnect/latest/UserGuide/Welcome.html" target="_blank" rel="noopener">AWS Direct Connect – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-InternetMonitor.html" target="_blank" rel="noopener">CloudWatch Internet Monitor</a></li>
-<li><a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/what-is-network-monitor.html" target="_blank" rel="noopener">CloudWatch Network Monitor</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/what-is-network-monitor.html" target="_blank" rel="noopener">CloudWatch Network Synthetic Monitor</a></li>
 </ul>` },
       ]},
     ],
