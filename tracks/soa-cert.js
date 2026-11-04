@@ -6,7 +6,7 @@ const TRACK_SOA_CERT = {
     storageKey: "ops4life:soa-cert", accent: "var(--c-purple)",
     sections: [
       { id: "monitoring-logging", title: "01 · Monitoring, Logging, Analysis, Remediation and Performance Optimization (22%)", color: "var(--c-purple)", items: [
-        { id: "d1-metrics-alarms", label: "Metrics, Alarms and Filters (Task 1.1)", type: "recommended",
+        { id: "d1-metrics-alarms", label: "Metrics, Alarms and Filters", type: "recommended",
           concepts: ["CloudWatch metrics", "Composite alarms", "Metric filters", "Logs Insights", "CloudWatch agent", "CloudTrail", "SNS"], tools: ["CloudWatch", "CloudTrail", "Managed Service for Prometheus", "SNS"],
           description: "CloudWatch metrics/logs/alarms/dashboards, the CloudWatch agent on EC2/ECS/EKS, CloudTrail, Managed Prometheus and SNS notifications.",
           content: `<h3 id="cw-basics">1.1 CloudWatch Metrics, Logs and Alarms</h3><h4>Core Building Blocks</h4><ul>
@@ -79,7 +79,7 @@ const TRACK_SOA_CERT = {
 <li><a href="https://docs.aws.amazon.com/xray/latest/devguide/aws-xray.html" target="_blank" rel="noopener">AWS X-Ray – Developer Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/sns/latest/dg/welcome.html" target="_blank" rel="noopener">Amazon SNS – Developer Guide</a></li>
 </ul>` },
-        { id: "d1-remediation", label: "Remediate with Events and Automation (Task 1.2)", type: "recommended",
+        { id: "d1-remediation", label: "Remediate with Events and Automation", type: "recommended",
           concepts: ["EventBridge rules", "Event bus", "Input transformer", "SSM Automation", "Runbooks", "Auto-remediation", "DevOps Agent"], tools: ["EventBridge", "Systems Manager Automation", "Lambda", "AWS DevOps Agent", "Kiro"],
           description: "Analyse metrics, route events through EventBridge, run Systems Manager Automation runbooks, and use AI-assisted ops tools (AWS DevOps Agent, Kiro).",
           content: `<h3 id="eventbridge">2.1 EventBridge: Route, Enrich, Deliver</h3><ul>
@@ -131,7 +131,7 @@ const TRACK_SOA_CERT = {
 <li><a href="https://kiro.dev/" target="_blank" rel="noopener">Kiro</a></li>
 <li><a href="https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html" target="_blank" rel="noopener">Amazon Bedrock – User Guide</a></li>
 </ul>` },
-        { id: "d1-performance", label: "Performance Optimization (Task 1.3)", type: "recommended",
+        { id: "d1-performance", label: "Performance Optimization", type: "recommended",
           concepts: ["Compute Optimizer", "EBS volume types", "IOPS vs throughput", "Placement groups", "S3 multipart", "Transfer Acceleration", "RDS Performance Insights", "RDS Proxy"], tools: ["Compute Optimizer", "EBS", "S3", "EFS", "FSx", "RDS Performance Insights", "DataSync"],
           description: "Right-size and tune EC2, EBS, S3, shared file storage (EFS/FSx/S3 Files) and RDS using metrics, Compute Optimizer and Performance Insights.",
           content: `<h3 id="ec2-perf">3.1 EC2 and Compute</h3><ul>
@@ -210,7 +210,7 @@ const TRACK_SOA_CERT = {
 </ul>` },
       ]},
       { id: "reliability-continuity", title: "02 · Reliability and Business Continuity (22%)", color: "var(--c-teal)", items: [
-        { id: "d2-scalability", label: "Scalability and Elasticity (Task 2.1)", type: "recommended",
+        { id: "d2-scalability", label: "Scalability and Elasticity", type: "recommended",
           concepts: ["Auto Scaling policies", "Target tracking", "Scheduled scaling", "Warm pools", "ElastiCache", "CloudFront", "DynamoDB capacity", "Aurora Serverless v2"], tools: ["EC2 Auto Scaling", "CloudFront", "ElastiCache", "DynamoDB", "Aurora"],
           description: "EC2 Auto Scaling and other scaling mechanisms, caching with CloudFront and ElastiCache, and scaling RDS, Aurora and DynamoDB.",
           content: `<h3 id="scaling-compute">1.1 Scaling Compute</h3><ul>
@@ -262,7 +262,7 @@ const TRACK_SOA_CERT = {
 <li><a href="https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html" target="_blank" rel="noopener">Amazon Aurora – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/capacity-mode.html" target="_blank" rel="noopener">DynamoDB – Read/write capacity mode</a></li>
 </ul>` },
-        { id: "d2-ha", label: "Highly Available and Resilient Environments (Task 2.2)", type: "recommended",
+        { id: "d2-ha", label: "Highly Available and Resilient Environments", type: "recommended",
           concepts: ["ELB types", "Health checks", "Cross-zone load balancing", "Route 53 failover", "Multi-AZ", "Fault tolerance", "Application Recovery Controller"], tools: ["Elastic Load Balancing", "Route 53", "Application Recovery Controller", "RDS Multi-AZ"],
           description: "ELB and Route 53 health checks, Multi-AZ designs, and Application Recovery Controller for fault-tolerant architectures.",
           content: `<h3 id="elb">2.1 Elastic Load Balancing</h3><ul>
@@ -313,7 +313,7 @@ const TRACK_SOA_CERT = {
 <li><a href="https://docs.aws.amazon.com/r53recovery/latest/dg/what-is-route-53-recovery.html" target="_blank" rel="noopener">Amazon Application Recovery Controller</a></li>
 <li><a href="https://aws.amazon.com/fis/" target="_blank" rel="noopener">AWS Fault Injection Service</a></li>
 </ul>` },
-        { id: "d2-backup-dr", label: "Backup, Restore and Disaster Recovery (Task 2.3)", type: "recommended",
+        { id: "d2-backup-dr", label: "Backup, Restore and Disaster Recovery", type: "recommended",
           concepts: ["AWS Backup", "Backup plans", "Point-in-time restore", "RTO and RPO", "S3 versioning", "Pilot light", "Warm standby", "Cross-Region backup"], tools: ["AWS Backup", "RDS", "S3", "DynamoDB", "EBS snapshots"],
           description: "AWS Backup, database restore methods against RTO/RPO, versioning, and the four DR strategies.",
           content: `<h3 id="backup">3.1 Automating Backups</h3><ul>
@@ -367,7 +367,7 @@ const TRACK_SOA_CERT = {
 </ul>` },
       ]},
       { id: "deployment-automation", title: "03 · Deployment, Provisioning and Automation (22%)", color: "var(--c-orange)", items: [
-        { id: "d3-provisioning", label: "Provision and Maintain Cloud Resources (Task 3.1)", type: "recommended",
+        { id: "d3-provisioning", label: "Provision and Maintain Cloud Resources", type: "recommended",
           concepts: ["EC2 Image Builder", "CloudFormation", "Change sets", "Drift detection", "StackSets", "AWS CDK", "AWS RAM", "Blue/green deployment"], tools: ["EC2 Image Builder", "CloudFormation", "AWS CDK", "StackSets", "AWS RAM", "Terraform", "Git"],
           description: "AMIs and Image Builder, CloudFormation and CDK, deployment troubleshooting, StackSets and RAM, deployment strategies, and Terraform/Git.",
           content: `<h3 id="ami">1.1 AMIs and Container Images</h3><ul>
@@ -423,7 +423,7 @@ const TRACK_SOA_CERT = {
 <li><a href="https://docs.aws.amazon.com/controltower/latest/userguide/what-is-control-tower.html" target="_blank" rel="noopener">AWS Control Tower</a></li>
 <li><a href="https://docs.aws.amazon.com/servicecatalog/latest/adminguide/introduction.html" target="_blank" rel="noopener">AWS Service Catalog</a></li>
 </ul>` },
-        { id: "d3-automation", label: "Automate Management of Existing Resources (Task 3.2)", type: "recommended",
+        { id: "d3-automation", label: "Automate Management of Existing Resources", type: "recommended",
           concepts: ["Systems Manager", "Patch Manager", "State Manager", "Maintenance Windows", "Parameter Store", "Session Manager", "Lambda triggers", "S3 Event Notifications"], tools: ["Systems Manager", "Lambda", "EventBridge", "S3 Event Notifications", "Step Functions"],
           description: "Systems Manager capabilities for patching and fleet operations, plus event-driven automation with Lambda, S3 events and EventBridge.",
           content: `<h3 id="ssm">2.1 Systems Manager Operational Capabilities</h3><ul>
@@ -467,7 +467,7 @@ const TRACK_SOA_CERT = {
 </ul>` },
       ]},
       { id: "security-compliance", title: "04 · Security and Compliance (16%)", color: "var(--c-pink)", items: [
-        { id: "d4-iam-governance", label: "Security and Compliance Tools and Policies (Task 4.1)", type: "recommended",
+        { id: "d4-iam-governance", label: "Security and Compliance Tools and Policies", type: "recommended",
           concepts: ["IAM policies", "Roles and STS", "Permission boundaries", "SCPs", "IAM Identity Center", "Access Analyzer", "Policy simulator", "AWS Config"], tools: ["IAM", "IAM Access Analyzer", "Organizations", "IAM Identity Center", "Trusted Advisor", "AWS Config"],
           description: "IAM features, access troubleshooting, multi-account governance with Organizations and SCPs, Trusted Advisor, and continuous compliance with AWS Config.",
           content: `<h3 id="iam">1.1 IAM Features</h3><ul>
@@ -520,7 +520,7 @@ const TRACK_SOA_CERT = {
 <li><a href="https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html" target="_blank" rel="noopener">AWS Config – Developer Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/config/latest/developerguide/conformance-packs.html" target="_blank" rel="noopener">AWS Config – Conformance packs</a></li>
 </ul>` },
-        { id: "d4-data-protection", label: "Protect Data and Infrastructure (Task 4.2)", type: "recommended",
+        { id: "d4-data-protection", label: "Protect Data and Infrastructure", type: "recommended",
           concepts: ["Data classification", "KMS keys", "Envelope encryption", "ACM certificates", "Secrets Manager", "Security Hub", "GuardDuty", "Inspector"], tools: ["KMS", "ACM", "Secrets Manager", "Macie", "GuardDuty", "Security Hub", "Inspector"],
           description: "Data classification, KMS encryption at rest, ACM encryption in transit, secrets storage, and security findings from Security Hub, GuardDuty, Inspector and Config.",
           content: `<h3 id="classification">2.1 Data Classification</h3><ul>
@@ -587,7 +587,7 @@ const TRACK_SOA_CERT = {
 </ul>` },
       ]},
       { id: "networking-delivery", title: "05 · Networking and Content Delivery (18%)", color: "var(--c-lime)", items: [
-        { id: "d5-vpc", label: "Networking Features and Connectivity (Task 5.1)", type: "recommended",
+        { id: "d5-vpc", label: "Networking Features and Connectivity", type: "recommended",
           concepts: ["VPC", "Route tables", "Security groups vs NACLs", "NAT gateway", "VPC endpoints", "PrivateLink", "VPC peering", "Transit Gateway"], tools: ["VPC", "NAT gateway", "VPC endpoints", "PrivateLink", "Transit Gateway", "WAF", "Network Firewall"],
           description: "VPC design (subnets, routes, NACLs, security groups, NAT/IGW), private connectivity with endpoints/PrivateLink/peering, network protection services and cost optimisation.",
           content: `<h3 id="vpc">1.1 Configure a VPC</h3><ul>
@@ -636,7 +636,7 @@ const TRACK_SOA_CERT = {
 <li><a href="https://docs.aws.amazon.com/network-firewall/latest/developerguide/what-is-aws-network-firewall.html" target="_blank" rel="noopener">AWS Network Firewall</a></li>
 <li><a href="https://docs.aws.amazon.com/vpc/latest/ipam/what-it-is-ipam.html" target="_blank" rel="noopener">Amazon VPC IP Address Manager</a></li>
 </ul>` },
-        { id: "d5-dns-cdn", label: "Domains, DNS and Content Delivery (Task 5.2)", type: "recommended",
+        { id: "d5-dns-cdn", label: "Domains, DNS and Content Delivery", type: "recommended",
           concepts: ["Hosted zones", "Routing policies", "Route 53 Resolver", "Alias records", "Query logging", "CloudFront", "Origin access control", "Global Accelerator"], tools: ["Route 53", "Route 53 Resolver", "CloudFront", "Global Accelerator"],
           description: "Route 53 hosted zones, Resolver and hybrid DNS, routing policies, query logging, CloudFront and Global Accelerator.",
           content: `<h3 id="dns">2.1 Configure DNS</h3><ul>
@@ -675,7 +675,7 @@ const TRACK_SOA_CERT = {
 <li><a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html" target="_blank" rel="noopener">CloudFront – Restrict access to an S3 origin (OAC)</a></li>
 <li><a href="https://docs.aws.amazon.com/global-accelerator/latest/dg/what-is-global-accelerator.html" target="_blank" rel="noopener">AWS Global Accelerator</a></li>
 </ul>` },
-        { id: "d5-troubleshoot", label: "Troubleshoot Network Connectivity (Task 5.3)", type: "recommended",
+        { id: "d5-troubleshoot", label: "Troubleshoot Network Connectivity", type: "recommended",
           concepts: ["Reachability Analyzer", "VPC Flow Logs", "ELB access logs", "Cache hit ratio", "Site-to-Site VPN", "Direct Connect", "Network Synthetic Monitor", "Internet Monitor"], tools: ["VPC Reachability Analyzer", "VPC Flow Logs", "CloudWatch Internet Monitor", "Network Monitor", "CloudFront logs"],
           description: "Systematic VPC troubleshooting, reading flow/ELB/WAF/CloudFront logs, CloudFront caching issues, hybrid connectivity, and CloudWatch network monitoring.",
           content: `<h3 id="vpc-ts">3.1 Troubleshoot VPC Configurations</h3><ul>
