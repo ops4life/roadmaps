@@ -1618,7 +1618,11 @@ function App() {
         status={openItem ? statusOf(progress, openItem.id) : "todo"}
         wide={track?.id === "aws-cert" || track?.id === "az-cert" || track?.id === "soa-cert"}
         onClose={() => setOpenItem(null)}
-        onMark={onMark}
+        onMark={(id, kind) => {
+          const becomingDone = kind === "done" && statusOf(progress, id) !== "done";
+          onMark(id, kind);
+          if (becomingDone && nextItem) setOpenItem(nextItem);
+        }}
         onPrev={prevItem ? () => setOpenItem(prevItem) : null}
         onNext={nextItem ? () => setOpenItem(nextItem) : null}
         pageKey={track?.id} pageLabel={track?.title}
