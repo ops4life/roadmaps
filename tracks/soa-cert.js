@@ -69,6 +69,12 @@ const TRACK_SOA_CERT = {
 <li>Scheduled scripts that check endpoints/APIs: <strong>CloudWatch Synthetics canaries</strong></li>
 <li>X-Ray: <strong>ALBs add the X-Amzn-Trace-Id header but do not send data to X-Ray</strong> and do not appear as a service-map node</li>
 <li>EC2 <strong>status checks are built in and cannot be disabled or deleted</strong>; custom monitoring scripts supplement them</li>
+<li>Classic Load Balancer requests dropped (<code>SpilloverCount</code> &gt; 0 = surge queue full): scale the ASG on <strong><code>SurgeQueueLength</code></strong>; a high max means the backends cannot keep up. Access logs and pre-warming do not fix it</li>
+<li>One CloudWatch dashboard can show metrics from several Regions: add a graph per Region using the <strong>Region selector</strong> in the console; no dashboard per Region needed</li>
+<li>Dashboard as code: export the existing dashboard as JSON and put it in the <code>DashboardBody</code> of an <strong><code>AWS::CloudWatch::Dashboard</code></strong> resource, so every stack/Region gets its own copy</li>
+<li>Auto scale on average RAM (not a built-in EC2 metric): push <code>RAMUtilization</code> as a <strong>custom metric</strong> with the CloudWatch agent/script and scale on it</li>
+<li>EC2 metrics at 1-minute resolution: enable <strong>detailed monitoring</strong> (basic = 5 min)</li>
+<li>Instance hangs at 100% CPU for a long time: <strong>CloudWatch alarm</strong> (100% for 3 periods of 5 min) with an <strong>EC2 reboot action</strong>; no Lambda cron needed</li>
 </ul><h3 id="references">References</h3><ul>
 <li><a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html" target="_blank" rel="noopener">Amazon CloudWatch – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html" target="_blank" rel="noopener">CloudWatch – Using Amazon CloudWatch alarms</a></li>
@@ -121,6 +127,8 @@ const TRACK_SOA_CERT = {
 <li>Check S3 logging is enabled and fix it automatically: <strong>AWS Config rule</strong> (s3-bucket-logging-enabled) with remediation</li>
 <li>Recover an impaired instance with Systems Manager Automation: <strong>AWSSupport-ExecuteEC2Rescue</strong></li>
 <li>Patch fleets quickly and consistently: <strong>Systems Manager Patch Manager</strong></li>
+<li>A DynamoDB (or other service) event hits your resources: check the <strong>AWS Health Dashboard (Personal Health Dashboard)</strong> first for the affected resources and remediation guidance; the Service Health Dashboard is only the general status</li>
+<li>Health notifications missing for member accounts under one payer: enable <strong>AWS Health organizational view</strong> via Organizations. Health events are per account by default</li>
 </ul><h3 id="references">References</h3><ul>
 <li><a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html" target="_blank" rel="noopener">Amazon EventBridge – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rule-troubleshooting.html" target="_blank" rel="noopener">EventBridge – Troubleshooting rules</a></li>
@@ -195,6 +203,12 @@ const TRACK_SOA_CERT = {
 <li>EBS attach error: the <strong>device name is already in use</strong>; retry with another name</li>
 <li>After growing an EBS volume, <strong>extend the partition and file system</strong> inside the OS</li>
 <li>About 5 PB to Glacier cheaply: <strong>Snowball Edge Storage Optimized</strong> (about 80 TB usable each) into S3, then a <strong>lifecycle policy</strong> to Glacier</li>
+<li>Few hot items drive most reads on RDS: put an <strong>ElastiCache</strong> cache in front; read replicas help less because the same hot rows are still read from the database</li>
+<li>ElastiCache Redis with many <code>Evictions</code> (memory full): move to a <strong>larger node type</strong> (more memory). It is the least change for the app</li>
+<li>T2/T3 instances throttled after the CPU credits run out: enable <strong>T2/T3 Unlimited</strong> (extra cost) or move to a fixed-performance type; also disable ELB stickiness if load is uneven. Pre-warming the ELB and changing the LB type do not help CPU</li>
+<li>Tens of TB per day, 5 PB history, no bandwidth: <strong>Snowball Edge</strong> (Storage Optimized for bulk transfer, Compute Optimized to clean/process data on the device) then analyse in Athena/Redshift</li>
+<li>Nightly ETL on the production RDS database: give the ETL team an <strong>RDS Read Replica</strong>, so production is not hit</li>
+<li>Gigabytes a day to S3 from distant clients: enable <strong>S3 Transfer Acceleration</strong> and upload to the acceleration endpoint</li>
 </ul><h3 id="references">References</h3><ul>
 <li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/what-is-compute-optimizer.html" target="_blank" rel="noopener">AWS Compute Optimizer – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html" target="_blank" rel="noopener">Placement groups – Amazon EC2</a></li>
@@ -251,6 +265,13 @@ const TRACK_SOA_CERT = {
 <li><code>DisableApiTermination</code> (termination protection) blocks API/console/CLI termination only: an <strong>ASG can still terminate</strong> the instance</li>
 <li>Predictable daily/weekly peak: <strong>scheduled scaling</strong> actions scale out before the spike and in after it. Reactive policies lag behind demand</li>
 <li>If every instance has <strong>scale-in protection</strong>, a scale-in lowers desired capacity but terminates nothing</li>
+<li>ASG at 90% CPU for hours but no scale out: the group is <strong>already at maximum capacity</strong>, the <strong>Launch process is suspended</strong>, or AWS lacks capacity for the instance type. A suspended AZRebalance process is not a cause</li>
+<li>Unhealthy ASG instance: it is <strong>replaced almost immediately</strong>; it never recovers by itself (the grace period only delays the first check)</li>
+<li>Memory-heavy app in an ASG: RAM is not published by the ELB; scale on a load balancer metric such as <strong>connection count / request count</strong> (or push RAM as a custom metric)</li>
+<li>Aurora behind an elastic ASG: use the <strong>Aurora reader endpoint</strong>, which load-balances over replicas as they come and go; no cron to update connection strings</li>
+<li>ASG <strong>Terminate</strong> suspended and <strong>AZRebalance</strong> active: rebalance launches new instances, the group can grow up to 10% over its size, and the extra instances are <strong>not</strong> terminated</li>
+<li>Daily compute job that can be interrupted: <strong>Spot Instances</strong> for the lowest cost</li>
+<li>Session affinity on an ALB (default routes each request independently): enable <strong>stickiness</strong> on the target group</li>
 </ul><h3 id="references">References</h3><ul>
 <li><a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html" target="_blank" rel="noopener">Amazon EC2 Auto Scaling – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scaling-target-tracking.html" target="_blank" rel="noopener">EC2 Auto Scaling – Scaling policies</a></li>
@@ -303,6 +324,7 @@ const TRACK_SOA_CERT = {
 <li>Aurora AZ outage with all instances in one AZ: nothing to promote, so you must <strong>manually create new DB instances in another AZ</strong>. With readers in other AZs Aurora promotes one automatically</li>
 <li>Users get logged out behind an ALB: enable <strong>sticky sessions</strong> (AWSALB cookie) or move session state to ElastiCache/DynamoDB</li>
 <li>Easy RDS high availability: <strong>Multi-AZ</strong> (synchronous standby, automatic failover)</li>
+<li>RDS needs automatic failover with no committed-data loss: <strong>Multi-AZ</strong> (synchronous standby). A cross-Region read replica is asynchronous and needs manual promotion</li>
 </ul><h3 id="references">References</h3><ul>
 <li><a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/what-is-load-balancing.html" target="_blank" rel="noopener">Elastic Load Balancing – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-troubleshooting.html" target="_blank" rel="noopener">ALB – Troubleshoot your Application Load Balancers</a></li>
@@ -354,6 +376,10 @@ const TRACK_SOA_CERT = {
 <li>Recover from accidental S3 deletes: <strong>bucket versioning</strong> (add MFA Delete for protection)</li>
 <li>Application-consistent AMI: create it with <strong>No reboot disabled</strong> (default) so the instance is shut down; No reboot gives crash-consistent images</li>
 <li>On-premises backup software needing block/POSIX storage: <strong>Storage Gateway stored volume</strong> (iSCSI), async EBS snapshots to AWS</li>
+<li>Replace an on-premises NFS v3 share with S3 and keep hot files cached locally: <strong>S3 File Gateway</strong> (NFS/SMB to S3 objects with a local cache). Volume Gateway is block (iSCSI), not file</li>
+<li>Weekly 1 TB archives kept 7 years and not deletable/changeable (WORM): <strong>S3 Glacier with a Vault Lock policy</strong></li>
+<li>On-premises iSCSI block devices backed by AWS: <strong>Volume Gateway</strong> (File Gateway is NFS/SMB)</li>
+<li>Deleted all objects but the bucket will not delete: <strong>versioning</strong> is on and <strong>delete markers / old versions</strong> remain; remove them (or use a lifecycle rule) first</li>
 </ul><h3 id="references">References</h3><ul>
 <li><a href="https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html" target="_blank" rel="noopener">AWS Backup – Developer Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/aws-backup/latest/devguide/vault-lock.html" target="_blank" rel="noopener">AWS Backup – Vault Lock</a></li>
@@ -410,6 +436,13 @@ const TRACK_SOA_CERT = {
 <li>Protect critical resources from accidental update/delete: <strong>stack policy</strong> (and termination protection / DeletionPolicy)</li>
 <li>Read a resource attribute such as the DB endpoint or DNS name: <code>!GetAtt</code> (<code>Ref</code> returns the id/name only)</li>
 <li>Roll IAM roles out to many accounts: <strong>CloudFormation StackSets</strong> with AWS Organizations</li>
+<li>Debug a failed <code>cfn-init</code> on an instance CloudFormation would delete: create the stack with <strong><code>OnFailure=DO_NOTHING</code></strong> (or <code>--disable-rollback</code>; the two cannot be combined) and read <code>/var/log/cfn-init.log</code>. Do not change the instance</li>
+<li>Stack shows <code>CREATE_COMPLETE</code> while <code>cfn-init</code> still runs: add a <strong>CreationPolicy (or WaitCondition)</strong> so CloudFormation waits for <code>cfn-signal</code> before continuing</li>
+<li><code>InsufficientInstanceCapacity</code>: AWS has no capacity right now, so <strong>retry later or try another AZ / instance type</strong>. <code>InstanceLimitExceeded</code> is the quota error (request a limit increase)</li>
+<li>AMI shared from account A to B, then deregistered in A: <strong>no new instances</strong> can be launched in A or B; instances already running in B are not affected. Copy the AMI <em>before</em> deregistering it</li>
+<li>Keep EBS data when a stack is deleted: <code>DeletionPolicy: Snapshot</code> on the volume</li>
+<li>Stack stuck waiting for <code>cfn-signal</code> in a private subnet: the instance needs a <strong>network route to CloudFormation</strong> (NAT Gateway/IGW or a VPC endpoint), and the signal must arrive before the <strong>timeout</strong></li>
+<li>A script that checks AMI IDs against an approved list: <strong>AMI IDs are Region-specific</strong>, so keep one approved list per Region</li>
 </ul><h3 id="references">References</h3><ul>
 <li><a href="https://docs.aws.amazon.com/imagebuilder/latest/userguide/what-is-image-builder.html" target="_blank" rel="noopener">EC2 Image Builder – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/what-is-ecr.html" target="_blank" rel="noopener">Amazon ECR – User Guide</a></li>
@@ -452,6 +485,10 @@ const TRACK_SOA_CERT = {
 </div>
 </div><h4>Exam Scenarios</h4><ul>
 <li>Auto Scaling <code>Client.InternalError: Client error on launch</code> with an encrypted EBS volume: the <strong>service-linked role has no access to the customer managed KMS key</strong>; across accounts, use a KMS key in the <strong>same account as the ASG</strong>, re-encrypt (copy) the snapshot with it, and allow the service-linked role on that key</li>
+<li>Patch many EC2 instances in one go: <strong>Systems Manager Patch Manager</strong> (also for urgent Windows security patches); patching the OS is the customer's job under shared responsibility</li>
+<li>Collect software/metadata from EC2 and on-premises servers: <strong>Systems Manager Inventory</strong></li>
+<li>A Lambda that stops instances at night but must skip some: <strong>tag</strong> those instances and have the function skip the tag</li>
+<li>Cost per department / find idle Elastic IP spend: activate <strong>cost allocation tags</strong> and report in <strong>Cost Explorer</strong></li>
 </ul><h3 id="references">References</h3><ul>
 <li><a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/what-is-systems-manager.html" target="_blank" rel="noopener">AWS Systems Manager – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html" target="_blank" rel="noopener">Systems Manager Patch Manager</a></li>
@@ -507,6 +544,12 @@ const TRACK_SOA_CERT = {
 <li>Developers (not testers) into production: <strong>role in the production account trusting the dev account</strong>, then IAM group policies in dev: allow developers to assume it, deny testers</li>
 <li>Root user denied on a bucket: a bucket policy without the root principal can lock it out. The root user can still <strong>edit or delete the bucket policy</strong>; no Support case needed</li>
 <li>Shared responsibility for abstracted services (S3): AWS runs the <strong>OS, platform and infrastructure</strong>; you choose encryption options, IAM and data classification</li>
+<li>Report that no known vulnerabilities remain on EC2 after patching: <strong>Amazon Inspector</strong> (findings/assessment report). Patch Manager patches, it does not report CVEs</li>
+<li>Find your most active IAM users: <strong>CloudTrail</strong> events queried with <strong>Athena</strong></li>
+<li>Many accounts with different rules: <strong>AWS Organizations with OUs</strong> and SCPs, not IAM groups/roles in each account</li>
+<li>Federating an external IdP with <strong>IAM Identity Center</strong>: give the IdP the SAML metadata from Identity Center (Identity Center is the SAML service provider)</li>
+<li>Mobile users upload to S3: <strong>federate with Cognito</strong> so they assume an IAM role; do not embed keys</li>
+<li>Find security groups open on a forbidden port (e.g. 846): <strong>AWS Config</strong> rule for compliance</li>
 </ul><h3 id="references">References</h3><ul>
 <li><a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html" target="_blank" rel="noopener">AWS IAM – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html" target="_blank" rel="noopener">IAM – Policy evaluation logic</a></li>
@@ -571,6 +614,12 @@ const TRACK_SOA_CERT = {
 <li>S3 <strong>website endpoint</strong> as CloudFront origin: must be a <strong>custom origin</strong>, so OAI/OAC are not possible; restrict access with a secret <strong>custom header</strong> that the origin checks</li>
 <li>Sharing an AMI: you do <strong>not</strong> need to share its snapshots; encrypted AMIs must use a <strong>customer managed KMS key</strong> (not the AWS managed key) and you must share that key too</li>
 <li>Storage Gateway encrypts in transit with <strong>SSL/TLS</strong> and at rest by default with <strong>SSE-S3</strong> (KMS keys optional via the API), so the data is already protected</li>
+<li>Force TLS to RDS PostgreSQL: set <strong><code>rds.force_ssl=1</code></strong> in the DB <strong>parameter group</strong> (default 0)</li>
+<li>Enable S3 <strong>MFA Delete</strong> with the <strong>root account and the AWS CLI</strong> (not console, not IAM users). It needs MFA to change versioning state and permanently delete a version</li>
+<li>Spot employees reading S3 objects they cannot access: enable <strong>S3 server access logs</strong> and query with <strong>Athena</strong></li>
+<li>Force encryption on every upload: bucket <strong>Default Encryption</strong></li>
+<li>Share a daily report with 10,000+ changing customers: <strong>pre-signed URLs</strong></li>
+<li>With MFA Delete, MFA is required to <strong>permanently delete an object version</strong> and to <strong>suspend (change) versioning</strong>; uploading versions, listing and enabling versioning need none</li>
 </ul><h3 id="references">References</h3><ul>
 <li><a href="https://docs.aws.amazon.com/kms/latest/developerguide/overview.html" target="_blank" rel="noopener">AWS KMS – Developer Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html" target="_blank" rel="noopener">KMS – Key policies</a></li>
@@ -622,6 +671,12 @@ const TRACK_SOA_CERT = {
 <li>IPv6 outbound-only from private subnets: <strong>egress-only internet gateway</strong> (IPv4 uses a NAT gateway)</li>
 <li>Reach Systems Manager APIs without the internet: <strong>interface VPC endpoint</strong> (PrivateLink)</li>
 <li>Public and private subnets in one VPC reach each other with <strong>no extra configuration</strong> (local route); you only control it with SGs/NACLs</li>
+<li>Software-only private link from the data center to a VPC: <strong>Site-to-Site VPN</strong> (over the internet, IPsec). <strong>Direct Connect</strong> is a physical, dedicated link and takes weeks to set up</li>
+<li>Subnet size for 28 instances: AWS reserves <strong>5 IPs per subnet</strong>, so usable = 2^(32−x) − 5. A /27 gives 27 (too few), so use <strong>/26</strong> (59)</li>
+<li>Subnets in different AZs of the same VPC talk by private IP with no extra setup: the <strong>main route table has an implicit local route</strong> for the VPC CIDR</li>
+<li>VPC peering up but no traffic: add the route in <strong>both</strong> VPCs' route tables (plus SG/NACL)</li>
+<li>Private subnet needs internet: route <code>0.0.0.0/0</code> to the <strong>NAT Gateway</strong>, which lives in a <strong>public</strong> subnet</li>
+<li>A security group rule that references another security group allows <strong>all instances in that group</strong>, not one IP (common reason unexpected 172.x hosts reach a bastion)</li>
 </ul><h3 id="references">References</h3><ul>
 <li><a href="https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html" target="_blank" rel="noopener">Amazon VPC – User Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/vpc/latest/userguide/infrastructure-security.html" target="_blank" rel="noopener">VPC – Compare security groups and network ACLs</a></li>
@@ -665,6 +720,9 @@ const TRACK_SOA_CERT = {
 </div><h4>Exam Scenarios</h4><ul>
 <li>CloudFront 4xx/400 after an S3 origin bucket moved Region (delete and recreate elsewhere): <strong>update the distribution</strong> so it finds the bucket in its current Region</li>
 <li>Remove a bad file from CloudFront right away: <strong>invalidate</strong> it (or version file names)</li>
+<li>Cut cost of serving a 10 TB monthly file from EFS behind an ALB: store it in <strong>S3</strong> and serve through <strong>CloudFront</strong></li>
+<li>CloudFront HTTPS with automatic renewal: request the certificate in <strong>ACM</strong> (in us-east-1 for CloudFront) and use <strong>DNS validation</strong>. Self-signed certificates and Secrets Manager do not renew; there is no rotation switch in CloudFront</li>
+<li>CloudFront returns many 5xx (e.g. 501): enable <strong>standard (access) logs</strong> to S3 and query them with <strong>Athena</strong></li>
 </ul><h3 id="references">References</h3><ul>
 <li><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html" target="_blank" rel="noopener">Amazon Route 53 – Developer Guide</a></li>
 <li><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver.html" target="_blank" rel="noopener">Route 53 Resolver</a></li>
@@ -712,6 +770,9 @@ const TRACK_SOA_CERT = {
 <li><strong>Synthetics canaries</strong> test endpoints/APIs on a schedule; <strong>Network Flow Monitor</strong> shows workload network performance between resources; use alarms on the metrics to notify via SNS</li>
 </ul><h4>Exam Scenarios</h4><ul>
 <li>RDS MySQL read replica errors: <strong>writes to the replica</strong> break replication; replica <code>max_allowed_packet</code> smaller than the source also causes errors; nontransactional engines (MyISAM) are the usual trouble</li>
+<li>App suddenly cannot reach a Multi-AZ RDS DB in a private subnet: check the <strong>DB security group inbound rules</strong> first (a changed rule is the usual cause)</li>
+<li>Many 4xx from a load balancer whose targets are terminated at random: enable <strong>ELB access logs</strong> (off by default, stored in S3) and query them with <strong>Athena</strong></li>
+<li>VPN host can ping in but replies are lost (Flow Logs show outbound REJECT): the subnet <strong>NACL is stateless</strong>, so allow the <strong>outbound</strong> ICMP too</li>
 </ul><h3 id="references">References</h3><ul>
 <li><a href="https://docs.aws.amazon.com/vpc/latest/reachability/what-is-reachability-analyzer.html" target="_blank" rel="noopener">VPC Reachability Analyzer</a></li>
 <li><a href="https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html" target="_blank" rel="noopener">VPC Flow Logs</a></li>
