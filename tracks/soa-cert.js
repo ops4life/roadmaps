@@ -435,7 +435,7 @@ const TRACK_SOA_CERT = {
 <li><strong>AWS Organizations</strong>: OUs, consolidated billing, central policies. <strong>Service control policies (SCPs)</strong> set the maximum permissions for member accounts &mdash; they never grant access and do not affect the management account</li>
 <li>Typical SCPs: deny leaving the organization, deny disabling CloudTrail/Config/GuardDuty, restrict Regions with <code>aws:RequestedRegion</code>, require encryption/tags</li>
 <li><strong>IAM Identity Center</strong>: central SSO for AWS accounts and apps, permission sets per account, integrates with an external IdP or Active Directory</li>
-<li><strong>Control Tower</strong> automates a multi-account landing zone with preventive (SCP) and detective (Config) guardrails</li>
+<li><strong>Control Tower</strong> automates a multi-account landing zone with preventive (SCP), detective (Config) and proactive (CloudFormation hooks) controls (formerly called guardrails)</li>
 <li>Delegated administrator accounts for security services (GuardDuty, Security Hub, Config, Backup) keep the management account clean</li>
 </ul><h3 id="trusted-config">1.4 Trusted Advisor and Compliance Monitoring</h3><ul>
 <li><strong>Trusted Advisor</strong> checks cost, performance, security, fault tolerance, service limits, and operational excellence. Full set of checks needs Business Support+, Enterprise Support or Unified Operations (Basic Support: service limits plus selected security and fault-tolerance checks; Developer and Business plans are being discontinued 1 Jan 2027); security checks flag open security groups, public S3 buckets, missing MFA on root, exposed access keys. Automate via EventBridge</li>
@@ -542,7 +542,7 @@ const TRACK_SOA_CERT = {
 <li><strong>Transit Gateway</strong>: hub-and-spoke for many VPCs and on-premises (attachments, route tables, peering between TGWs, RAM sharing). <strong>Site-to-Site VPN</strong> (IPsec, two tunnels per connection, up to 1.25 Gbps per tunnel; Large Bandwidth Tunnels reach 5 Gbps on Transit Gateway/Cloud WAN attachments), <strong>Direct Connect</strong> (dedicated private link), <strong>Client VPN</strong> (remote users)</li>
 <li>S3 traffic from private subnets through a gateway endpoint avoids NAT data processing charges</li>
 </ul><h3 id="protection">1.3 Network Protection Services (Audit)</h3><ul>
-<li><strong>AWS WAF</strong>: L7 web ACLs on CloudFront, ALB, API Gateway, AppSync (managed rule groups, rate-based rules, geo, IP sets, bot control)</li>
+<li><strong>AWS WAF</strong>: L7 web ACLs on CloudFront, ALB, API Gateway REST APIs, AppSync, Cognito user pools, App Runner, Verified Access (managed rule groups, rate-based rules, geo, IP sets, bot control)</li>
 <li><strong>AWS Shield</strong>: Standard (free, automatic L3/4 DDoS protection); Advanced (paid; response team, cost protection, enhanced detection)</li>
 <li><strong>AWS Network Firewall</strong>: stateful and stateless inspection, domain filtering, Suricata rules at VPC level. <strong>Route 53 Resolver DNS Firewall</strong>: block DNS lookups to malicious domains. <strong>Firewall Manager</strong> centralises policy across accounts</li>
 <li>Audit with logs: WAF logs (Firehose/S3/CloudWatch Logs), Network Firewall logs, Resolver query logs, and Config rules that check association of protections</li>
@@ -581,7 +581,7 @@ const TRACK_SOA_CERT = {
 <p>Geolocation = <em>where the user is</em>; Latency = <em>fastest Region</em>; Geoproximity = <em>distance with bias</em>. If the scenario says 'must serve EU users only from EU', that is geolocation.</p>
 </div>
 </div><h3 id="cdn">2.3 Content and Service Distribution</h3><ul>
-<li><strong>CloudFront</strong> origins: S3 (use <strong>Origin Access Control</strong> to keep the bucket private), ALB/EC2, API Gateway, custom HTTP. Behaviors route path patterns to different origins and set cache policy, origin request policy, and function associations</li>
+<li><strong>CloudFront</strong> origins: S3 (use <strong>Origin Access Control</strong> to keep the bucket private; it replaces the legacy OAI and supports SSE-KMS and all Regions; an S3 website endpoint must be a custom origin and cannot use OAC), ALB/EC2, API Gateway, custom HTTP. Behaviors route path patterns to different origins and set cache policy, origin request policy, and function associations</li>
 <li><strong>Security</strong>: HTTPS viewer policy, signed URLs/cookies for private content, geo restriction, field-level encryption, <strong>WAF</strong> and Shield integration, custom error pages, origin failover groups</li>
 <li><strong>CloudFront Functions</strong> (lightweight viewer request/response) vs <strong>Lambda@Edge</strong> (heavier logic, origin events)</li>
 <li><strong>Global Accelerator</strong>: two static anycast IPs that route over the AWS backbone to the nearest healthy endpoint (ALB, NLB, EC2, EIP); great for non-HTTP (TCP/UDP), gaming, IoT, fast regional failover and static IP allow-lists. CloudFront caches content; Global Accelerator does not cache</li>
