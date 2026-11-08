@@ -25,7 +25,7 @@
 <link rel="icon" type="image/png" href="favicon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Space+Mono:wght@400;700&family=Geist:wght@400;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet" />
 <style>
 :root{
   --bg:    #EFE9D6;
@@ -119,6 +119,30 @@ button{font:inherit;color:inherit}
 .guide-embed .diagram{ border:1.5px solid var(--ink); background:var(--bg-3); padding:12px; margin:0 0 12px; }
 .guide-embed .diagram svg{ display:block; width:100%; height:auto; max-width:100%; }
 .guide-embed .diagram-caption{ margin:8px 0 0; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-3); text-align:center; }
+.diagram.dd{--dd-paper:#f5f5f5;--dd-paper2:#ececec;--dd-ink:#2d3142;--dd-muted:#4f5d75;--dd-soft:#5a6580;--dd-rule:#bfc0c0;--dd-accent:#bf4520;--dd-tint:rgba(191,69,32,.08)}
+html.dark .diagram.dd{--dd-paper:#2d3142;--dd-paper2:#393e53;--dd-ink:#f5f5f5;--dd-muted:#bfc0c0;--dd-soft:#949eb2;--dd-rule:rgba(191,192,192,.35);--dd-accent:#f08a59;--dd-tint:rgba(240,138,89,.10)}
+.guide-embed .diagram.dd{ border:1px solid var(--dd-rule); border-radius:6px; background:var(--dd-paper); padding:12px; overflow-x:auto; }
+.guide-embed .diagram.dd svg{ min-width:520px; max-width:560px; margin:0 auto; }
+@media (max-width:640px){ .guide-embed .diagram.dd svg{ min-width:660px; max-width:none; } }
+.guide-embed .diagram.dd .diagram-caption{ color:var(--dd-soft); font-family:"Geist Mono",ui-monospace,monospace; }
+.dd .dd-mask{fill:var(--dd-paper)}
+.dd .dd-node{fill:var(--dd-paper);stroke:var(--dd-ink);stroke-width:1}
+.dd .dd-store{fill:var(--dd-paper2)}
+.dd .dd-ext{stroke:var(--dd-muted);stroke-dasharray:4 3}
+.dd .dd-focal{fill:var(--dd-tint);stroke:var(--dd-accent);stroke-width:1.5}
+.dd .dd-zone{fill:none;stroke:var(--dd-rule);stroke-dasharray:4 3}
+.dd .dd-name{font:600 12px Geist,"Helvetica Neue",Arial,sans-serif;fill:var(--dd-ink)}
+.dd .dd-sub{font:400 9.5px "Geist Mono",ui-monospace,monospace;fill:var(--dd-soft)}
+.dd .dd-name.dd-hl{fill:var(--dd-accent)}
+.dd .dd-sub.dd-hl{fill:var(--dd-accent);opacity:.85}
+.dd .dd-eyebrow{font:500 9px "Geist Mono",ui-monospace,monospace;letter-spacing:.14em;fill:var(--dd-muted)}
+.dd .dd-label{font:500 9px "Geist Mono",ui-monospace,monospace;letter-spacing:.06em;fill:var(--dd-muted)}
+.dd .dd-note{font:italic 15px "Instrument Serif",Georgia,serif;fill:var(--dd-muted)}
+.dd .dd-arrow{fill:none;stroke:var(--dd-muted);stroke-width:1.25}
+.dd .dd-arrow.dd-acc{stroke:var(--dd-accent)}
+.dd .dd-dash{stroke-dasharray:5 4}
+.dd .dd-head{fill:var(--dd-muted)}
+.dd .dd-head-acc{fill:var(--dd-accent)}
 .guide-embed a{ color:var(--accent); text-decoration:underline; text-underline-offset:2px; font-weight:600; }
 .guide-embed a:hover{ text-decoration-thickness:2px; }
 .guide-embed h3#references{ padding-top:10px; border-top:1.5px dashed var(--ink-3); }
@@ -1163,7 +1187,7 @@ function Drawer({ open, item, section, status, onClose, onMark, onPrev, onNext, 
         </div>
 
         <div ref={bodyRef} style={{padding:"22px 22px 28px", overflowY:"auto", flex:1}}>
-          <h3 className="display" style={{margin:"0 0 14px", fontSize:42, lineHeight:.92, letterSpacing:"-.02em"}}>
+          <h3 className="display drawer-title" style={{margin:"0 0 14px", fontSize:42, lineHeight:.92, letterSpacing:"-.02em"}}>
             {item.label}<span style={{color:"var(--accent)"}}>.</span>
           </h3>
           <HighlightableText
@@ -1252,7 +1276,8 @@ function Drawer({ open, item, section, status, onClose, onMark, onPrev, onNext, 
         @keyframes fade { from{opacity:0} to{opacity:1} }
         @keyframes slide { from{transform:translateX(20px); opacity:0} to{transform:translateX(0); opacity:1} }
         @media (max-width: 640px){
-          .drawer-aside{ width:100% !important; top:auto !important; bottom:0 !important; height:70vh !important; border-left:none !important; border-top:2px solid var(--ink) !important; box-shadow:0 -6px 0 var(--ink) !important; animation: slideUp .2s ease !important; }
+          .drawer-title{ font-size:26px !important; line-height:1 !important; margin-bottom:10px !important; }
+          .drawer-aside{ width:100% !important; top:auto !important; bottom:0 !important; height:92vh !important; border-left:none !important; border-top:2px solid var(--ink) !important; box-shadow:0 -6px 0 var(--ink) !important; animation: slideUp .2s ease !important; }
         }
         @keyframes slideUp { from{transform:translateY(20px); opacity:0} to{transform:translateY(0); opacity:1} }
       `}</style>
